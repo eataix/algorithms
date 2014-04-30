@@ -10,7 +10,7 @@ int main()
         int f;
         cin >> f;
         int total = 0;
-        for (; f >0; --f) {
+        for (; f > 0; --f) {
             int a, b, c;
             cin >> a >> b >> c;
             total += a * c;
