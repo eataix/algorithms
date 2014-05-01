@@ -1,0 +1,12 @@
+*
+!/.gitignore
+!/python
+!*.py
+!/cxx
+!*.cpp
+!/golang
+!*.go
+!/rust
+!*.rs
+!/haskell
+!*.hs
