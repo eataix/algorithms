@@ -47,31 +47,15 @@ int main()
 {
     ios_base::sync_with_stdio(false);
 
-    int n, s;
-    cin >> n >> s;
-
-    int min = 100;
-    bool flag = false;
-
+    int n;
+    cin >> n;
+    vector<int> h(n);
     REP(i, n) {
-        int x, y;
-        cin >> x >> y;
+        cin >> h[i];
+    }
 
-        if (x < s && y <= min) {
-            flag = true;
-            if (y != 0) {
-                min = y;
-            }
-        }
-        if (x == s && y == 0) {
-            flag = true;
-        }
-    }
-    if (flag) {
-        cout << 100 - min << endl;
-    } else {
-        cout << -1 << endl;
-    }
+    cout << *max_element(h.begin(), h.end()) << endl;
 
     return 0;
 }
+
