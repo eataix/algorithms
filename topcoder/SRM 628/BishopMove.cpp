@@ -1,19 +1,23 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-class RectangleCoveringEasy {
+class BishopMove {
     public:
-        int solve(int holeH, int holeW, int boardH, int boardW) {
-            if((boardH>=holeH&&boardW>holeW)||(boardH>holeH&&boardW>=holeW)||(boardH>=holeW&&boardW>holeH)||(boardH>holeW&&boardW>=holeH))  
-                return 1;
-            else
-                return -1;
+    int howManyMoves(int r1, int c1, int r2, int c2) {
+        if ((r1 + c1) % 2 != (r2 + c2) % 2) {
+            return -1;
+        } else if (r1 == r2 && c1 == c2) {
+            return 0;
+        } else if (abs(r1 - r2) == abs(c1 - c2)) {
+            return 1;
+        } else {
+            return 2;
         }
-
+    }
 };
 
 // CUT begin
-ifstream data("RectangleCoveringEasy.sample");
+ifstream data("BishopMove.sample");
 
 string next_line() {
     string s;
@@ -41,10 +45,10 @@ string to_string(string t) {
     return "\"" + t + "\"";
 }
 
-bool do_test(int holeH, int holeW, int boardH, int boardW, int __expected) {
+bool do_test(int r1, int c1, int r2, int c2, int __expected) {
     time_t startClock = clock();
-    RectangleCoveringEasy *instance = new RectangleCoveringEasy();
-    int __result = instance->solve(holeH, holeW, boardH, boardW);
+    BishopMove *instance = new BishopMove();
+    int __result = instance->howManyMoves(r1, c1, r2, c2);
     double elapsed = (double)(clock() - startClock) / CLOCKS_PER_SEC;
     delete instance;
 
@@ -65,14 +69,14 @@ int run_test(bool mainProcess, const set<int> &case_set, const string command) {
     while (true) {
         if (next_line().find("--") != 0)
             break;
-        int holeH;
-        from_stream(holeH);
-        int holeW;
-        from_stream(holeW);
-        int boardH;
-        from_stream(boardH);
-        int boardW;
-        from_stream(boardW);
+        int r1;
+        from_stream(r1);
+        int c1;
+        from_stream(c1);
+        int r2;
+        from_stream(r2);
+        int c2;
+        from_stream(c2);
         next_line();
         int __answer;
         from_stream(__answer);
@@ -82,13 +86,13 @@ int run_test(bool mainProcess, const set<int> &case_set, const string command) {
             continue;
 
         cout << "  Testcase #" << cases - 1 << " ... ";
-        if ( do_test(holeH, holeW, boardH, boardW, __answer)) {
+        if ( do_test(r1, c1, r2, c2, __answer)) {
             passed++;
         }
     }
     if (mainProcess) {
         cout << endl << "Passed : " << passed << "/" << cases << " cases" << endl;
-        int T = time(NULL) - 1410930708;
+        int T = time(NULL) - 1410931442;
         double PT = T / 60.0, TT = 75.0;
         cout << "Time   : " << T / 60 << " minutes " << T % 60 << " secs" << endl;
         cout << "Score  : " << 250 * (0.3 + (0.7 * TT * TT) / (10.0 * PT * PT + TT * TT)) << " points" << endl;
@@ -109,7 +113,7 @@ int main(int argc, char *argv[]) {
         }
     }
     if (mainProcess) {
-        cout << "RectangleCoveringEasy (250 Points)" << endl << endl;
+        cout << "BishopMove (250 Points)" << endl << endl;
     }
     return run_test(mainProcess, cases, argv[0]);
 }

@@ -1,19 +1,23 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-class RectangleCoveringEasy {
+class FixedDiceGameDiv2 {
     public:
-        int solve(int holeH, int holeW, int boardH, int boardW) {
-            if((boardH>=holeH&&boardW>holeW)||(boardH>holeH&&boardW>=holeW)||(boardH>=holeW&&boardW>holeH)||(boardH>holeW&&boardW>=holeH))  
-                return 1;
-            else
-                return -1;
+    double getExpectation(int a, int b) {
+        double ret = 0;
+        double count = 0;
+        for (int i = 1; i <= b; ++i) {
+            for (int j = i + 1; j <= a; ++j) {
+                ret += j;
+                count += 1;
+            }
         }
-
+        return ret/ count;
+    }
 };
 
 // CUT begin
-ifstream data("RectangleCoveringEasy.sample");
+ifstream data("FixedDiceGameDiv2.sample");
 
 string next_line() {
     string s;
@@ -41,14 +45,16 @@ string to_string(string t) {
     return "\"" + t + "\"";
 }
 
-bool do_test(int holeH, int holeW, int boardH, int boardW, int __expected) {
+bool double_equal(const double &a, const double &b) { return b==b && a==a && fabs(b - a) <= 1e-9 * max(1.0, fabs(a) ); }
+
+bool do_test(int a, int b, double __expected) {
     time_t startClock = clock();
-    RectangleCoveringEasy *instance = new RectangleCoveringEasy();
-    int __result = instance->solve(holeH, holeW, boardH, boardW);
+    FixedDiceGameDiv2 *instance = new FixedDiceGameDiv2();
+    double __result = instance->getExpectation(a, b);
     double elapsed = (double)(clock() - startClock) / CLOCKS_PER_SEC;
     delete instance;
 
-    if (__result == __expected) {
+    if (double_equal(__expected, __result)) {
         cout << "PASSED!" << " (" << elapsed << " seconds)" << endl;
         return true;
     }
@@ -65,16 +71,12 @@ int run_test(bool mainProcess, const set<int> &case_set, const string command) {
     while (true) {
         if (next_line().find("--") != 0)
             break;
-        int holeH;
-        from_stream(holeH);
-        int holeW;
-        from_stream(holeW);
-        int boardH;
-        from_stream(boardH);
-        int boardW;
-        from_stream(boardW);
+        int a;
+        from_stream(a);
+        int b;
+        from_stream(b);
         next_line();
-        int __answer;
+        double __answer;
         from_stream(__answer);
 
         cases++;
@@ -82,16 +84,16 @@ int run_test(bool mainProcess, const set<int> &case_set, const string command) {
             continue;
 
         cout << "  Testcase #" << cases - 1 << " ... ";
-        if ( do_test(holeH, holeW, boardH, boardW, __answer)) {
+        if ( do_test(a, b, __answer)) {
             passed++;
         }
     }
     if (mainProcess) {
         cout << endl << "Passed : " << passed << "/" << cases << " cases" << endl;
-        int T = time(NULL) - 1410930708;
+        int T = time(NULL) - 1410935019;
         double PT = T / 60.0, TT = 75.0;
         cout << "Time   : " << T / 60 << " minutes " << T % 60 << " secs" << endl;
-        cout << "Score  : " << 250 * (0.3 + (0.7 * TT * TT) / (10.0 * PT * PT + TT * TT)) << " points" << endl;
+        cout << "Score  : " << 500 * (0.3 + (0.7 * TT * TT) / (10.0 * PT * PT + TT * TT)) << " points" << endl;
     }
     return 0;
 }
@@ -109,7 +111,7 @@ int main(int argc, char *argv[]) {
         }
     }
     if (mainProcess) {
-        cout << "RectangleCoveringEasy (250 Points)" << endl << endl;
+        cout << "FixedDiceGameDiv2 (500 Points)" << endl << endl;
     }
     return run_test(mainProcess, cases, argv[0]);
 }

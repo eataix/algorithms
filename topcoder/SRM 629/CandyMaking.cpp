@@ -1,19 +1,27 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-class RectangleCoveringEasy {
+class CandyMaking {
     public:
-        int solve(int holeH, int holeW, int boardH, int boardW) {
-            if((boardH>=holeH&&boardW>holeW)||(boardH>holeH&&boardW>=holeW)||(boardH>=holeW&&boardW>holeH)||(boardH>holeW&&boardW>=holeH))  
-                return 1;
-            else
-                return -1;
+    double findSuitableDensity(vector<int> containerVolume, vector<int> desiredWeight) {
+        vector<double> densities (containerVolume.size());
+        for (int i = 0; i < containerVolume.size(); ++i) {
+            densities .push_back((double) desiredWeight[i] / containerVolume[i]);
         }
-
+        double ret = 1e9;
+        for (double d : densities) {
+            double diff = 0;
+            for (int i = 0; i < containerVolume.size(); ++i) {
+                diff += fabs(d * containerVolume[i] - desiredWeight[i]);
+            }
+            ret = min(diff, ret);
+        }
+        return ret;
+    }
 };
 
 // CUT begin
-ifstream data("RectangleCoveringEasy.sample");
+ifstream data("CandyMaking.sample");
 
 string next_line() {
     string s;
@@ -30,6 +38,17 @@ void from_stream(string &s) {
     s = next_line();
 }
 
+template <typename T> void from_stream(vector<T> &ts) {
+    int len;
+    from_stream(len);
+    ts.clear();
+    for (int i = 0; i < len; ++i) {
+        T t;
+        from_stream(t);
+        ts.push_back(t);
+    }
+}
+
 template <typename T>
 string to_string(T t) {
     stringstream s;
@@ -41,14 +60,16 @@ string to_string(string t) {
     return "\"" + t + "\"";
 }
 
-bool do_test(int holeH, int holeW, int boardH, int boardW, int __expected) {
+bool double_equal(const double &a, const double &b) { return b==b && a==a && fabs(b - a) <= 1e-9 * max(1.0, fabs(a) ); }
+
+bool do_test(vector<int> containerVolume, vector<int> desiredWeight, double __expected) {
     time_t startClock = clock();
-    RectangleCoveringEasy *instance = new RectangleCoveringEasy();
-    int __result = instance->solve(holeH, holeW, boardH, boardW);
+    CandyMaking *instance = new CandyMaking();
+    double __result = instance->findSuitableDensity(containerVolume, desiredWeight);
     double elapsed = (double)(clock() - startClock) / CLOCKS_PER_SEC;
     delete instance;
 
-    if (__result == __expected) {
+    if (double_equal(__expected, __result)) {
         cout << "PASSED!" << " (" << elapsed << " seconds)" << endl;
         return true;
     }
@@ -65,16 +86,12 @@ int run_test(bool mainProcess, const set<int> &case_set, const string command) {
     while (true) {
         if (next_line().find("--") != 0)
             break;
-        int holeH;
-        from_stream(holeH);
-        int holeW;
-        from_stream(holeW);
-        int boardH;
-        from_stream(boardH);
-        int boardW;
-        from_stream(boardW);
+        vector<int> containerVolume;
+        from_stream(containerVolume);
+        vector<int> desiredWeight;
+        from_stream(desiredWeight);
         next_line();
-        int __answer;
+        double __answer;
         from_stream(__answer);
 
         cases++;
@@ -82,16 +99,16 @@ int run_test(bool mainProcess, const set<int> &case_set, const string command) {
             continue;
 
         cout << "  Testcase #" << cases - 1 << " ... ";
-        if ( do_test(holeH, holeW, boardH, boardW, __answer)) {
+        if ( do_test(containerVolume, desiredWeight, __answer)) {
             passed++;
         }
     }
     if (mainProcess) {
         cout << endl << "Passed : " << passed << "/" << cases << " cases" << endl;
-        int T = time(NULL) - 1410930708;
+        int T = time(NULL) - 1410930768;
         double PT = T / 60.0, TT = 75.0;
         cout << "Time   : " << T / 60 << " minutes " << T % 60 << " secs" << endl;
-        cout << "Score  : " << 250 * (0.3 + (0.7 * TT * TT) / (10.0 * PT * PT + TT * TT)) << " points" << endl;
+        cout << "Score  : " << 550 * (0.3 + (0.7 * TT * TT) / (10.0 * PT * PT + TT * TT)) << " points" << endl;
     }
     return 0;
 }
@@ -109,7 +126,7 @@ int main(int argc, char *argv[]) {
         }
     }
     if (mainProcess) {
-        cout << "RectangleCoveringEasy (250 Points)" << endl << endl;
+        cout << "CandyMaking (550 Points)" << endl << endl;
     }
     return run_test(mainProcess, cases, argv[0]);
 }

@@ -1,19 +1,31 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-class RectangleCoveringEasy {
-    public:
-        int solve(int holeH, int holeW, int boardH, int boardW) {
-            if((boardH>=holeH&&boardW>holeW)||(boardH>holeH&&boardW>=holeW)||(boardH>=holeW&&boardW>holeH)||(boardH>holeW&&boardW>=holeH))  
-                return 1;
-            else
-                return -1;
-        }
+class IncrementingSequence { public:
+        string canItBeDone(int k, vector<int> A) {
+            vector<int> num(51);
+            for (int i : A) {
+                num[i] += 1;
+            }
 
+            for(int i = 1; i <= A.size(); i += 1) {
+                int x;
+                for(x = 1; x <= i; x += 1) {
+                    if (num[x] > 0 && (i - x) % k == 0) {
+                        num[x] -= 1;
+                        break;
+                    }
+                }
+                if (x > i) {
+                    return "IMPOSSIBLE";
+                }
+            }
+            return "POSSIBLE";
+        }
 };
 
 // CUT begin
-ifstream data("RectangleCoveringEasy.sample");
+ifstream data("IncrementingSequence.sample");
 
 string next_line() {
     string s;
@@ -30,6 +42,17 @@ void from_stream(string &s) {
     s = next_line();
 }
 
+template <typename T> void from_stream(vector<T> &ts) {
+    int len;
+    from_stream(len);
+    ts.clear();
+    for (int i = 0; i < len; ++i) {
+        T t;
+        from_stream(t);
+        ts.push_back(t);
+    }
+}
+
 template <typename T>
 string to_string(T t) {
     stringstream s;
@@ -41,10 +64,10 @@ string to_string(string t) {
     return "\"" + t + "\"";
 }
 
-bool do_test(int holeH, int holeW, int boardH, int boardW, int __expected) {
+bool do_test(int k, vector<int> A, string __expected) {
     time_t startClock = clock();
-    RectangleCoveringEasy *instance = new RectangleCoveringEasy();
-    int __result = instance->solve(holeH, holeW, boardH, boardW);
+    IncrementingSequence *instance = new IncrementingSequence();
+    string __result = instance->canItBeDone(k, A);
     double elapsed = (double)(clock() - startClock) / CLOCKS_PER_SEC;
     delete instance;
 
@@ -65,16 +88,12 @@ int run_test(bool mainProcess, const set<int> &case_set, const string command) {
     while (true) {
         if (next_line().find("--") != 0)
             break;
-        int holeH;
-        from_stream(holeH);
-        int holeW;
-        from_stream(holeW);
-        int boardH;
-        from_stream(boardH);
-        int boardW;
-        from_stream(boardW);
+        int k;
+        from_stream(k);
+        vector<int> A;
+        from_stream(A);
         next_line();
-        int __answer;
+        string __answer;
         from_stream(__answer);
 
         cases++;
@@ -82,16 +101,16 @@ int run_test(bool mainProcess, const set<int> &case_set, const string command) {
             continue;
 
         cout << "  Testcase #" << cases - 1 << " ... ";
-        if ( do_test(holeH, holeW, boardH, boardW, __answer)) {
+        if ( do_test(k, A, __answer)) {
             passed++;
         }
     }
     if (mainProcess) {
         cout << endl << "Passed : " << passed << "/" << cases << " cases" << endl;
-        int T = time(NULL) - 1410930708;
+        int T = time(NULL) - 1410935949;
         double PT = T / 60.0, TT = 75.0;
         cout << "Time   : " << T / 60 << " minutes " << T % 60 << " secs" << endl;
-        cout << "Score  : " << 250 * (0.3 + (0.7 * TT * TT) / (10.0 * PT * PT + TT * TT)) << " points" << endl;
+        cout << "Score  : " << 500 * (0.3 + (0.7 * TT * TT) / (10.0 * PT * PT + TT * TT)) << " points" << endl;
     }
     return 0;
 }
@@ -109,7 +128,7 @@ int main(int argc, char *argv[]) {
         }
     }
     if (mainProcess) {
-        cout << "RectangleCoveringEasy (250 Points)" << endl << endl;
+        cout << "IncrementingSequence (500 Points)" << endl << endl;
     }
     return run_test(mainProcess, cases, argv[0]);
 }
