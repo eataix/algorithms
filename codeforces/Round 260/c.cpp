@@ -518,6 +518,10 @@ int main() {
     }
     dp[1] = A[1];
     FOR_1(i, 2, 100002) {
+        // i is either chosen or removed
+        // if it is chosen, then i - 1 must not be chosen, so dp(i) = dp(i - 2)
+        // + i * A[i]
+        // if it is removed, then i - 1 must be chosen, so dp(i) = dp(i - 1)
         dp[i]=max(dp[i-1],dp[i-2]+A[i]*(LL)i);
     }
     cout << dp[100002] << endl;

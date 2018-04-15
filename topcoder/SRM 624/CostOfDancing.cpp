@@ -27,11 +27,7 @@ class CostOfDancing {
     public:
     int minimum(int K, vector<int> danceCost) {
         sort(danceCost.begin(), danceCost.end());
-        int t = 0;
-        for (int i = 0; i < K; ++i) {
-            t += danceCost[i];
-        }
-        return t;
+        return accumulate(danceCost.begin(), danceCost.begin() + K, 0);
     }
 };
 

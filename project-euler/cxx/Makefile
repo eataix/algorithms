@@ -1,5 +1,5 @@
 CXX=clang++
-CXXFLAGS=-std=c++11 -Wall -Wextra
+CXXFLAGS=-std=c++1y -Wall -Wextra
 
 all:
 	@echo "Don't Panic."

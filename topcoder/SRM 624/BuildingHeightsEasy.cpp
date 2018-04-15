@@ -1,41 +1,19 @@
-#include <functional>
-#include <algorithm>
-#include <iostream>
-#include <fstream>
-#include <sstream>
-#include <iomanip>
-#include <numeric>
-#include <cstring>
-#include <climits>
-#include <cassert>
-#include <complex>
-#include <cstdio>
-#include <string>
-#include <vector>
-#include <bitset>
-#include <queue>
-#include <stack>
-#include <cmath>
-#include <ctime>
-#include <list>
-#include <set>
-#include <map>
-
+#include <bits/stdc++.h>
 using namespace std;
 
 class BuildingHeightsEasy {
     public:
     int minimum(int M, vector<int> heights) {
         sort(heights.begin(), heights.end());
-        int ret = 3000;
-        for (int i = M - 1; i < (int) heights.size(); ++i) {
-            int tmp = 0;
+        int m = 3000;
+        for (int i = M - 1; i < heights.size(); ++i) {
+            int ret = 0;
             for (int j = i - M + 1; j < i; ++j) {
-                tmp += heights[i] - heights[j];
+                ret += heights[i] - heights[j];
             }
-            ret = min(tmp, ret);
+            m = min(m, ret);
         }
-        return ret;
+        return m;
     }
 };
 
@@ -122,7 +100,7 @@ int run_test(bool mainProcess, const set<int> &case_set, const string command) {
     }
     if (mainProcess) {
         cout << endl << "Passed : " << passed << "/" << cases << " cases" << endl;
-        int T = time(NULL) - 1410158183;
+        int T = time(NULL) - 1410942372;
         double PT = T / 60.0, TT = 75.0;
         cout << "Time   : " << T / 60 << " minutes " << T % 60 << " secs" << endl;
         cout << "Score  : " << 500 * (0.3 + (0.7 * TT * TT) / (10.0 * PT * PT + TT * TT)) << " points" << endl;
