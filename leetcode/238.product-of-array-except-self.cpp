@@ -24,38 +24,27 @@ using namespace std;
  * Could you solve it with constant space complexity? (Note: The output array
  * does not count as extra space for the purpose of space complexity analysis.)
  */
-class Solution
-{
+class Solution {
 public:
-  vector<int> productExceptSelf(vector<int> &nums)
-  {
+  vector<int> productExceptSelf(vector<int> &nums) {
     vector<int> left(nums.size(), 1);
     vector<int> right(nums.size(), 1);
-    for (int i = 0; i < nums.size(); ++i)
-    {
-      if (i == 0)
-      {
+    for (int i = 0; i < nums.size(); ++i) {
+      if (i == 0) {
         left[i] = 1;
-      }
-      else
-      {
+      } else {
         left[i] = left[i - 1] * nums[i - 1];
       }
     }
-    for (int i = nums.size() - 1; i >= 0; --i)
-    {
-      if (i == nums.size() - 1)
-      {
+    for (int i = nums.size() - 1; i >= 0; --i) {
+      if (i == nums.size() - 1) {
         right[i] = 1;
-      }
-      else
-      {
+      } else {
         right[i] = right[i + 1] * nums[i + 1];
       }
     }
     vector<int> result(nums.size());
-    for (int i = 0; i < nums.size(); ++i)
-    {
+    for (int i = 0; i < nums.size(); ++i) {
       result[i] = left[i] * right[i];
     }
     return result;

@@ -1,5 +1,5 @@
-#include <string>
 #include <set>
+#include <string>
 using namespace std;
 /*
  * [782] Jewels and Stones
@@ -42,24 +42,19 @@ using namespace std;
  * The characters in J are distinct.
  *
  */
-class Solution
-{
-  public:
-    int numJewelsInStones(string J, string S)
-    {
-        set<char> jewels;
-        for (char ch : J)
-        {
-            jewels.insert(ch);
-        }
-        int count = 0;
-        for (char ch : S)
-        {
-            if (jewels.find(ch) != jewels.cend())
-            {
-                count += 1;
-            }
-        }
-        return count;
+class Solution {
+public:
+  int numJewelsInStones(string J, string S) {
+    set<char> jewels;
+    for (char ch : J) {
+      jewels.insert(ch);
     }
+    int count = 0;
+    for (char ch : S) {
+      if (jewels.find(ch) != jewels.cend()) {
+        count += 1;
+      }
+    }
+    return count;
+  }
 };

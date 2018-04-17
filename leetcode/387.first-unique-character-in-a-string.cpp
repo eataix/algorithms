@@ -1,5 +1,5 @@
-#include <string>
 #include <map>
+#include <string>
 using namespace std;
 /*
  * [387] First Unique Character in a String
@@ -30,23 +30,18 @@ using namespace std;
  * Note: You may assume the string contain only lowercase letters.
  *
  */
-class Solution
-{
-  public:
-    int firstUniqChar(string s)
-    {
-        map<char, int> dictionary;
-        for (char ch : s)
-        {
-            dictionary[ch] += 1;
-        }
-        for (int i = 0; i < s.size(); ++i)
-        {
-            if (dictionary[s[i]] == 1)
-            {
-                return i;
-            }
-        }
-        return -1;
+class Solution {
+public:
+  int firstUniqChar(string s) {
+    map<char, int> dictionary;
+    for (char ch : s) {
+      dictionary[ch] += 1;
     }
+    for (int i = 0; i < s.size(); ++i) {
+      if (dictionary[s[i]] == 1) {
+        return i;
+      }
+    }
+    return -1;
+  }
 };

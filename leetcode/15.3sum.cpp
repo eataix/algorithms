@@ -1,6 +1,6 @@
+#include <iostream>
 #include <set>
 #include <vector>
-#include <iostream>
 using namespace std;
 /*
  * [15] 3Sum
@@ -29,36 +29,31 @@ using namespace std;
  * ]
  *
  */
-class Solution
-{
-  public:
-    vector<vector<int>> threeSum(vector<int> &nums)
-    {
-        set<int> uniqueNumSet;
-        for (int num : nums)
-        {
-            uniqueNumSet.insert(num);
-        }
-
-        vector<vector<int>> ret;
-        for (int i = 0; i < nums.size(); ++i)
-        {
-            int a = nums[i];
-            for (int j = i + 1; j < nums.size(); ++j)
-            {
-                int b = nums[j];
-                int target = 0 - a - b;
-                if (target != a && target != b && uniqueNumSet.find(target) != uniqueNumSet.cend())
-                {
-                    vector<int> r;
-                    r.push_back(a);
-                    r.push_back(b);
-                    r.push_back(target);
-                    cout << a << " " << b << " " << target << endl;
-                    ret.push_back(r);
-                }
-            }
-        }
-        return ret;
+class Solution {
+public:
+  vector<vector<int>> threeSum(vector<int> &nums) {
+    set<int> uniqueNumSet;
+    for (int num : nums) {
+      uniqueNumSet.insert(num);
     }
+
+    vector<vector<int>> ret;
+    for (int i = 0; i < nums.size(); ++i) {
+      int a = nums[i];
+      for (int j = i + 1; j < nums.size(); ++j) {
+        int b = nums[j];
+        int target = 0 - a - b;
+        if (target != a && target != b &&
+            uniqueNumSet.find(target) != uniqueNumSet.cend()) {
+          vector<int> r;
+          r.push_back(a);
+          r.push_back(b);
+          r.push_back(target);
+          cout << a << " " << b << " " << target << endl;
+          ret.push_back(r);
+        }
+      }
+    }
+    return ret;
+  }
 };

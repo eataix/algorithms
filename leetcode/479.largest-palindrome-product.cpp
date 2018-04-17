@@ -1,6 +1,6 @@
-#include <iostream>
 #include <algorithm>
 #include <cmath>
+#include <iostream>
 using namespace std;
 /*
  * [479] Largest Palindrome Product
@@ -30,60 +30,52 @@ using namespace std;
  *
  *
  */
-class Solution
-{
-    long long palindrome(long long n)
-    {
-        long long newV = 0;
-        while (n > 0)
-        {
-            newV = newV * 10 + n % 10;
-            n /= 10;
-        }
-        return newV;
+class Solution {
+  long long palindrome(long long n) {
+    long long newV = 0;
+    while (n > 0) {
+      newV = newV * 10 + n % 10;
+      n /= 10;
+    }
+    return newV;
+  }
+
+public:
+  int largestPalindrome(int n) {
+    if (n == 1) {
+      return 9;
     }
 
-  public:
-    int largestPalindrome(int n)
-    {
-        if (n == 1)
-        {
-            return 9;
+    int upper = pow(10, n) - 1;
+    int lower = pow(10, n - 1);
+
+    long long product;
+    for (int firstHalf = upper; firstHalf >= lower; --firstHalf) {
+      long long secondHalf = palindrome(firstHalf);
+      product = pow(10, n) * firstHalf + secondHalf;
+
+      for (long i = upper; i * i >= product; --i) {
+        if (product % i == 0) {
+          cout << firstHalf << " " << secondHalf << " " << product << endl;
+          cout << "product: " << product << " i: " << i << " j: " << product / i
+               << endl;
+          return product % 1337;
         }
-
-        int upper = pow(10, n) - 1;
-        int lower = pow(10, n - 1);
-
-        long long product;
-        for (int firstHalf = upper; firstHalf >= lower; --firstHalf)
-        {
-            long long secondHalf = palindrome(firstHalf);
-            product = pow(10, n) * firstHalf + secondHalf;
-
-            for (long i = upper; i * i >= product; --i)
-            {
-                if (product % i == 0)
-                {
-                    cout << firstHalf << " " << secondHalf << " " << product << endl;
-                    cout << "product: " << product << " i: " << i << " j: " << product / i << endl;
-                    return product % 1337;
-                }
-            }
-        }
+      }
     }
+  }
 };
 
 #ifdef DEBUG
-int main()
-{
-    Solution sol;
-    cout << sol.largestPalindrome(1) << endl;
-    cout << sol.largestPalindrome(2) << endl;
-    cout << sol.largestPalindrome(3) << endl;
-    cout << sol.largestPalindrome(4) << endl;
-    cout << sol.largestPalindrome(5) << endl;
-    cout << sol.largestPalindrome(6) << endl;
-    cout << sol.largestPalindrome(7) << endl;
-    cout << sol.largestPalindrome(8) << endl;
+int main() {
+  Solution sol;
+  cout << sol.largestPalindrome(1) << endl;
+  cout << sol.largestPalindrome(2) << endl;
+  cout << sol.largestPalindrome(3) << endl;
+  cout << sol.largestPalindrome(4) << endl;
+  cout << sol.largestPalindrome(5) << endl;
+  cout << sol.largestPalindrome(6) << endl;
+  cout << sol.largestPalindrome(7) << endl;
+  cout << sol.largestPalindrome(8) << endl;
 }
 #endif

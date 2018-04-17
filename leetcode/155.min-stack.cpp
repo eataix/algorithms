@@ -1,8 +1,8 @@
+#include <algorithm>
+#include <climits>
+#include <iostream>
 #include <stack>
 #include <vector>
-#include <iostream>
-#include <climits>
-#include <algorithm>
 using namespace std;
 /*
  * [155] Min Stack
@@ -13,7 +13,8 @@ using namespace std;
  * Easy (31.19%)
  * Total Accepted:    182.4K
  * Total Submissions: 584.8K
- * Testcase Example:  '["MinStack","push","push","push","getMin","pop","top","getMin"]\n[[],[-2],[0],[-3],[],[],[],[]]'
+ * Testcase Example:
+ * '["MinStack","push","push","push","getMin","pop","top","getMin"]\n[[],[-2],[0],[-3],[],[],[],[]]'
  *
  *
  * Design a stack that supports push, pop, top, and retrieving the minimum
@@ -47,44 +48,31 @@ using namespace std;
  *
  *
  */
-class MinStack
-{
-  public:
-    /** initialize your data structure here. */
-    stack<int> internalStack;
-    stack<long long> dataStack;
+class MinStack {
+public:
+  /** initialize your data structure here. */
+  stack<int> internalStack;
+  stack<long long> dataStack;
 
-    MinStack()
-    {
-    }
+  MinStack() {}
 
-    void push(int x)
-    {
-        if (internalStack.empty() || internalStack.top() >= x)
-        {
-            internalStack.push(x);
-        }
-        dataStack.push(x);
+  void push(int x) {
+    if (internalStack.empty() || internalStack.top() >= x) {
+      internalStack.push(x);
     }
+    dataStack.push(x);
+  }
 
-    void pop()
-    {
-        if (internalStack.top() == dataStack.top())
-        {
-            internalStack.pop();
-        }
-        dataStack.pop();
+  void pop() {
+    if (internalStack.top() == dataStack.top()) {
+      internalStack.pop();
     }
+    dataStack.pop();
+  }
 
-    int top()
-    {
-        return dataStack.top();
-    }
+  int top() { return dataStack.top(); }
 
-    int getMin()
-    {
-        return internalStack.top();
-    }
+  int getMin() { return internalStack.top(); }
 };
 
 /**
@@ -97,15 +85,14 @@ class MinStack
  */
 
 #ifdef DEBUG
-int main()
-{
-    MinStack minStack;
-    minStack.push(-2);
-    minStack.push(0);
-    minStack.push(-3);
-    cout << minStack.getMin() << endl;
-    minStack.pop();
-    cout << minStack.top() << endl;
-    cout << minStack.getMin() << endl;
+int main() {
+  MinStack minStack;
+  minStack.push(-2);
+  minStack.push(0);
+  minStack.push(-3);
+  cout << minStack.getMin() << endl;
+  minStack.pop();
+  cout << minStack.top() << endl;
+  cout << minStack.getMin() << endl;
 }
 #endif

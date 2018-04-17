@@ -27,32 +27,26 @@
  *
  *
  */
-#include <vector>
 #include <map>
+#include <vector>
 using namespace std;
 
-class Solution
-{
-  public:
-    vector<int> twoSum(vector<int> &nums, int target)
-    {
-        map<int, int> seen;
-        vector<int> solution;
-        for (int i = 0; i < nums.size(); ++i)
-        {
-            int num = nums[i];
-            int diff = target - num;
-            if (seen.find(diff) != seen.end())
-            {
-                solution.push_back(seen[diff]);
-                solution.push_back(i);
-                break;
-            }
-            else
-            {
-                seen[num] = i;
-            }
-        }
-        return solution;
+class Solution {
+public:
+  vector<int> twoSum(vector<int> &nums, int target) {
+    map<int, int> seen;
+    vector<int> solution;
+    for (int i = 0; i < nums.size(); ++i) {
+      int num = nums[i];
+      int diff = target - num;
+      if (seen.find(diff) != seen.end()) {
+        solution.push_back(seen[diff]);
+        solution.push_back(i);
+        break;
+      } else {
+        seen[num] = i;
+      }
     }
+    return solution;
+  }
 };

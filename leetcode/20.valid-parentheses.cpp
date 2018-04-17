@@ -1,6 +1,6 @@
+#include <iostream>
 #include <stack>
 #include <string>
-#include <iostream>
 using namespace std;
 /*
  * [20] Valid Parentheses
@@ -20,68 +20,54 @@ using namespace std;
  * valid but "(]" and "([)]" are not.
  *
  */
-class Solution
-{
-  public:
-    bool isValid(string s)
-    {
-        stack<char> seen;
-        for (char ch : s)
-        {
-            switch (ch)
-            {
-            case '(':
-                seen.push(ch);
-                break;
-            case ')':
-                if (seen.empty() || seen.top() != '(')
-                {
+class Solution {
+public:
+  bool isValid(string s) {
+    stack<char> seen;
+    for (char ch : s) {
+      switch (ch) {
+      case '(':
+        seen.push(ch);
+        break;
+      case ')':
+        if (seen.empty() || seen.top() != '(') {
 
-                    return false;
-                }
-                else
-                {
-                    seen.pop();
-                }
-                break;
-            case '{':
-                seen.push(ch);
-                break;
-            case '}':
-                if (seen.empty() || seen.top() != '{')
-                {
-
-                    return false;
-                }
-                else
-                {
-                    seen.pop();
-                }
-                break;
-            case '[':
-                seen.push(ch);
-                break;
-            case ']':
-                if (seen.empty() || seen.top() != '[')
-                {
-
-                    return false;
-                }
-                else
-                {
-                    seen.pop();
-                }
-                break;
-            }
+          return false;
+        } else {
+          seen.pop();
         }
-        return seen.empty();
+        break;
+      case '{':
+        seen.push(ch);
+        break;
+      case '}':
+        if (seen.empty() || seen.top() != '{') {
+
+          return false;
+        } else {
+          seen.pop();
+        }
+        break;
+      case '[':
+        seen.push(ch);
+        break;
+      case ']':
+        if (seen.empty() || seen.top() != '[') {
+
+          return false;
+        } else {
+          seen.pop();
+        }
+        break;
+      }
     }
+    return seen.empty();
+  }
 };
 
 #ifdef DEBUG
-int main()
-{
-    Solution sol;
-    cout << sol.isValid("()") << endl;
+int main() {
+  Solution sol;
+  cout << sol.isValid("()") << endl;
 }
 #endif

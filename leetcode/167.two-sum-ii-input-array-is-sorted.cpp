@@ -26,16 +26,13 @@ using namespace std;
  * Output: index1=1, index2=2
  *
  */
-class Solution
-{
-  public:
-    vector<int> twoSum(vector<int> &numbers, int target)
-    {
-        set<int> seen;
+class Solution {
+public:
+  vector<int> twoSum(vector<int> &numbers, int target) {
+    set<int> seen;
 
-        for (int number : numbers)
-        {
-            seen.insert(number);
-        }
+    for (int number : numbers) {
+      seen.insert(number);
     }
+  }
 };

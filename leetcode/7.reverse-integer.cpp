@@ -38,31 +38,26 @@
  * assume that your function returns 0 when the reversed integer overflows.
  *
  */
-class Solution
-{
-  public:
-    int reverse(int x)
-    {
-        bool negative = false;
-        if (x < 0)
-        {
-            negative = true;
-            x = -x;
-        }
-        int prev_rev_num = 0;
-        int rev_num = 0;
-        while (x != 0)
-        {
-            int curr_digit = x % 10;
-            rev_num = (rev_num * 10) + curr_digit;
-            if ((rev_num - curr_digit) / 10 != prev_rev_num)
-            {
-                return 0;
-            }
-            prev_rev_num = rev_num;
-            x /= 10;
-        }
-
-        return negative ? -rev_num : rev_num;
+class Solution {
+public:
+  int reverse(int x) {
+    bool negative = false;
+    if (x < 0) {
+      negative = true;
+      x = -x;
     }
+    int prev_rev_num = 0;
+    int rev_num = 0;
+    while (x != 0) {
+      int curr_digit = x % 10;
+      rev_num = (rev_num * 10) + curr_digit;
+      if ((rev_num - curr_digit) / 10 != prev_rev_num) {
+        return 0;
+      }
+      prev_rev_num = rev_num;
+      x /= 10;
+    }
+
+    return negative ? -rev_num : rev_num;
+  }
 };

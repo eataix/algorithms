@@ -1,6 +1,6 @@
-#include <string>
-#include <bitset>
 #include <algorithm>
+#include <bitset>
+#include <string>
 using namespace std;
 
 /*
@@ -39,12 +39,10 @@ using namespace std;
  *
  *
  */
-class Solution
-{
-  public:
-    int hammingDistance(int x, int y)
-    {
-        string binStr = bitset<64>(x ^ y).to_string();
-        return count(binStr.cbegin(), binStr.cend(), '1');
-    }
+class Solution {
+public:
+  int hammingDistance(int x, int y) {
+    string binStr = bitset<64>(x ^ y).to_string();
+    return count(binStr.cbegin(), binStr.cend(), '1');
+  }
 };

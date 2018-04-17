@@ -1,5 +1,5 @@
-#include <vector>
 #include <set>
+#include <vector>
 using namespace std;
 /*
  * [217] Contains Duplicate
@@ -18,16 +18,13 @@ using namespace std;
  * array, and it should return false if every element is distinct.
  *
  */
-class Solution
-{
-  public:
-    bool containsDuplicate(vector<int> &nums)
-    {
-        set<int> unique;
-        for (int num : nums)
-        {
-            unique.insert(num);
-        }
-        return unique.size() < nums.size();
+class Solution {
+public:
+  bool containsDuplicate(vector<int> &nums) {
+    set<int> unique;
+    for (int num : nums) {
+      unique.insert(num);
     }
+    return unique.size() < nums.size();
+  }
 };

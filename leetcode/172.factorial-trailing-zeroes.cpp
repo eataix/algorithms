@@ -17,17 +17,14 @@ using namespace std;
  * Credits:Special thanks to @ts for adding this problem and creating all test
  * cases.
  */
-class Solution
-{
-  public:
-    int trailingZeroes(int n)
-    {
-        int count = 0;
-        while (n > 0)
-        {
-            count += n / 5;
-            n /= 5;
-        }
-        return count;
+class Solution {
+public:
+  int trailingZeroes(int n) {
+    int count = 0;
+    while (n > 0) {
+      count += n / 5;
+      n /= 5;
     }
+    return count;
+  }
 };

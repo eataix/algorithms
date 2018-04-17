@@ -25,75 +25,60 @@ using namespace std;
  * };
  */
 #ifdef DEBUG
-struct ListNode
-{
-    int val;
-    ListNode *next;
-    ListNode(int x) : val(x), next(NULL)
-    {
-    }
+struct ListNode {
+  int val;
+  ListNode *next;
+  ListNode(int x) : val(x), next(NULL) {}
 };
 #endif
 
-class Solution
-{
-  public:
-    bool isPalindrome(ListNode *head)
-    {
-        ListNode *middle = middleNode(head);
-        ListNode *ptr = head;
-        while (ptr != NULL)
-        {
-            if (ptr->next == middle)
-            {
-                ptr->next = NULL;
-            }
-        }
-        ListNode *reversedHalf = reverse(middle);
+class Solution {
+public:
+  bool isPalindrome(ListNode *head) {
+    ListNode *middle = middleNode(head);
+    ListNode *ptr = head;
+    while (ptr != NULL) {
+      if (ptr->next == middle) {
+        ptr->next = NULL;
+      }
+    }
+    ListNode *reversedHalf = reverse(middle);
 
-        while (head != NULL && reversedHalf != NULL)
-        {
-            if (head->val != reversedHalf->val)
-            {
-                return false;
-            }
-            head = head->next;
-            reversedHalf = reversedHalf->next;
-        }
-
-        return head == NULL && reversedHalf == NULL;
+    while (head != NULL && reversedHalf != NULL) {
+      if (head->val != reversedHalf->val) {
+        return false;
+      }
+      head = head->next;
+      reversedHalf = reversedHalf->next;
     }
 
-    ListNode *reverse(ListNode *head)
-    {
-        ListNode *curr = head;
-        ListNode *prev = NULL;
-        ListNode *next = NULL;
+    return head == NULL && reversedHalf == NULL;
+  }
 
-        while (curr != NULL)
-        {
-            next = curr->next;
-            curr->next = prev;
-            prev = curr;
-            curr = next;
-        }
+  ListNode *reverse(ListNode *head) {
+    ListNode *curr = head;
+    ListNode *prev = NULL;
+    ListNode *next = NULL;
 
-        return prev;
+    while (curr != NULL) {
+      next = curr->next;
+      curr->next = prev;
+      prev = curr;
+      curr = next;
     }
 
-    ListNode *
-    middleNode(ListNode *head)
-    {
-        ListNode *fast = head;
-        ListNode *slow = head;
-        if (head != NULL)
-        {
-            while (fast != NULL && fast->next != NULL)
-            {
-                fast = fast->next->next;
-                slow = slow->next;
-            }
-        }
-        return slow;
+    return prev;
+  }
+
+  ListNode *middleNode(ListNode *head) {
+    ListNode *fast = head;
+    ListNode *slow = head;
+    if (head != NULL) {
+      while (fast != NULL && fast->next != NULL) {
+        fast = fast->next->next;
+        slow = slow->next;
+      }
     }
+    return slow;
+  }
 };

@@ -35,54 +35,42 @@ using namespace std;
  * test cases.
  *
  */
-class Solution
-{
-  public:
-    bool isHappy(int n)
-    {
-        set<int> seen;
-        seen.insert(n);
-        for (;;)
-        {
-            if (n == 1)
-            {
-                return true;
-            }
-            else
-            {
-                n = convert(n);
-                if (seen.find(n) != seen.cend())
-                {
-                    return false;
-                }
-                else
-                {
-                    seen.insert(n);
-                }
-            }
+class Solution {
+public:
+  bool isHappy(int n) {
+    set<int> seen;
+    seen.insert(n);
+    for (;;) {
+      if (n == 1) {
+        return true;
+      } else {
+        n = convert(n);
+        if (seen.find(n) != seen.cend()) {
+          return false;
+        } else {
+          seen.insert(n);
         }
+      }
     }
+  }
 
-    int convert(int n)
-    {
-        int res = 0;
-        do
-        {
-            int i = n % 10;
-            res += pow(i, 2);
-            n /= 10;
-        } while (n > 0);
-        return res;
-    }
+  int convert(int n) {
+    int res = 0;
+    do {
+      int i = n % 10;
+      res += pow(i, 2);
+      n /= 10;
+    } while (n > 0);
+    return res;
+  }
 };
 
 #ifdef DEBUG
-int main()
-{
-    Solution sol;
-    cout << sol.isHappy(19) << endl;
-    cout << sol.isHappy(82) << endl;
-    cout << sol.isHappy(68) << endl;
-    cout << sol.isHappy(100) << endl;
+int main() {
+  Solution sol;
+  cout << sol.isHappy(19) << endl;
+  cout << sol.isHappy(82) << endl;
+  cout << sol.isHappy(68) << endl;
+  cout << sol.isHappy(100) << endl;
 }
 #endif

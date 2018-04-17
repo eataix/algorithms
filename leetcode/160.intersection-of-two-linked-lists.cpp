@@ -48,68 +48,55 @@ using namespace std;
  * };
  */
 #ifdef DEBUG
-struct ListNode
-{
-    int val;
-    ListNode *next;
-    ListNode(int x) : val(x), next(NULL) {}
+struct ListNode {
+  int val;
+  ListNode *next;
+  ListNode(int x) : val(x), next(NULL) {}
 };
 #endif
 
-class Solution
-{
-  public:
-    ListNode *getIntersectionNode(ListNode *headA, ListNode *headB)
-    {
-        int lenA = 0;
-        ListNode *ptrA = headA;
-        while (ptrA != NULL)
-        {
-            lenA += 1;
-            ptrA = ptrA->next;
-        }
-
-        int lenB = 0;
-        ListNode *ptrB = headB;
-        while (ptrB != NULL)
-        {
-            lenB += 1;
-            ptrB = ptrB->next;
-        }
-
-        ListNode *longer;
-        ListNode *shorter;
-        if (lenA > lenB)
-        {
-            longer = headA;
-            shorter = headB;
-        }
-        else
-        {
-            longer = headB;
-            shorter = headA;
-        }
-
-        int diff = abs(lenA - lenB);
-
-        for (int i = 0; i < diff; ++i)
-        {
-            longer = longer->next;
-        }
-
-        while (longer != NULL && shorter != NULL && longer != shorter)
-        {
-            longer = longer->next;
-            shorter = shorter->next;
-        }
-
-        if (longer == shorter)
-        {
-            return longer;
-        }
-        else
-        {
-            return NULL;
-        }
+class Solution {
+public:
+  ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+    int lenA = 0;
+    ListNode *ptrA = headA;
+    while (ptrA != NULL) {
+      lenA += 1;
+      ptrA = ptrA->next;
     }
+
+    int lenB = 0;
+    ListNode *ptrB = headB;
+    while (ptrB != NULL) {
+      lenB += 1;
+      ptrB = ptrB->next;
+    }
+
+    ListNode *longer;
+    ListNode *shorter;
+    if (lenA > lenB) {
+      longer = headA;
+      shorter = headB;
+    } else {
+      longer = headB;
+      shorter = headA;
+    }
+
+    int diff = abs(lenA - lenB);
+
+    for (int i = 0; i < diff; ++i) {
+      longer = longer->next;
+    }
+
+    while (longer != NULL && shorter != NULL && longer != shorter) {
+      longer = longer->next;
+      shorter = shorter->next;
+    }
+
+    if (longer == shorter) {
+      return longer;
+    } else {
+      return NULL;
+    }
+  }
 };

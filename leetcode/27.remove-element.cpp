@@ -1,6 +1,6 @@
+#include <algorithm>
 #include <iostream>
 #include <vector>
-#include <algorithm>
 using namespace std;
 /*
  * [27] Remove Element
@@ -66,34 +66,28 @@ using namespace std;
  * }
  *
  */
-class Solution
-{
-  public:
-    int removeElement(vector<int> &nums, int val)
-    {
-        if (nums.size() == 0)
-        {
-            return 0;
-        }
-        int i = 0;
-        for (int j = 0; j < nums.size(); ++j)
-        {
-            if (nums[j] != val)
-            {
-                nums[i++] = nums[j];
-            }
-        }
-        return i;
+class Solution {
+public:
+  int removeElement(vector<int> &nums, int val) {
+    if (nums.size() == 0) {
+      return 0;
     }
+    int i = 0;
+    for (int j = 0; j < nums.size(); ++j) {
+      if (nums[j] != val) {
+        nums[i++] = nums[j];
+      }
+    }
+    return i;
+  }
 };
 
 #ifdef DEBUG
-int main()
-{
-    Solution sol;
-    vector<int> v1{3, 2, 2, 3};
-    cout << sol.removeElement(v1, 3) << endl;
-    vector<int> v2{0, 1, 2, 2, 3, 0, 4, 2};
-    cout << sol.removeElement(v2, 2) << endl;
+int main() {
+  Solution sol;
+  vector<int> v1{3, 2, 2, 3};
+  cout << sol.removeElement(v1, 3) << endl;
+  vector<int> v2{0, 1, 2, 2, 3, 0, 4, 2};
+  cout << sol.removeElement(v2, 2) << endl;
 }
 #endif

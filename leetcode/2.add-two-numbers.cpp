@@ -1,6 +1,6 @@
-#include <stddef.h>
-#include <iostream>
 #include <cmath>
+#include <iostream>
+#include <stddef.h>
 using namespace std;
 /*
  * [2] Add Two Numbers
@@ -30,29 +30,25 @@ using namespace std;
  *
  */
 
-class Solution
-{
-  public:
-    ListNode *addTwoNumbers(ListNode *l1, ListNode *l2)
-    {
-        return addTwoNumbers(l1, l2, 0);
+class Solution {
+public:
+  ListNode *addTwoNumbers(ListNode *l1, ListNode *l2) {
+    return addTwoNumbers(l1, l2, 0);
+  }
+
+  ListNode *addTwoNumbers(ListNode *l1, ListNode *l2, int carry) {
+    if (l1 == NULL && l2 == NULL) {
+      return carry == 0 ? NULL : new ListNode(carry);
     }
 
-    ListNode *addTwoNumbers(ListNode *l1, ListNode *l2, int carry)
-    {
-        if (l1 == NULL && l2 == NULL)
-        {
-            return carry == 0 ? NULL : new ListNode(carry);
-        }
+    ListNode *newl1 = l1 == NULL ? NULL : l1->next;
+    ListNode *newl2 = l2 == NULL ? NULL : l2->next;
+    int i1 = l1 == NULL ? 0 : l1->val;
+    int i2 = l2 == NULL ? 0 : l2->val;
 
-        ListNode *newl1 = l1 == NULL ? NULL : l1->next;
-        ListNode *newl2 = l2 == NULL ? NULL : l2->next;
-        int i1 = l1 == NULL ? 0 : l1->val;
-        int i2 = l2 == NULL ? 0 : l2->val;
-
-        int newValue = i1 + i2 + carry;
-        ListNode *res = new ListNode(newValue % 10);
-        res->next = addTwoNumbers(newl1, newl2, newValue / 10);
-        return res;
-    }
+    int newValue = i1 + i2 + carry;
+    ListNode *res = new ListNode(newValue % 10);
+    res->next = addTwoNumbers(newl1, newl2, newValue / 10);
+    return res;
+  }
 };

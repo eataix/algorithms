@@ -24,10 +24,7 @@ using namespace std;
  * Credits:Special thanks to @ifanchu for adding this problem and creating all
  * test cases. Also thanks to @ts for adding additional test cases.
  */
-class Solution
-{
-  public:
-    int rob(vector<int> &nums)
-    {
-    }
+class Solution {
+public:
+  int rob(vector<int> &nums) {}
 };

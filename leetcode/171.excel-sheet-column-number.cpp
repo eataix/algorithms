@@ -28,19 +28,16 @@ using namespace std;
  * Credits:Special thanks to @ts for adding this problem and creating all test
  * cases.
  */
-class Solution
-{
-  public:
-    int titleToNumber(string s)
-    {
-        int total = 0;
-        int power = 0;
-        for (int i = s.size() - 1; i >= 0; --i)
-        {
-            int v = s[i] - 'A' + 1;
-            total += v * pow(26, power);
-            power += 1;
-        }
-        return total;
+class Solution {
+public:
+  int titleToNumber(string s) {
+    int total = 0;
+    int power = 0;
+    for (int i = s.size() - 1; i >= 0; --i) {
+      int v = s[i] - 'A' + 1;
+      total += v * pow(26, power);
+      power += 1;
     }
+    return total;
+  }
 };

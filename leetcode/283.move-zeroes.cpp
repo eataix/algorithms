@@ -1,5 +1,5 @@
-#include <vector>
 #include <algorithm>
+#include <vector>
 using namespace std;
 /*
  * [283] Move Zeroes
@@ -33,25 +33,20 @@ using namespace std;
  * Credits:Special thanks to @jianchao.li.fighter for adding this problem and
  * creating all test cases.
  */
-class Solution
-{
-  public:
-    void moveZeroes(vector<int> &nums)
-    {
-        int candidatePosForNonZero = 0;
-        for (int i = 0; i < nums.size(); i++)
-        {
-            int n = nums[i];
-            if (n != 0)
-            {
-                nums[candidatePosForNonZero] = n;
-                candidatePosForNonZero += 1;
-            }
-        }
-
-        for (int i = candidatePosForNonZero; i < nums.size(); i++)
-        {
-            nums[i] = 0;
-        }
+class Solution {
+public:
+  void moveZeroes(vector<int> &nums) {
+    int candidatePosForNonZero = 0;
+    for (int i = 0; i < nums.size(); i++) {
+      int n = nums[i];
+      if (n != 0) {
+        nums[candidatePosForNonZero] = n;
+        candidatePosForNonZero += 1;
+      }
     }
+
+    for (int i = candidatePosForNonZero; i < nums.size(); i++) {
+      nums[i] = 0;
+    }
+  }
 };

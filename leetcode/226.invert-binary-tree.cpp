@@ -48,28 +48,24 @@ using namespace std;
  * };
  */
 #ifdef DEBUG
-struct TreeNode
-{
-    int val;
-    TreeNode *left;
-    TreeNode *right;
-    TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+struct TreeNode {
+  int val;
+  TreeNode *left;
+  TreeNode *right;
+  TreeNode(int x) : val(x), left(NULL), right(NULL) {}
 };
 #endif
 
-class Solution
-{
-  public:
-    TreeNode *invertTree(TreeNode *root)
-    {
-        if (root == NULL)
-        {
-            return NULL;
-        }
-
-        TreeNode *newTree = new TreeNode(root->val);
-        newTree->left = invertTree(root->right);
-        newTree->right = invertTree(root->left);
-        return newTree;
+class Solution {
+public:
+  TreeNode *invertTree(TreeNode *root) {
+    if (root == NULL) {
+      return NULL;
     }
+
+    TreeNode *newTree = new TreeNode(root->val);
+    newTree->left = invertTree(root->right);
+    newTree->right = invertTree(root->left);
+    return newTree;
+  }
 };

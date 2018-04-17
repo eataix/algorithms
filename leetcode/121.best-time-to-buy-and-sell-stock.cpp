@@ -1,5 +1,5 @@
-#include <vector>
 #include <algorithm>
+#include <vector>
 using namespace std;
 /*
  * [121] Best Time to Buy and Sell Stock
@@ -38,25 +38,20 @@ using namespace std;
  *
  *
  */
-class Solution
-{
-  public:
-    int maxProfit(vector<int> &prices)
-    {
-        if (prices.empty())
-        {
-            return 0;
-        }
-        int minSoFar = prices.front();
-        int ret = 0;
-        for (auto i : prices)
-        {
-            if (i < minSoFar)
-            {
-                minSoFar = i;
-            }
-            ret = max(ret, i - minSoFar);
-        }
-        return ret;
+class Solution {
+public:
+  int maxProfit(vector<int> &prices) {
+    if (prices.empty()) {
+      return 0;
     }
+    int minSoFar = prices.front();
+    int ret = 0;
+    for (auto i : prices) {
+      if (i < minSoFar) {
+        minSoFar = i;
+      }
+      ret = max(ret, i - minSoFar);
+    }
+    return ret;
+  }
 };

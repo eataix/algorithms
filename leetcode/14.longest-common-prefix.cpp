@@ -1,6 +1,6 @@
-#include <vector>
-#include <string>
 #include <algorithm>
+#include <string>
+#include <vector>
 using namespace std;
 /*
  * [14] Longest Common Prefix
@@ -17,41 +17,32 @@ using namespace std;
  * of strings.
  *
  */
-class Solution
-{
-  public:
-    string longestCommonPrefix(vector<string> &strs)
-    {
-        if (strs.size() == 0)
-        {
-            return "";
-        }
-        string firstStr = strs[0];
-        int minLength = firstStr.length();
-        for (string str : strs)
-        {
-            if (str.length() < minLength)
-            {
-                minLength = str.length();
-            }
-        }
-        int i = 0;
-        for (; i < minLength; ++i)
-        {
-            bool same = true;
-            for (int j = 1; j < strs.size(); ++j)
-            {
-                if (strs[j][i] != firstStr[i])
-                {
-                    same = false;
-                    break;
-                }
-            }
-            if (!same)
-            {
-                break;
-            }
-        }
-        return firstStr.substr(0, i);
+class Solution {
+public:
+  string longestCommonPrefix(vector<string> &strs) {
+    if (strs.size() == 0) {
+      return "";
     }
+    string firstStr = strs[0];
+    int minLength = firstStr.length();
+    for (string str : strs) {
+      if (str.length() < minLength) {
+        minLength = str.length();
+      }
+    }
+    int i = 0;
+    for (; i < minLength; ++i) {
+      bool same = true;
+      for (int j = 1; j < strs.size(); ++j) {
+        if (strs[j][i] != firstStr[i]) {
+          same = false;
+          break;
+        }
+      }
+      if (!same) {
+        break;
+      }
+    }
+    return firstStr.substr(0, i);
+  }
 };

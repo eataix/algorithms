@@ -28,33 +28,27 @@
  *
  *
  */
-class Solution
-{
-  public:
-    bool isPalindrome(int x)
-    {
-        if (x < 0)
-        {
-            return false;
-        }
-
-        int division = 1;
-        while (x / division >= 10)
-        {
-            division *= 10;
-        }
-
-        while (x != 0)
-        {
-            int l = x / division;
-            int r = x % 10;
-            if (l != r)
-            {
-                return false;
-            }
-            x = (x % division) / 10;
-            division /= 100;
-        }
-        return true;
+class Solution {
+public:
+  bool isPalindrome(int x) {
+    if (x < 0) {
+      return false;
     }
+
+    int division = 1;
+    while (x / division >= 10) {
+      division *= 10;
+    }
+
+    while (x != 0) {
+      int l = x / division;
+      int r = x % 10;
+      if (l != r) {
+        return false;
+      }
+      x = (x % division) / 10;
+      division /= 100;
+    }
+    return true;
+  }
 };

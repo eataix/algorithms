@@ -1,6 +1,6 @@
-#include <string>
-#include <map>
 #include <iostream>
+#include <map>
+#include <string>
 using namespace std;
 /*
  * [242] Valid Anagram
@@ -28,40 +28,32 @@ using namespace std;
  * solution to such case?
  *
  */
-class Solution
-{
-  public:
-    bool isAnagram(string s, string t)
-    {
-        map<char, int> dictionary;
-        for (char ch : s)
-        {
-            dictionary[ch] += 1;
-        }
+class Solution {
+public:
+  bool isAnagram(string s, string t) {
+    map<char, int> dictionary;
+    for (char ch : s) {
+      dictionary[ch] += 1;
+    }
 #ifdef DEBUG
-        for (auto entry : dictionary)
-        {
-            cout << entry.first << " " << entry.second << endl;
-        }
+    for (auto entry : dictionary) {
+      cout << entry.first << " " << entry.second << endl;
+    }
 #endif
-        for (char ch : t)
-        {
-            dictionary[ch] -= 1;
-        }
+    for (char ch : t) {
+      dictionary[ch] -= 1;
+    }
 #ifdef DEBUG
-        for (auto entry : dictionary)
-        {
-            cout << entry.first << " " << entry.second << endl;
-        }
+    for (auto entry : dictionary) {
+      cout << entry.first << " " << entry.second << endl;
+    }
 #endif
 
-        for (auto entry : dictionary)
-        {
-            if (entry.second != 0)
-            {
-                return false;
-            }
-        }
-        return true;
+    for (auto entry : dictionary) {
+      if (entry.second != 0) {
+        return false;
+      }
     }
+    return true;
+  }
 };
