@@ -1,4 +1,5 @@
 #include <vector>
+#include <iostream>
 using namespace std;
 /*
  * [4] Median of Two Sorted Arrays
@@ -39,14 +40,41 @@ class Solution
   public:
     double findMedianSortedArrays(vector<int> &nums1, vector<int> &nums2)
     {
-        int m = nums1.size() - 1;
-        int n = nums2.size() - 1;
-        return findMedianSortedArrays(nums1, 0, m, nums2, 0, n);
-    }
+        bool isEven = (nums1.size() + nums2.size()) % 2 == 0;
+        int total = nums1.size() + nums2.size();
 
-    double findMedianSortedArrays(const vector<int> &nums1, int start1, int end1, const vector<int> &nums2, int start2, int end2)
-    {
-        int middle1 = (end1 - start1) / 2;
-        int middle2 = (end2 - start2) / 2;
-    }
+        if (isEven) {
+            return ((double)findNthElement(nums1, nums2, total / 2) + findNthElement(nums1, nums2, total / 2+1))/2;
+        } else {
+            return findNthElement(nums1, nums2, (total + 1)/ 2);
+        }
+   }
+
+   int findNthElement(const vector<int> &nums1, const vector<int> &nums2, int target) {
+        int i = 0;
+        int j = 0;
+
+        int currVal;
+        for (int k = 1; k <= target; ++k) {
+            if (i == nums1.size()) {
+                currVal = nums2[j++];
+            } else if (j == nums2.size()) {
+                currVal = nums1[i++];
+            } else if (nums1[i] < nums2[j])  {
+                currVal = nums1[i++];
+            } else {
+                currVal = nums2[j++];
+            }
+        }
+        return currVal;
+   }
 };
+
+#ifdef DEBUG
+int main() {
+    vector<int> v1 = {1, 2};
+    vector<int> v2 = {3, 4};
+    Solution sol;
+    cout << sol.findMedianSortedArrays(v1, v2) << endl;
+}
+#endif
