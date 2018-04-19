@@ -1,16 +1,12 @@
-#include <algorithm>
-#include <iostream>
-#include <vector>
-using namespace std;
 /*
  * [198] House Robber
  *
  * https://leetcode.com/problems/house-robber/description/
  *
  * algorithms
- * Easy (39.97%)
- * Total Accepted:    195.9K
- * Total Submissions: 490.1K
+ * Easy (39.99%)
+ * Total Accepted:    197.5K
+ * Total Submissions: 493.8K
  * Testcase Example:  '[]'
  *
  * You are a professional robber planning to rob houses along a street. Each
@@ -28,33 +24,5 @@ using namespace std;
  */
 class Solution {
 public:
-  int rob(vector<int> &nums) {
-    if (nums.empty()) {
-      return 0;
-    } else if (nums.size() == 1) {
-      return nums[0];
-    }
-
-    vector<int> dp(nums.size() + 1, 0);
-    dp[1] = nums[0];
-
-    for (int i = 2; i <= nums.size(); ++i) {
-      dp[i] = max(nums[i - 1] + dp[i - 2], dp[i - 1]);
-    }
-
-#ifdef DEBUG
-    for (int i = 0; i < dp.size(); ++i) {
-      cout << "dp[" << i << "] = " << dp[i] << endl;
-    }
-#endif
-    return dp[nums.size()];
-  }
+  int rob(vector<int> &nums) {}
 };
-
-#ifdef DEBUG
-int main() {
-  Solution sol;
-  vector<int> v1{1, 2, 3, 4, 5};
-  cout << sol.rob(v1) << endl;
-}
-#endif

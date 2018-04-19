@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <iostream>
 #include <set>
 #include <vector>
@@ -32,28 +33,40 @@ using namespace std;
 class Solution {
 public:
   vector<vector<int>> threeSum(vector<int> &nums) {
-    set<int> uniqueNumSet;
-    for (int num : nums) {
-      uniqueNumSet.insert(num);
+    vector<vector<int>> res;
+    if (nums.size() < 3) {
+      return res;
     }
 
-    vector<vector<int>> ret;
-    for (int i = 0; i < nums.size(); ++i) {
-      int a = nums[i];
-      for (int j = i + 1; j < nums.size(); ++j) {
-        int b = nums[j];
-        int target = 0 - a - b;
-        if (target != a && target != b &&
-            uniqueNumSet.find(target) != uniqueNumSet.cend()) {
-          vector<int> r;
-          r.push_back(a);
-          r.push_back(b);
-          r.push_back(target);
-          cout << a << " " << b << " " << target << endl;
-          ret.push_back(r);
+    sort(nums.begin(), nums.end());
+
+    for (int i = 0; i < nums.size() - 2; ++i) {
+      if (i > 0 && nums[i] == nums[i - 1]) {
+        continue;
+      }
+      int currTarget = -nums[i];
+      int left = i + 1;
+      int right = nums.size() - 1;
+      while (left < right) {
+        int currSum = nums[left] + nums[right];
+        if (currSum == currTarget) {
+          vector<int> sol = {nums[i], nums[left], nums[right]};
+          left += 1;
+          right -= 1;
+          while (nums[left] == nums[left - 1]) {
+            left += 1;
+          }
+          while (nums[right] == nums[right + 1]) {
+            right -= 1;
+          }
+          res.push_back(sol);
+        } else if (currSum < currTarget) {
+          left += 1;
+        } else {
+          right -= 1;
         }
       }
     }
-    return ret;
+    return res;
   }
 };
