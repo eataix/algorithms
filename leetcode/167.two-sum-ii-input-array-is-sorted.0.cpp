@@ -1,15 +1,12 @@
-#include <set>
-#include <vector>
-using namespace std;
 /*
  * [167] Two Sum II - Input array is sorted
  *
  * https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/description/
  *
  * algorithms
- * Easy (47.23%)
- * Total Accepted:    134.2K
- * Total Submissions: 284.2K
+ * Easy (47.24%)
+ * Total Accepted:    135.1K
+ * Total Submissions: 286K
  * Testcase Example:  '[2,7,11,15]\n9'
  *
  * Given an array of integers that is already sorted in ascending order, find
@@ -28,25 +25,5 @@ using namespace std;
  */
 class Solution {
 public:
-  vector<int> twoSum(vector<int> &numbers, int target) {
-    vector<int> v{-1, -1};
-    if (numbers.empty()) {
-      return v;
-    }
-    int i = 0;
-    int j = numbers.size() - 1;
-
-    while (i < j) {
-      if (numbers[i] + numbers[j] < target) {
-        i += 1;
-      } else if (numbers[i] + numbers[j] > target) {
-        j -= 1;
-      } else {
-        v[0] = i + 1;
-        v[1] = j + 1;
-        break;
-      }
-    }
-    return v;
-  }
+  vector<int> twoSum(vector<int> &numbers, int target) {}
 };
