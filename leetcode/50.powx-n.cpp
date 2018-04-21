@@ -46,14 +46,23 @@
 class Solution {
 public:
   double myPow(double x, int n) {
-    double res = 1.0;
-    for (int i = n; i > 0; i /= 2) {
-      if (i % 2 != 0) {
-        res *= x;
-      }
-      x *= x;
+    if (n < 0) {
+      return 1 / p(x, -n);
+    } else {
+      return p(x, n);
+    }
+  }
+
+  double p(double x, int n) {
+    if (n == 0) {
+      return 1;
     }
 
-    return res;
+    double v = p(x, n / 2);
+    if (n % 2 == 0) {
+      return v * v;
+    } else {
+      return v * v * x;
+    }
   }
 };
