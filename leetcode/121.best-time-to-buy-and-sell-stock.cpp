@@ -44,13 +44,11 @@ public:
     if (prices.empty()) {
       return 0;
     }
-    int minSoFar = prices.front();
+    int minSoFar = prices[0];
     int ret = 0;
-    for (auto i : prices) {
-      if (i < minSoFar) {
-        minSoFar = i;
-      }
-      ret = max(ret, i - minSoFar);
+    for (auto &p : prices) {
+      minSoFar = min(minSoFar, p);
+      ret = max(ret, p - minSoFar);
     }
     return ret;
   }

@@ -31,15 +31,6 @@ using namespace std;
  *
  */
 class Solution {
-  long long palindrome(long long n) {
-    long long newV = 0;
-    while (n > 0) {
-      newV = newV * 10 + n % 10;
-      n /= 10;
-    }
-    return newV;
-  }
-
 public:
   int largestPalindrome(int n) {
     if (n == 1) {
@@ -49,16 +40,16 @@ public:
     int upper = pow(10, n) - 1;
     int lower = pow(10, n - 1);
 
-    long long product;
     for (int firstHalf = upper; firstHalf >= lower; --firstHalf) {
-      long long secondHalf = palindrome(firstHalf);
-      product = pow(10, n) * firstHalf + secondHalf;
+      string str = to_string(firstHalf);
+      long product = stol(str + string(str.crbegin(), str.crend()));
 
       for (long i = upper; i * i >= product; --i) {
         if (product % i == 0) {
-          cout << firstHalf << " " << secondHalf << " " << product << endl;
+#ifdef DEBUG
           cout << "product: " << product << " i: " << i << " j: " << product / i
                << endl;
+#endif
           return product % 1337;
         }
       }
