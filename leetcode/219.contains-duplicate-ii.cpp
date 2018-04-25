@@ -1,5 +1,5 @@
 #include <iostream>
-#include <set>
+#include <unordered_set>
 #include <vector>
 using namespace std;
 /*
@@ -27,7 +27,7 @@ public:
     }
 
     int i = 0; // index of the earliest element in the set
-    set<int> dictionary;
+    unordered_set<int> dictionary;
     dictionary.insert(nums[0]);
     for (int j = 1; j < nums.size(); ++j) {
       if (j - i > k) {

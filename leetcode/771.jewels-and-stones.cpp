@@ -1,5 +1,5 @@
-#include <set>
 #include <string>
+#include <unordered_set>
 using namespace std;
 /*
  * [782] Jewels and Stones
@@ -45,7 +45,7 @@ using namespace std;
 class Solution {
 public:
   int numJewelsInStones(string J, string S) {
-    set<char> jewels;
+    unordered_set<char> jewels;
     for (char ch : J) {
       jewels.insert(ch);
     }

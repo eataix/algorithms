@@ -1,6 +1,6 @@
 #include <cmath>
 #include <iostream>
-#include <set>
+#include <unordered_set>
 using namespace std;
 /*
  * [202] Happy Number
@@ -38,7 +38,7 @@ using namespace std;
 class Solution {
 public:
   bool isHappy(int n) {
-    set<int> seen;
+    unordered_set<int> seen;
     seen.insert(n);
     for (;;) {
       if (n == 1) {

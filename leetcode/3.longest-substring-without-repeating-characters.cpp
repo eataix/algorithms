@@ -1,7 +1,7 @@
 #include <algorithm>
-#include <map>
-#include <set>
 #include <string>
+#include <unordered_map>
+#include <unordered_set>
 #include <vector>
 using namespace std;
 /*
@@ -30,7 +30,7 @@ using namespace std;
 class Solution {
 public:
   int lengthOfLongestSubstring(string s) {
-    set<char> dictionary;
+    unordered_set<char> dictionary;
 
     int ans = 0, i = 0, j = 0;
     while (i < s.size() && j < s.size()) {
@@ -45,7 +45,7 @@ public:
   }
 
   int lengthOfLongestSubstring2(string s) {
-    map<char, int> map;
+    unordered_map<char, int> map;
     int n = s.length(), ans = 0;
 
     for (int j = 0, i = 0; j < n; ++j) {

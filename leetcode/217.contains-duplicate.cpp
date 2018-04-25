@@ -1,4 +1,4 @@
-#include <set>
+#include <unordered_set>
 #include <vector>
 using namespace std;
 /*
@@ -21,7 +21,7 @@ using namespace std;
 class Solution {
 public:
   bool containsDuplicate(vector<int> &nums) {
-    set<int> unique;
+    unordered_set<int> unique;
     for (int num : nums) {
       unique.insert(num);
     }

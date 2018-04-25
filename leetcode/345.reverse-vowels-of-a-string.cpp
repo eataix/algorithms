@@ -1,8 +1,8 @@
 #include <deque>
 #include <iostream>
-#include <set>
 #include <stack>
 #include <string>
+#include <unordered_set>
 using namespace std;
 /*
  * [345] Reverse Vowels of a String
@@ -34,7 +34,8 @@ using namespace std;
  *
  */
 
-const set<char> vowels{'a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U'};
+const unordered_set<char> vowels{'a', 'e', 'i', 'o', 'u',
+                                 'A', 'E', 'I', 'O', 'U'};
 
 class Solution {
 public:

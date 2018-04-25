@@ -27,14 +27,14 @@
  *
  *
  */
-#include <map>
+#include <unordered_map>
 #include <vector>
 using namespace std;
 
 class Solution {
 public:
   vector<int> twoSum(vector<int> &nums, int target) {
-    map<int, int> seen;
+    unordered_map<int, int> seen;
     vector<int> solution;
     for (int i = 0; i < nums.size(); ++i) {
       int num = nums[i];

@@ -1,6 +1,6 @@
 #include <iostream>
-#include <map>
 #include <string>
+#include <unordered_map>
 using namespace std;
 /*
  * [242] Valid Anagram
@@ -31,7 +31,7 @@ using namespace std;
 class Solution {
 public:
   bool isAnagram(string s, string t) {
-    map<char, int> dictionary;
+    unordered_map<char, int> dictionary;
     for (char ch : s) {
       dictionary[ch] += 1;
     }

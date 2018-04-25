@@ -1,5 +1,5 @@
-#include <map>
 #include <string>
+#include <unordered_map>
 using namespace std;
 /*
  * [387] First Unique Character in a String
@@ -33,7 +33,7 @@ using namespace std;
 class Solution {
 public:
   int firstUniqChar(string s) {
-    map<char, int> dictionary;
+    unordered_map<char, int> dictionary;
     for (char ch : s) {
       dictionary[ch] += 1;
     }

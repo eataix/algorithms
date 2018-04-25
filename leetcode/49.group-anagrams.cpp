@@ -1,8 +1,7 @@
 #include <algorithm>
 #include <iostream>
-#include <map>
-#include <set>
 #include <string>
+#include <unordered_map>
 #include <vector>
 using namespace std;
 /*
@@ -40,7 +39,7 @@ using namespace std;
 class Solution {
 public:
   vector<vector<string>> groupAnagrams(vector<string> &strs) {
-    map<string, vector<string>> mapNewStringsToOldOnes;
+    unordered_map<string, vector<string>> mapNewStringsToOldOnes;
 
     for (string str : strs) {
       string str2{str};
