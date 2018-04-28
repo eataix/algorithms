@@ -33,8 +33,30 @@ using namespace std;
  *
  * Credits:Special thanks to @ syedee  for adding this problem and creating all
  * test cases.
+ *
+ *
+ * https://webcache.googleusercontent.com/search?q=cache:expofuVjkvEJ:www.cnblogs.com/grandyang/p/5294255.html+&cd=7&hl=en&ct=clnk&gl=au
  */
 class Solution {
 public:
-  vector<int> countBits(int num) {}
+  vector<int> countBits(int num) {
+    vector<int> res(num + 1, 0);
+    for (int i = 1; i <= num; ++i) {
+      if (i % 2 == 0) {
+        res[i] = res[i / 2];
+      } else {
+        res[i] = res[i / 2] + 1;
+      }
+    }
+    return res;
+  }
+
+  vector<int> countBits2(int num) {
+    vector<int> res(num + 1, 0);
+
+    for (int i = 1; i <= num; ++i) {
+      res[i] = res[i & (i - 1)] + 1;
+    }
+    return res;
+  }
 };
