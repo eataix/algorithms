@@ -1,5 +1,5 @@
-#include<vector>
-#include<algorithm>
+#include <algorithm>
+#include <vector>
 using namespace std;
 /*
  * [453] Minimum Moves to Equal Array Elements
@@ -34,16 +34,16 @@ using namespace std;
 class Solution {
 public:
   int minMoves(vector<int> &nums) {
-      int minV {INT_MAX};
-      int res{0};
+    int minV{INT_MAX};
+    int res{0};
 
-      for (auto const& num : nums) {
-          minV = min(minV, num);
-      }
+    for (auto const &num : nums) {
+      minV = min(minV, num);
+    }
 
-      for (auto const&num : nums) {
-          res += num - minV;
-      }
-      return res;
+    for (auto const &num : nums) {
+      res += num - minV;
+    }
+    return res;
   }
 };

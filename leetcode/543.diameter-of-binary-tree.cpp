@@ -1,5 +1,5 @@
-#include<unordered_map>
 #include <algorithm>
+#include <unordered_map>
 using namespace std;
 /*
  * [543] Diameter of Binary Tree
@@ -59,25 +59,25 @@ struct TreeNode {
 #endif
 
 class Solution {
-    unordered_map<TreeNode*, int> m;
+  unordered_map<TreeNode *, int> m;
+
 public:
   int diameterOfBinaryTree(TreeNode *root) {
-      int res = 0;
-        maxDepth(root, res);
-        return res;
+    int res = 0;
+    maxDepth(root, res);
+    return res;
   }
-      int maxDepth(TreeNode* node, int& res) {
-          if (node == nullptr) {
-              return 0;
-          }
-          if (m.count(node) > 0) {
-              return m[node];
-          }
-          int left = maxDepth(node->left, res);
-          int right = maxDepth(node->right, res);
-          res = max(res, left + right);
-          m[node] = max(left, right) + 1;
-          return m[node];
-      }
-
+  int maxDepth(TreeNode *node, int &res) {
+    if (node == nullptr) {
+      return 0;
+    }
+    if (m.count(node) > 0) {
+      return m[node];
+    }
+    int left = maxDepth(node->left, res);
+    int right = maxDepth(node->right, res);
+    res = max(res, left + right);
+    m[node] = max(left, right) + 1;
+    return m[node];
+  }
 };
