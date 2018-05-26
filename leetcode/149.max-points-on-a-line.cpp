@@ -43,6 +43,7 @@ public:
     for (int i = 0; i < points.size(); ++i) {
       map<pair<int, int>, int> map;
       int duplicate = 1;
+      int maxV = 0;
       for (int j = i + 1; j < points.size(); ++j) {
         if (points[i].x == points[j].x && points[i].y == points[j].y) {
           duplicate += 1;
@@ -50,14 +51,10 @@ public:
           int dx = points[j].x - points[i].x;
           int dy = points[j].y - points[i].y;
           int d = gcd(dx, dy);
-          map[make_pair(dx / d, dy / d)] += 1;
+          maxV = max(maxV, ++map[{dx / d, dy / d}]);
         }
       }
-      res = max(res, duplicate);
-
-      for (auto kv : map) {
-        res = max(res, kv.second + duplicate);
-      }
+      res = max(res, duplicate + maxV);
     }
     return res;
   }

@@ -1,4 +1,3 @@
-#include <iostream>
 #include <vector>
 using namespace std;
 /*
@@ -37,45 +36,41 @@ using namespace std;
  */
 class Solution {
 public:
-  double findMedianSortedArrays(vector<int> &nums1, vector<int> &nums2) {
-    bool isEven = (nums1.size() + nums2.size()) % 2 == 0;
-    int total = nums1.size() + nums2.size();
-
-    if (isEven) {
-      return ((double)findNthElement(nums1, nums2, total / 2) +
-              findNthElement(nums1, nums2, total / 2 + 1)) /
-             2;
-    } else {
-      return findNthElement(nums1, nums2, (total + 1) / 2);
+  double findMedianSortedArrays(const vector<int> &nums1,
+                                const vector<int> &nums2) {
+    if (nums1.size() > nums2.size()) {
+      return findMedianSortedArrays(nums2, nums1);
     }
-  }
 
-  int findNthElement(const vector<int> &nums1, const vector<int> &nums2,
-                     int target) {
-    int i = 0;
-    int j = 0;
+    int m = nums1.size();
+    int n = nums2.size();
 
-    int currVal;
-    for (int k = 1; k <= target; ++k) {
-      if (i == nums1.size()) {
-        currVal = nums2[j++];
-      } else if (j == nums2.size()) {
-        currVal = nums1[i++];
-      } else if (nums1[i] < nums2[j]) {
-        currVal = nums1[i++];
+    int low = 0;
+    int high = m;
+
+    while (low <= high) {
+      int partition1 = (low + high) / 2;
+      int partition2 = (m + n + 1) / 2 - partition1;
+
+      int maxLeft1 = partition1 == 0 ? INT_MIN : nums1[partition1 - 1];
+      int minRight1 = partition1 == m ? INT_MAX : nums1[partition1];
+
+      int maxLeft2 = partition2 == 0 ? INT_MIN : nums2[partition2 - 1];
+      int minRight2 = partition2 == n ? INT_MAX : nums2[partition2];
+
+      if (maxLeft1 <= minRight2 && maxLeft2 <= minRight1) {
+        if ((m + n) % 2 == 0) {
+          return static_cast<double>(max(maxLeft1, maxLeft2) +
+                                     min(minRight1, minRight2)) /
+                 2;
+        } else {
+          return static_cast<double>(max(maxLeft1, maxLeft2));
+        }
+      } else if (maxLeft1 > minRight2) {
+        high = partition1 - 1;
       } else {
-        currVal = nums2[j++];
+        low = partition1 + 1;
       }
     }
-    return currVal;
   }
 };
-
-#ifdef DEBUG
-int main() {
-  vector<int> v1 = {1, 2};
-  vector<int> v2 = {3, 4};
-  Solution sol;
-  cout << sol.findMedianSortedArrays(v1, v2) << endl;
-}
-#endif
