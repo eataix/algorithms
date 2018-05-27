@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <unordered_map>
 #include <vector>
 using namespace std;
 /*
@@ -24,6 +25,28 @@ using namespace std;
 class Solution {
 public:
   int majorityElement(vector<int> &nums) {
+    int res = 0;
+    int count = 0;
+    for (int num : nums) {
+      if (count == 0) {
+        res = num;
+      }
+      count += (num == res) ? 1 : -1;
+    }
+    return res;
+  }
+
+  int majorityElement1(vector<int> &nums) {
+    unordered_map<int, int> count;
+
+    for (int i : nums) {
+      if (++count[i] > nums.size() / 2) {
+        return i;
+      }
+    }
+  }
+
+  int majorityElement2(vector<int> &nums) {
     nth_element(nums.begin(), nums.begin() + nums.size() / 2, nums.end());
     return nums[nums.size() / 2];
   }
