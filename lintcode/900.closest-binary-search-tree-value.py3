@@ -1,8 +1,10 @@
 if __name__ == '__main__':
+
     class TreeNode:
         def __init__(self, val):
             self.val = val
             self.left, self.right = None, None
+
 
 class Solution:
     """
@@ -10,6 +12,7 @@ class Solution:
     @param target: the given target
     @return: the value in the BST that is closest to the target
     """
+
     def closestValue(self, root, target):
         bestV = None
         bestD = None
@@ -27,4 +30,3 @@ class Solution:
                 return target
 
         return bestV
-

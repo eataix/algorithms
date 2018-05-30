@@ -3,11 +3,12 @@ class Solution:
     @param board: the board
     @return: whether the Sudoku is valid
     """
+
     def isValidSudoku(self, board):
         rows = [[False] * 9 for _ in range(9)]
         cols = [[False] * 9 for _ in range(9)]
         cells = [[False] * 9 for _ in range(9)]
-        
+
         for row in range(9):
             for col in range(9):
                 if board[row][col] == '.':
