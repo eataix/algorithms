@@ -69,7 +69,7 @@ public:
     } else {
       for (int i = start; i < candidates.size(); ++i) {
         out.push_back(candidates[i]);
-        combinationSumDFS(candidates, target - candidates[i], i + 1, out, res);
+        combinationSumDFS(candidates, target - candidates[i], i, out, res);
         out.pop_back();
       }
     }
