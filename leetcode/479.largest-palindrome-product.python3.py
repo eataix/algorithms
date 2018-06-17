@@ -38,8 +38,8 @@ class Solution:
         if n == 8:
             return 9999000000009999 % 1337
 
-        upper_limit = 10 ** n - 1
-        lower_limit = 10 ** (n - 1)
+        upper_limit = 10**n - 1
+        lower_limit = 10**(n - 1)
 
         def palindrome(n):
             v = 0

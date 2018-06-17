@@ -10,25 +10,25 @@
 # Testcase Example:  '[[1,1],2,[1,1]]'
 #
 # Given a nested list of integers, implement an iterator to flatten it.
-# 
+#
 # Each element is either an integer, or a list -- whose elements may also be
 # integers or other lists.
-# 
+#
 # Example 1:
 # Given the list [[1,1],2,[1,1]],
-# 
+#
 # By calling next repeatedly until hasNext returns false, the order of elements
 # returned by next should be: [1,1,2,1,1].
-# 
-# 
-# 
+#
+#
+#
 # Example 2:
 # Given the list [1,[4,[6]]],
-# 
+#
 # By calling next repeatedly until hasNext returns false, the order of elements
 # returned by next should be: [1,4,6].
-# 
-# 
+#
+#
 #
 # """
 # This is the interface that allows for creating nested lists.
@@ -57,8 +57,8 @@
 
 from collections import deque
 
-class NestedIterator(object):
 
+class NestedIterator(object):
     def __init__(self, nestedList):
         """
         Initialize your data structure here.
@@ -74,7 +74,6 @@ class NestedIterator(object):
         """
         return self.q.popleft().getInteger()
 
-
     def hasNext(self):
         """
         :rtype: bool
@@ -88,7 +87,8 @@ class NestedIterator(object):
             l = ni.getList()
             for i in reversed(l):
                 self.q.appendleft(i)
-        return False        
+        return False
+
 
 # Your NestedIterator object will be instantiated and called as such:
 # i, v = NestedIterator(nestedList), []
