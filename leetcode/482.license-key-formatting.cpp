@@ -1,4 +1,3 @@
-#include <cctype>
 #include <iostream>
 #include <string>
 using namespace std;
@@ -62,56 +61,17 @@ using namespace std;
  */
 class Solution {
 public:
-  string licenseKeyFormatting(const string &S, int K) {
-    int count = 0;
-    for (char ch : S) {
-      if (ch != '-') {
-        count += 1;
-      }
-    }
-
-    int first_group_count = count % K == 0 ? K : count % K;
-
-    count -= first_group_count;
-
+  string licenseKeyFormatting(string S, int K) {
     string res;
-    int idx = 0;
-    while (first_group_count > 0) {
-      while (S[idx] == '-') {
-        idx += 1;
-      }
-      char ch = S[idx];
-      if (ch >= 'a' && ch <= 'z') {
-        ch = toupper(ch);
-      }
-      res += ch;
-      idx += 1;
-      first_group_count -= 1;
-    }
-
-    if (count > 0) {
-      res += '-';
-    }
-
-    int c = 0;
-    while (count > 0) {
-      while (S[idx] == '-') {
-        idx += 1;
-      }
-      char ch = S[idx];
-      if (ch >= 'a' && ch <= 'z') {
-        ch = toupper(ch);
-      }
-      res += ch;
-      idx += 1;
-      c += 1;
-      count -= 1;
-
-      if (c == K && first_group_count + count > 0) {
-        c = 0;
-        res += '-';
+    for (auto it = S.crbegin(); it != S.crend(); ++it) {
+      if (*it != '-') {
+        if (res.size() % (K + 1) == K) {
+          res += '-';
+        }
+        res += toupper(*it);
       }
     }
+    reverse(res.begin(), res.end());
     return res;
   }
 };
