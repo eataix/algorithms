@@ -20,16 +20,14 @@ public:
    * @return: The car was detected or not
    */
   string radarDetection(vector<Point> &coordinates, vector<int> &radius) {
-    int n = coordinates.size();
-    for (int i = 0; i < n; ++i) {
-      int x = coordinates[i].x;
-      int y = coordinates[i].y;
-      int r = radius[i];
-
-      if (abs(y) <= r) {
-        return "YES";
-      }
-    }
-    return "NO";
+	          for (int i = 0; i <coordinates.size(); ++i) {
+            int upper = coordinates[i].y + radius[i];
+            int lower = coordinates[i].y - radius[i];
+            
+            if ((upper > 0 && lower <0) || (upper > 1 && lower < 1)) {
+                return "YES";    
+            }
+        }
+        return "NO";
   }
 };

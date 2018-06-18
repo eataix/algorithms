@@ -16,6 +16,8 @@ class Solution:
 
     def radarDetection(self, coordinates, radius):
         for i in range(len(coordinates)):
-            if abs(coordinates[i].y) <= radius[i]:
+            upper = coordinates[i].y + radius[i]
+            lower = coordinates[i].y - radius[i]
+            if (upper > 0 and lower < 0) or (upper > 1 and lower < 1):
                 return "YES"
         return "NO"
