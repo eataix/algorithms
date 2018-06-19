@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <iostream>
 #include <queue>
 #include <utility>
@@ -36,29 +37,44 @@ using namespace std;
  */
 class Solution {
 public:
+  int jump(const vector<int> &nums) {
+    int levels = 0;
+    int maxIdxCurrLevel = 0;
+    int maxIdxNextLevel = 0;
+    for (int i = 0; i < nums.size() - 1; ++i) {
+      maxIdxNextLevel = max(maxIdxNextLevel, nums[i] + i);
+
+      if (i == maxIdxCurrLevel) {
+        maxIdxCurrLevel = maxIdxNextLevel;
+        levels += 1;
+      }
+    }
+    return levels;
+  }
+
   int jump1(const vector<int> &nums) {
-    int res = 0;
-    int last = 0;
+    int levels = 0;
+    int lastOfCurrLevl = 0;
     int curr = 0;
 
     for (int i = 0; i < nums.size(); ++i) {
-      if (i > last) {
-        last = curr;
-        res += 1;
+      if (i > lastOfCurrLevl) {
+        lastOfCurrLevl = curr;
+        levels += 1;
       }
       curr = max(curr, i + nums[i]);
     }
-    return res;
+    return levels;
   }
 
-  int jump(const vector<int> &nums) {
+  int jump3(const vector<int> &nums) {
     vector<bool> visited(nums.size(), false);
     vector<int> depth(nums.size(), nums.size());
     queue<int> q;
 
     q.push(0);
     visited[0] = true;
-    numJumps[0] = 0;
+    depth[0] = 0;
 
     int currMax = 0;
 
@@ -66,19 +82,22 @@ public:
       int idx = q.front();
       q.pop();
 
-      for (int i = idx + 1; i < nums.size() && i <= idx + nums[idx]; ++i) {
+      for (int i = min(static_cast<int>(nums.size() - 1), idx + nums[idx]);
+           i >= idx + 1; --i) {
         if (!visited[i]) {
-          numJumps[i] = numJumps[idx] + 1;
+          depth[i] = depth[idx] + 1;
           visited[i] = true;
           if (currMax < i + nums[i]) {
             currMax = i + nums[i];
             q.push(i);
           }
+        } else {
+          break;
         }
       }
     }
 
-    return numJumps.back();
+    return depth.back();
   }
 
   int jump2(const vector<int> &nums) {
