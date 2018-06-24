@@ -14,20 +14,20 @@
 
 class Solution {
 public:
-    /**
-     * @param head: n
-     * @return: The new head of reversed linked list.
-     */
-    ListNode * reverse(ListNode * head) {
-        ListNode *prev = nullptr;
-        ListNode *curr = head;
-        while (curr != nullptr) {
-            ListNode *oldNext = curr->next;
-            curr->next = prev;
-            prev = curr;
-            curr = oldNext;
-        }
-        
-        return prev;
+  /**
+   * @param head: n
+   * @return: The new head of reversed linked list.
+   */
+  ListNode *reverse(ListNode *head) {
+    ListNode *prev = nullptr;
+    ListNode *curr = head;
+    while (curr != nullptr) {
+      ListNode *oldNext = curr->next;
+      curr->next = prev;
+      prev = curr;
+      curr = oldNext;
     }
+
+    return prev;
+  }
 };
