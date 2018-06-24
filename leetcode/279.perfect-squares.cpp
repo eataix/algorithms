@@ -1,4 +1,7 @@
 #include <cmath>
+#include <iostream>
+#include <limits>
+#include <vector>
 using namespace std;
 /*
  * [279] Perfect Squares
@@ -36,6 +39,19 @@ private:
 
 public:
   int numSquares(int n) {
+    vector<int> dp(n + 1, numeric_limits<int>::max());
+
+    dp[0] = 0;
+
+    for (int i = 1; i <= n; ++i) {
+      for (int j = 1; j * j <= i; ++j) {
+        dp[i] = min(dp[i], dp[i - j * j] + 1);
+      }
+    }
+    return dp[n];
+  }
+
+  int numSquares2(int n) {
     if (is_square(n)) {
       return 1;
     }
@@ -57,3 +73,11 @@ public:
     return 3;
   }
 };
+
+#ifdef DEBUG
+int main() {
+  Solution sol;
+  cout << sol.numSquares(12) << endl;
+  cout << sol.numSquares(13) << endl;
+}
+#endif
