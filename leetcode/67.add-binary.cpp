@@ -24,63 +24,24 @@ using namespace std;
 class Solution {
 public:
   string addBinary(string a, string b) {
-    stack<char> res;
+    int i = a.size() - 1;
+    int j = b.size() - 1;
     int carry = 0;
-    int i;
-    int j;
-    for (i = a.size() - 1, j = b.size() - 1; i >= 0 && j >= 0; i -= 1, j -= 1) {
-      int x = a[i] - '0';
-      int y = b[j] - '0';
-      int sum = x + y + carry;
-      char ch;
-      if (sum >= 2) {
-        ch = sum % 2 + '0';
-        carry = 1;
-      } else {
-        ch = sum + '0';
-        carry = 0;
-      }
-      res.push(ch);
-    }
-    while (i >= 0) {
-      int x = a[i] - '0';
-      int sum = x + carry;
-      char ch;
-      if (sum == 2) {
-        ch = '0';
-        carry = 1;
-      } else {
-        ch = sum + '0';
-        carry = 0;
-      }
-      res.push(ch);
+    string res;
+    while (i >= 0 || j >= 0 || carry) {
+      int op1 = i >= 0 ? a[i] - '0' : 0;
+      int op2 = j >= 0 ? b[j] - '0' : 0;
+
+      int sum = op1 + op2 + carry;
+      carry = sum >= 2;
+      res += '0' + (sum & 1);
+
       i -= 1;
-    }
-    while (j >= 0) {
-      int y = b[j] - '0';
-      int sum = y + carry;
-      char ch;
-      if (sum == 2) {
-        ch = '0';
-        carry = 1;
-      } else {
-        ch = sum + '0';
-        carry = 0;
-      }
-      res.push(ch);
       j -= 1;
     }
 
-    if (carry == 1) {
-      res.push('1');
-    }
-
-    string result;
-    while (!res.empty()) {
-      result += res.top();
-      res.pop();
-    }
-    return result;
+    reverse(res.begin(), res.end());
+    return res;
   }
 };
 

@@ -31,6 +31,27 @@ public:
   int rob(vector<int> &nums) {
     if (nums.empty()) {
       return 0;
+    }
+
+    if (nums.size() == 1) {
+      return nums[0];
+    }
+
+    int minusTwo = 0;
+    int minusOne = nums[0];
+
+    for (int i = 1; i < nums.size(); ++i) {
+      int curr = max(minusTwo + nums[i], minusOne);
+
+      minusTwo = minusOne;
+      minusOne = curr;
+    }
+    return minusOne;
+  }
+
+  int rob1(vector<int> &nums) {
+    if (nums.empty()) {
+      return 0;
     } else if (nums.size() == 1) {
       return nums[0];
     }

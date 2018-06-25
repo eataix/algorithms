@@ -41,18 +41,16 @@ using namespace std;
  */
 class Solution {
 public:
-  int hammingDistance(int x, int y) {
-	  return __builtin_popcount(x ^y);
-  }
+  int hammingDistance(int x, int y) { return __builtin_popcount(x ^ y); }
 
   int hammingDistance1(int x, int y) {
-	  int cnt = 0;
-	  int n = x ^ y;
-	  while (n) {
-		  cnt += 1;
-		  n &= n - 1;
-	  }
-	  return cnt;
+    int cnt = 0;
+    int n = x ^ y;
+    while (n) {
+      cnt += 1;
+      n &= n - 1;
+    }
+    return cnt;
   }
   int hammingDistance2(int x, int y) {
     string binStr = bitset<64>(x ^ y).to_string();
