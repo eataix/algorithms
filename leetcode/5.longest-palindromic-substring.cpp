@@ -35,6 +35,31 @@ using namespace std;
  */
 class Solution {
 public:
+  string longestPalindrome(string s) {
+	  int minStart =-1;
+	  int maxLen = 0;
+	  for (int i = 0; i < s.size(); ++i) {
+		  int len1 = expandAroundCenters(s, i, i);
+		  int len2 = expandAroundCenters(s, i, i + 1);
+		  int len = max(len1, len2);
+		  if (len > maxLen) {
+			  minStart = i - (len - 1) / 2;
+			  maxLen = len;
+		  }
+	  }
+	  return minStart == -1? "" : s.substr(minStart, maxLen);
+  }
+  int expandAroundCenters(const string &s, int left, int right) {
+	  int l = left;
+	   int r = right;
+
+	   while (l >= 0 && r < s.size() && s[l] == s[r]) {
+		   l += 1;
+		   r += 1;
+	   }
+	   return r - l - 1;
+  }
+
   string removePaddings(string s) {
     if (s.empty()) {
       return "";
@@ -60,7 +85,7 @@ public:
     return s2;
   }
 
-  string longestPalindrome(string s) {
+  string longestPalindrome2(string s) {
     if (s.size() == 0) {
       return "";
     }
