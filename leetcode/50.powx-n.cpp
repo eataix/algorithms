@@ -1,3 +1,5 @@
+#include <iostream>
+using namespace std;
 /*
  * [50] Pow(x, n)
  *
@@ -46,6 +48,27 @@
 class Solution {
 public:
   double myPow(double x, int n) {
+    long long p = n;
+    if (p < 0) {
+      x = 1 / x;
+      p = -p;
+    }
+
+    if (p == 0) {
+      return 1;
+    }
+    double residual = 1;
+    while (p > 1) {
+      if (p % 2 == 1) {
+        residual *= x;
+      }
+      x = x * x;
+      p /= 2;
+    }
+    return x * residual;
+  }
+
+  double myPow2(double x, int n) {
     if (n < 0) {
       return 1 / p(x, -n);
     } else {
@@ -66,3 +89,10 @@ public:
     }
   }
 };
+
+#ifdef DEBUG
+int main() {
+  Solution sol;
+  sol.myPow(2.1, 3);
+}
+#endif

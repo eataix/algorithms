@@ -39,6 +39,31 @@ using namespace std;
 class Solution {
 public:
   vector<vector<string>> groupAnagrams(vector<string> &strs) {
+    unordered_map<string, vector<string>> m;
+
+    for (string str : strs) {
+      vector<int> cnt(26, 0);
+
+      for (char ch : str) {
+        cnt[ch - 'a'] += 1;
+      }
+
+      string s;
+      for (int c : cnt) {
+        s += '#';
+        s += to_string(c);
+      }
+      m[s].push_back(str);
+    }
+
+    vector<vector<string>> res;
+    for (auto kv : m) {
+      res.push_back(kv.second);
+    }
+    return res;
+  }
+
+  vector<vector<string>> groupAnagrams2(vector<string> &strs) {
     unordered_map<string, vector<string>> mapNewStringsToOldOnes;
 
     for (string str : strs) {

@@ -25,6 +25,9 @@ using namespace std;
 class Solution {
 public:
   int maxProduct(vector<int> &nums) {
+    if (nums.empty()) {
+      return 0;
+    }
     vector<int> maxV(nums.size());
     vector<int> minV(nums.size());
 
@@ -34,14 +37,12 @@ public:
     int res = maxV[0];
 
     for (int i = 1; i < nums.size(); ++i) {
-      maxV[i] = nums[i];
-      minV[i] = nums[i];
       if (nums[i] > 0) {
-        maxV[i] = max(maxV[i], nums[i] * maxV[i - 1]);
-        minV[i] = min(minV[i], nums[i] * minV[i - 1]);
+        maxV[i] = max(nums[i], nums[i] * maxV[i - 1]);
+        minV[i] = min(nums[i], nums[i] * minV[i - 1]);
       } else {
-        maxV[i] = max(maxV[i], nums[i] * minV[i - 1]);
-        minV[i] = min(minV[i], nums[i] * maxV[i - 1]);
+        maxV[i] = max(nums[i], nums[i] * minV[i - 1]);
+        minV[i] = min(nums[i], nums[i] * maxV[i - 1]);
       }
       res = max(maxV[i], res);
     }

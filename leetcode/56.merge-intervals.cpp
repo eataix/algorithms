@@ -48,6 +48,24 @@ bool comp(const Interval &i1, const Interval &i2) {
 class Solution {
 public:
   vector<Interval> merge(vector<Interval> &intervals) {
+    sort(intervals.begin(), intervals.end(),
+         [](const Interval &i1, const Interval &i2) {
+           return i1.start < i2.start;
+         });
+
+    vector<Interval> res;
+
+    for (int i = 0; i < intervals.size(); ++i) {
+      if (!res.empty() && intervals[i].start <= res.back().end) {
+        res.back().end = max(res.back().end, intervals[i].end);
+      } else {
+        res.push_back(intervals[i]);
+      }
+    }
+    return res;
+  }
+
+  vector<Interval> merge2(vector<Interval> &intervals) {
     if (intervals.size() <= 1) {
       return intervals;
     }

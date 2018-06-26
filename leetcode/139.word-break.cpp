@@ -39,19 +39,40 @@ using namespace std;
 class Solution {
 public:
   bool wordBreak(string s, vector<string> &wordDict) {
-    unordered_set<string> dict{wordDict.cbegin(), wordDict.cend()};
-    string s2 = '$' + s;
-    vector<bool> dp{s2.size(), false};
+    unordered_set<string> dict{wordDict.begin(), wordDict.end()};
+    vector<bool> dp(s.size() + 1, false);
 
     dp[0] = true;
-    for (int i = 1; i < s2.size(); ++i) {
+
+    for (int i = 1; i <= s.size(); ++i) {
       for (int j = 0; j < i; ++j) {
-        dp[i] = dp[j] && dict.find(s2.substr(j + 1, i - j)) != dict.cend();
+        dp[i] = dp[j] && dict.count(s.substr(j, i - j));
         if (dp[i]) {
           break;
         }
       }
     }
-    return dp[s2.size() - 1];
+    return dp.back();
+  }
+
+  bool wordBreak1(string s, vector<string> &wordDict) {
+    vector<bool> dp(s.size() + 1, false);
+
+    dp[0] = true;
+
+    for (int len = 1; len <= s.size(); ++len) {
+      for (auto const &word : wordDict) {
+        int start = len - word.size();
+        if (start >= 0) {
+          string newStr = s.substr(start, word.size());
+          dp[len] = dp[start] && newStr == word;
+          if (dp[len]) {
+            break;
+          }
+        }
+      }
+    }
+
+    return dp.back();
   }
 };
