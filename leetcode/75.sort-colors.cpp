@@ -1,3 +1,5 @@
+#include <vector>
+using namespace std;
 /*
  * [75] Sort Colors
  *
@@ -38,5 +40,22 @@
  */
 class Solution {
 public:
-  void sortColors(vector<int> &nums) {}
+  void sortColors(vector<int> &nums) {
+    int low = 0;
+    int high = nums.size() - 1;
+    int mid = 0;
+
+    while (mid <= high) {
+      if (nums[mid] == 0) {
+        swap(nums[mid], nums[low]);
+        low += 1;
+        mid += 1;
+      } else if (nums[mid] == 2) {
+        swap(nums[mid], nums[high]);
+        high -= 1;
+      } else {
+        mid += 1;
+      }
+    }
+  }
 };

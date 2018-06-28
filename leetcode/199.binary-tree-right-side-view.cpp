@@ -69,36 +69,4 @@ public:
     recursive(root->right, level + 1, res);
     recursive(root->left, level + 1, res);
   }
-
-  vector<int> rightSideView2(TreeNode *root) {
-    if (root == nullptr) {
-      return {};
-    }
-    queue<pair<TreeNode *, int>> q;
-    unordered_map<int, vector<TreeNode *>> m;
-
-    q.push({root, 0});
-    int maxLevel = 0;
-    while (!q.empty()) {
-      auto p = q.front();
-      q.pop();
-      m[p.second].push_back(p.first);
-      maxLevel = max(maxLevel, p.second);
-
-      if (p.first->left != nullptr) {
-        q.push({p.first->left, p.second + 1});
-      }
-
-      if (p.first->right != nullptr) {
-        q.push({p.first->right, p.second + 1});
-      }
-    }
-
-    vector<int> res;
-    for (int i = 0; i <= maxLevel; ++i) {
-      res.push_back(m[i].back()->val);
-    }
-
-    return res;
-  }
 };

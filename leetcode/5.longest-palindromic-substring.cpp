@@ -54,7 +54,7 @@ public:
     int r = right;
 
     while (l >= 0 && r < s.size() && s[l] == s[r]) {
-      l += 1;
+      l -= 1;
       r += 1;
     }
     return r - l - 1;

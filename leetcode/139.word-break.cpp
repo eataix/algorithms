@@ -38,7 +38,7 @@ using namespace std;
  */
 class Solution {
 public:
-  bool wordBreak(string s, vector<string> &wordDict) {
+  bool wordBreak2(string s, vector<string> &wordDict) {
     unordered_set<string> dict{wordDict.begin(), wordDict.end()};
     vector<bool> dp(s.size() + 1, false);
 
@@ -55,7 +55,7 @@ public:
     return dp.back();
   }
 
-  bool wordBreak1(string s, vector<string> &wordDict) {
+  bool wordBreak(string s, vector<string> &wordDict) {
     vector<bool> dp(s.size() + 1, false);
 
     dp[0] = true;

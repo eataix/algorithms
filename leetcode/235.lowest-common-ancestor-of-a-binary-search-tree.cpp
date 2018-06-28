@@ -59,27 +59,40 @@ struct TreeNode {
 
 class Solution {
 public:
-  TreeNode *lca(TreeNode *root, int minV, int maxV) {
-    if (root == nullptr) {
-      return nullptr;
-    }
-
-    if (root->val > maxV) {
-      return lca(root->left, minV, maxV);
-    } else if (root->val < minV) {
-      return lca(root->right, minV, maxV);
-    } else {
-      return root;
-    }
-  }
-
   TreeNode *lowestCommonAncestor(TreeNode *root, TreeNode *p, TreeNode *q) {
     if (root == nullptr || p == nullptr || q == nullptr) {
       return nullptr;
     }
     int maxV = max(p->val, q->val);
     int minV = min(p->val, q->val);
+    TreeNode *cur = root;
+    while (true) {
+      if (cur->val > maxV) {
+        cur = cur->left;
+      } else if (cur->val < minV) {
+        cur = cur->right;
+      } else {
+        return cur;
+      }
+    }
+  }
 
-    return lca(root, minV, maxV);
+  TreeNode *lowestCommonAncestor2(TreeNode *root, TreeNode *p, TreeNode *q) {
+    if (root == nullptr || root == p || root == q) {
+      return root;
+    }
+
+    TreeNode *left = lowestCommonAncestor2(root->left, p, q);
+    TreeNode *right = lowestCommonAncestor2(root->right, p, q);
+
+    if (left == nullptr && right == nullptr) {
+      return nullptr;
+    }
+
+    if (left != nullptr && right != nullptr) {
+      return root;
+    }
+
+    return left ? left : right;
   }
 };
