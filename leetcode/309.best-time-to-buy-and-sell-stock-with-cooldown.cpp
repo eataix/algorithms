@@ -39,10 +39,10 @@ using namespace std;
 class Solution {
 public:
   int maxProfit(vector<int> &prices) {
-      int n = prices.size();
-      if (n <= 1) {
-          return 0;
-      }
+    int n = prices.size();
+    if (n <= 1) {
+      return 0;
+    }
     vector<int> sold(prices.size());
     vector<int> bought(prices.size());
 
@@ -51,11 +51,10 @@ public:
 
     for (int i = 1; i < prices.size(); ++i) {
       sold[i] = max(sold[i - 1], bought[i - 1] + prices[i]);
-      bought[i] = max(bought[i - 1], i - 2 >= 0 ? sold[i - 2] - prices[i]
-                                                : -prices[i]);
+      bought[i] =
+          max(bought[i - 1], i - 2 >= 0 ? sold[i - 2] - prices[i] : -prices[i]);
     }
 
     return sold.back();
   }
 };
-
