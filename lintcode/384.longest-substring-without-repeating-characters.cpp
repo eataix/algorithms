@@ -2,24 +2,24 @@
 
 class Solution {
 public:
-    /**
-     * @param s: a string
-     * @return: an integer
-     */
-    int lengthOfLongestSubstring(string &s) {
-        unordered_map<char, int> m;
-        
-        int maxLen = 0;
-        for (int left = 0, right = 0; right < s.size(); ++right) {
-            if (m.count(s[right])) {
-                left = max(left, m[s[right]] + 1);
-            }
-            m[s[right]] = right;
-            maxLen = max(maxLen, right - left + 1);
-        }
-        
-        return maxLen;
+  /**
+   * @param s: a string
+   * @return: an integer
+   */
+  int lengthOfLongestSubstring(string &s) {
+    unordered_map<char, int> m;
+
+    int maxLen = 0;
+    for (int left = 0, right = 0; right < s.size(); ++right) {
+      if (m.count(s[right])) {
+        left = max(left, m[s[right]] + 1);
+      }
+      m[s[right]] = right;
+      maxLen = max(maxLen, right - left + 1);
     }
+
+    return maxLen;
+  }
 };
 
 #include <algorithm>

@@ -1,4 +1,4 @@
-#include<algorithm>
+#include <algorithm>
 #include <limits>
 using namespace std;
 /*

@@ -114,7 +114,7 @@ public:
         newRow -= dir.first;
         newCol -= dir.second;
         --dist;
-        if (dists[newRow][newCol] > dist) {
+        if (dist < dists[newRow][newCol]) {
           dists[newRow][newCol] = dist;
           if (newRow != destination[0] || newCol != destination[1]) {
             q.push({newRow, newCol});
