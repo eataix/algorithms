@@ -1,3 +1,4 @@
+#include<limits>
 #include <algorithm>
 #include <vector>
 using namespace std;
@@ -57,6 +58,25 @@ using namespace std;
 class Solution {
 public:
   int maxProfit(vector<int> &prices) {
+      int n = prices.size();
+      if (n <= 1) {
+          return 0;
+      }
+      vector<int> sell(prices.size());
+      vector<int> buy(prices.size());
+      
+      sell[0] = 0;
+      buy[0] = -prices[0];
+
+	  for (int i = 1; i < prices.size(); ++i) {
+		  sell[i] = max(sell[i - 1], buy[i - 1] + prices[i]);
+          buy[i] = max(buy[i - 1], sell[i - 1] - prices[i]);
+	  }
+
+	  return sell.back();
+  }
+
+  int maxProfit1(vector<int> &prices) {
     if (prices.size() <= 1) {
       return 0;
     }
@@ -67,3 +87,4 @@ public:
     return profit;
   }
 };
+
