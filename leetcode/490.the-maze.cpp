@@ -83,8 +83,53 @@ class Solution {
   vector<pair<int, int>> dirs{{0, -1}, {-1, 0}, {0, 1}, {1, 0}};
 
 public:
-  bool hasPath(vector<vector<int>> &maze, vector<int> &start,
+  bool hasPath(const vector<vector<int>> &maze, vector<int> &start,
                vector<int> &destination) {
+    if (maze.empty() || maze[0].empty()) {
+      return false;
+    }
+
+    int numRows = maze.size();
+    int numCols = maze[0].size();
+
+    vector<vector<bool>> visited(numRows, vector<bool>(numCols, false));
+
+    dfs(maze, start[0], start[1], destination, visited);
+
+    return visited[destination[0]][destination[1]];
+  }
+
+  void dfs(const vector<vector<int>> &maze, int row, int col,
+           vector<int> &destination, vector<vector<bool>> &visited) {
+    int numRows = maze.size();
+    int numCols = maze[0].size();
+
+    if (row < 0 || row >= numRows || col < 0 || col >= numCols) {
+      return;
+    }
+
+    visited[row][col] = true;
+
+    for (auto dir : dirs) {
+      int currRow = row;
+      int currCol = col;
+
+      while (currRow >= 0 && currRow < numRows && currCol >= 0 &&
+             currCol < numCols && maze[currRow][currCol] == 0) {
+        currRow += dir.first;
+        currCol += dir.second;
+      }
+
+      currRow -= dir.first;
+      currCol -= dir.second;
+      if (!visited[currRow][currCol]) {
+        dfs(maze, currRow, currCol, destination, visited);
+      }
+    }
+  }
+
+  bool hasPath2(vector<vector<int>> &maze, vector<int> &start,
+                vector<int> &destination) {
     if (maze.empty() || maze[0].empty()) {
       return true;
     }

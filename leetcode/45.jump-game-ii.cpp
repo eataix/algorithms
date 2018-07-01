@@ -41,13 +41,13 @@ public:
     int levels = 0;
     int maxIdxCurrLevel = 0;
     int maxIdxNextLevel = 0;
-    for (int i = 0; i < nums.size() - 1; ++i) {
-      maxIdxNextLevel = max(maxIdxNextLevel, nums[i] + i);
-
-      if (i == maxIdxCurrLevel) {
+    for (int i = 0; i < nums.size(); ++i) {
+      if (i > maxIdxCurrLevel) {
         maxIdxCurrLevel = maxIdxNextLevel;
         levels += 1;
       }
+
+      maxIdxNextLevel = max(maxIdxNextLevel, nums[i] + i);
     }
     return levels;
   }

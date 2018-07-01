@@ -91,6 +91,48 @@ public:
   int shortestDistance(vector<vector<int>> &maze, vector<int> &start,
                        vector<int> &destination) {
     int numRows = maze.size(), numCols = maze[0].size();
+    vector<vector<int>> distances(
+        numRows, vector<int>(numCols, numeric_limits<int>::max()));
+
+    distances[start[0]][start[1]] = 0;
+    dfs(maze, start[0], start[1], distances, destination);
+
+    int res = distances[destination[0]][destination[1]];
+    return (res == numeric_limits<int>::max()) ? -1 : res;
+  }
+
+  void dfs(const vector<vector<int>> &maze, int row, int col,
+           vector<vector<int>> &distances, const vector<int> &destination) {
+    int numRows = maze.size(), numCols = maze[0].size();
+    if (row < 0 || row >= numRows || col < 0 || col >= numCols) {
+      return;
+    }
+
+    for (auto dir : dirs) {
+      int newRow = row;
+      int newCol = col;
+      int dist = distances[row][col];
+      while (newRow >= 0 && newRow < numRows && newCol >= 0 &&
+             newCol < numCols && maze[newRow][newCol] == 0) {
+        newRow += dir.first;
+        newCol += dir.second;
+        ++dist;
+      }
+      newRow -= dir.first;
+      newCol -= dir.second;
+      --dist;
+      if (dist < distances[newRow][newCol]) {
+        distances[newRow][newCol] = dist;
+        if (newRow != destination[0] || newCol != destination[1]) {
+          dfs(maze, newRow, newCol, distances, destination);
+        }
+      }
+    }
+  }
+
+  int shortestDistance1(vector<vector<int>> &maze, vector<int> &start,
+                        vector<int> &destination) {
+    int numRows = maze.size(), numCols = maze[0].size();
     vector<vector<int>> dists(numRows,
                               vector<int>(numCols, numeric_limits<int>::max()));
     queue<pair<int, int>> q;
