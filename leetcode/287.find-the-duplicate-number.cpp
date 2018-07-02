@@ -36,13 +36,13 @@ class Solution {
 public:
   int findDuplicate(vector<int> &nums) {
     if (nums.size() > 1) {
-      int slow = nums[0];
-      int fast = nums[nums[0]];
+      int slow = 0;
+      int fast = 0;
 
-      while (slow != fast) {
+      do {
         slow = nums[slow];
         fast = nums[nums[fast]];
-      }
+      } while (slow != fast);
 
       fast = 0;
       while (fast != slow) {

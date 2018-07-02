@@ -63,6 +63,24 @@ public:
   }
 
   ListNode *deleteDuplicates(ListNode *head) {
+    ListNode *deleteDuplicates(ListNode * head) {
+      if (head == nullptr || head->next == nullptr) {
+        return head;
+      }
+      auto prev = head;
+      ListNode *curr = prev;
+      while ((curr = curr->next) != nullptr) {
+        if (curr->val != prev->val) {
+          prev->next = curr;
+          prev = prev->next;
+        }
+      }
+      prev->next = nullptr;
+      return head;
+    }
+  }
+
+  ListNode *deleteDuplicates(ListNode *head) {
     ListNode *curr = head;
     while (curr != nullptr) {
       ListNode *runner = curr;

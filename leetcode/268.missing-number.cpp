@@ -43,6 +43,27 @@ using namespace std;
 class Solution {
 public:
   int missingNumber(vector<int> &nums) {
+    auto n = static_cast<long long>(nums.size()) + 1;
+    auto total = 0LL;
+    for (auto num : nums) {
+      total += num;
+    }
+    return n * (n + 1) - total;
+  }
+
+  int missingNumber2(vector<int> &nums) {
+    int res = 0;
+    for (int i = 1; i <= nums.size(); ++i) {
+      res ^= i;
+    }
+
+    for (auto num : nums) {
+      res ^= num;
+    }
+
+    return res;
+  }
+  int missingNumber2(vector<int> &nums) {
     int res = 0;
     for (int i = 0; i < nums.size(); ++i) {
       res ^= (i + 1) ^ nums[i];

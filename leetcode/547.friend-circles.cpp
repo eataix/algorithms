@@ -130,7 +130,7 @@ public:
   void dfs(const vector<vector<int>> &M, int i, vector<bool> &visited) {
     for (int j = 0; j < M.size(); ++j) {
       if (M[i][j] == 1 && !visited[j]) {
-        visited[j] = 1;
+        visited[j] = true;
         dfs(M, j, visited);
       }
     }
@@ -148,5 +148,47 @@ public:
       }
     }
     return count;
+  }
+};
+
+class Solution {
+  int find_set(const vector<int> &parents, int id) {
+    if (parents[id] == id) {
+      return id;
+    } else {
+      return find_set(parents, parents[id]);
+    }
+  }
+  void union_set(vector<int> &parents, int i, int j) {
+    int p = find_set(parents, i);
+    int q = find_set(parents, j);
+
+    if (p != q) {
+      parents[p] = q;
+    }
+  }
+
+public:
+  int findCircleNum(vector<vector<int>> &M) {
+    int n = M.size();
+
+    vector<int> parents(n);
+    for (int i = 0; i < n; ++i) {
+      parents[i] = i;
+    }
+
+    for (int i = 0; i < n; ++i) {
+      for (int j = i + 1; j < n; ++j) {
+        if (M[i][j] == 1) {
+          union_set(parents, i, j);
+        }
+      }
+    }
+
+    unordered_set<int> s;
+    for (int i = 0; i < n; ++i) {
+      s.insert(find_set(parents, i));
+    }
+    return s.size();
   }
 };

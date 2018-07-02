@@ -39,77 +39,78 @@ using namespace std;
  * Note:
  * You may assume that all inputs are consist of lowercase letters a-z.
  */
-class TrieNode {
-public:
-  vector<shared_ptr<TrieNode>> next;
-  string word;
-  TrieNode() : next(26, nullptr), word("") {}
-};
 
 class Solution {
-  vector<pair<int, int>> dirs{{-1, 0}, {1, 0}, {0, 1}, {0, -1}};
+  class TrieNode {
+  public:
+    vector<shared_ptr<TrieNode>> next;
+    string word;
 
-  shared_ptr<TrieNode> buildTrie(const vector<string> &words) {
+    TrieNode() : next(26, nullptr), word("") {}
+  };
+
+  shared_ptr<TrieNode> makeRoot(const vector<string> &words) {
     auto root = make_shared<TrieNode>();
-    for (const auto &word : words) {
-      auto p = root;
-      for (char ch : word) {
-        int i = ch - 'a';
-        if (p->next[i] == nullptr) {
-          p->next[i] = make_shared<TrieNode>();
+
+    for (auto const &word : words) {
+      auto curr = root;
+      for (auto ch : word) {
+        int v = ch - 'a';
+        if (curr->next[v] == nullptr) {
+          curr->next[v] = make_shared<TrieNode>();
         }
-        p = p->next[i];
+        curr = curr->next[v];
       }
-      p->word = word;
+      curr->word = word;
     }
+
     return root;
   }
+  vector<pair<int, int>> dirs{{
+                                  0,
+                                  1,
+                              },
+                              {0, -1},
+                              {1, 0},
+                              {-1, 0}};
 
-  string out;
-  void dfs(vector<vector<char>> &board, const int r, const int c,
-           shared_ptr<TrieNode> node, vector<string> &res) {
-    char ch = board[r][c];
-    int v = ch - 'a';
+  void dfs(vector<vector<char>> &board, int r, int c, shared_ptr<TrieNode> node,
+           vector<string> &res) {
+    int numRows = board.size();
+    int numCols = board[0].size();
 
-    if (ch == '#' || node->next[v] == nullptr) {
+    if (r < 0 || r >= numRows || c < 0 || c >= numCols) {
       return;
     }
 
-    node = node->next[v];
-    if (node->word.size()) {
+    if (board[r][c] == '#' || node->next[board[r][c] - 'a'] == nullptr) {
+      return;
+    }
+
+    node = node->next[board[r][c] - 'a'];
+    if (!node->word.empty()) {
       res.push_back(node->word);
       node->word = "";
     }
-
+    char ch = board[r][c];
     board[r][c] = '#';
-
     for (auto dir : dirs) {
       int newR = r + dir.first;
       int newC = c + dir.second;
 
-      if (newR >= 0 && newR < board.size() && newC >= 0 &&
-          newC < board[0].size()) {
-        out.push_back(ch);
-        dfs(board, newR, newC, node, res);
-        out.pop_back();
-      }
+      dfs(board, newR, newC, node, res);
     }
-
     board[r][c] = ch;
   }
 
 public:
-  vector<string> findWords(vector<vector<char>> &board,
-                           const vector<string> &words) {
-    if (board.empty() || board[0].empty()) {
-      return {};
-    }
+  vector<string> findWords(vector<vector<char>> &board, vector<string> &words) {
+    auto root = makeRoot(words);
+    int numRows = board.size();
+    int numCols = board[0].size();
     vector<string> res;
-
-    auto root = buildTrie(words);
-
-    for (int r = 0; r < board.size(); ++r) {
-      for (int c = 0; c < board[0].size(); ++c) {
+    for (int r = 0; r < numRows; ++r) {
+      for (int c = 0; c < numCols; ++c) {
         dfs(board, r, c, root, res);
       }
     }
