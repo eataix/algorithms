@@ -41,8 +41,37 @@ using namespace std;
  *
  */
 class Solution {
-  void dfs(const string &s, vector<int> &res, int last_i, int last_j,
-           const vector<char> &p) {}
+  void dfs(const string &s, vector<string> &res, int last_i, int last_j,
+           const vector<char> &p) {
+    int stack = 0;
+    for (int i = last_i; i < s.size(); ++i) {
+      if (s[i] == p[0]) {
+        stack += 1;
+      }
+
+      if (s[i] == p[1]) {
+        stack -= 1;
+      }
+
+      if (stack >= 0) {
+        continue;
+      }
+
+      for (int j = last_j; j <= i; ++j) {
+        if (s[j] == p[1] && (j == last_j || s[j - 1] != s[j])) {
+          dfs(s.substr(0, j) + s.substr(j + 1), res, i, j, p);
+        }
+      }
+      return;
+    }
+
+    string rev = string{s.crbegin(), s.crend()};
+    if (p[0] == '(') {
+      dfs(rev, res, 0, 0, {')', '('});
+    } else {
+      res.push_back(rev);
+    }
+  }
 
 public:
   vector<string> removeInvalidParentheses(string s) {

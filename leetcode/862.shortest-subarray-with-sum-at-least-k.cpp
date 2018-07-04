@@ -59,33 +59,28 @@ using namespace std;
  *
  *
  */
+
 class Solution {
 public:
   int shortestSubarray(vector<int> &A, int K) {
-    int n = A.size();
-    int res = n + 1;
-
-    vector<int> dp(n + 1, 0);
-
-    for (int i = 1; i <= n; ++i) {
-      dp[i] = dp[i - 1] + A[i - 1];
+    vector<long long> totalSum(A.size() + 1, 0);
+    for (int len = 1; len <= A.size(); ++len) {
+      totalSum[len] = totalSum[len - 1] + A[len - 1];
     }
 
-    deque<int> q;
-
-    for (int i = 0; i <= n; ++i) {
-      while (!q.empty() && dp[q.front()] <= dp[i] - K) {
-        res = min(res, i - q.front());
+    deque<pair<int, int>> q;
+    int res = A.size() + 1;
+    for (int i = 0; i < totalSum.size(); ++i) {
+      while (!q.empty() && totalSum[i] - q.front().second >= K) {
+        res = min(res, i - q.front().first);
         q.pop_front();
       }
 
-      while (!q.empty() && dp[i] <= dp[q.back()]) {
+      while (!q.empty() && q.back().second >= totalSum[i]) {
         q.pop_back();
       }
-
-      q.push_back(i);
+      q.push_back({i, totalSum[i]});
     }
-
-    return res <= n ? res : -1;
+    return res > A.size() ? -1 : res;
   }
 };
