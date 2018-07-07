@@ -45,6 +45,8 @@ public:
       int mid = left + (right - left) / 2;
       if (nums[mid] < target) {
         left = mid + 1;
+      } else if (nums[mid] > target) {
+        right = mid - 1;
       } else {
         right = mid;
       }
@@ -56,17 +58,17 @@ public:
 
     res[0] = right;
 
-    right = nums.size();
+    right = nums.size() - 1;
     while (left < right) {
-      int mid = left + (right - left) / 2;
-      if (nums[mid] <= target) {
-        left = mid + 1;
+      int mid = left + (right - left) / 2 + 1;
+      if (nums[mid] > target) {
+        right = mid - 1;
       } else {
-        right = mid;
+        left = mid;
       }
     }
 
-    res[1] = left - 1;
+    res[1] = right;
     return res;
   }
 };
