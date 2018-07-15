@@ -30,5 +30,26 @@ using namespace std;
  */
 class Solution {
 public:
-  vector<int> countSmaller(vector<int> &nums) {}
+  vector<int> countSmaller(vector<int> &nums) {
+    vector<int> tmp;
+    vector<int> res(nums.size());
+
+    for (int i = nums.size() - 1; i >= 0; --i) {
+      int left = 0;
+      int right = tmp.size();
+
+      while (left < right) {
+        int mid = left + (right - left) / 2;
+
+        if (tmp[mid] >= nums[i]) {
+          right = mid;
+        } else {
+          left = mid + 1;
+        }
+      }
+      res[i] = right;
+      tmp.insert(tmp.begin() + right, nums[i]);
+    }
+    return res;
+  }
 };

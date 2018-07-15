@@ -70,11 +70,10 @@ struct TreeNode {
 #endif
 
 class Result {
-  public:
+public:
   TreeNode *node;
   int dist;
-  Result(TreeNode *n, int d) : node{n}, dist{d} {
-  }
+  Result(TreeNode *n, int d) : node{n}, dist{d} {}
 };
 
 class Solution {
@@ -96,8 +95,7 @@ class Solution {
 
     return Result{node, l.dist + 1};
   }
+
 public:
-  TreeNode *subtreeWithAllDeepest(TreeNode *root) {
-    return dfs(root).node;
-  }
+  TreeNode *subtreeWithAllDeepest(TreeNode *root) { return dfs(root).node; }
 };
