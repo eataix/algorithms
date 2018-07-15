@@ -1,6 +1,5 @@
 #include <algorithm>
 #include <vector>
-#include <vector>
 using namespace std;
 /*
  * [324] Wiggle Sort II
