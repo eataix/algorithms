@@ -1,5 +1,5 @@
-#include<vector>
-#include<algorithm>
+#include <algorithm>
+#include <vector>
 using namespace std;
 /*
  * [515] Find Largest Value in Each Tree Row
@@ -13,21 +13,21 @@ using namespace std;
  * Testcase Example:  '[1,3,2,5,3,null,9]'
  *
  * You need to find the largest value in each row of a binary tree.
- * 
+ *
  * Example:
- * 
- * Input: 
- * 
+ *
+ * Input:
+ *
  * ⁠         1
  * ⁠        / \
  * ⁠       3   2
  * ⁠      / \   \
- * ⁠     5   3   9 
- * 
+ * ⁠     5   3   9
+ *
  * Output: [1, 3, 9]
- * 
- * 
- * 
+ *
+ *
+ *
  */
 /**
  * Definition for a binary tree node.
@@ -40,10 +40,10 @@ using namespace std;
  */
 #ifdef DEBUG
 struct TreeNode {
-int val;
-TreeNode *left;
-TreeNode *right;
-TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+  int val;
+  TreeNode *left;
+  TreeNode *right;
+  TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
 };
 #endif
 
@@ -56,19 +56,20 @@ class Solution {
     if (res.size() < level + 1) {
       res.push_back(node->val);
     } else {
-      solution[level] = max(solution[level], node->val);
+      res[level] = max(res[level], node->val);
     }
 
-    helper(node->left, level + 1);
-    helper(node->right, level + 1);
+    helper(node->left, level + 1, res);
+    helper(node->right, level + 1, res);
   }
+
 public:
-    vector<int> largestValues(TreeNode* root) {
-      if (root == nullptr) {
-        return {};
-      }
-      vector<int> solution;
-      helper(root, 0, solution);
-      return solution;
+  vector<int> largestValues(TreeNode *root) {
+    if (root == nullptr) {
+      return {};
     }
+    vector<int> solution;
+    helper(root, 0, solution);
+    return solution;
+  }
 };
