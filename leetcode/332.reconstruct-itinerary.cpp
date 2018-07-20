@@ -1,3 +1,8 @@
+#include <set>
+#include <string>
+#include <unordered_map>
+#include <vector>
+using namespace std;
 /*
  * [332] Reconstruct Itinerary
  *
@@ -50,14 +55,31 @@
  */
 
 class Solution {
+  void dfs(unordered_map<string, multiset<string>> &m, const string &s,
+           vector<string> &res) {
+    while (!m[s].empty()) {
+      auto b = m[s].begin();
+      string t = *b;
+      m[s].erase(b);
+      dfs(m, t, res);
+    }
+    res.push_back(s);
+  }
+
 public:
   vector<string> findItinerary(vector<pair<string, string>> tickets) {
     if (tickets.empty()) {
       return {};
     }
-    unordered_map < string for (auto const &ticket : tickets) {
-      string src = ticket.first;
-      string dest = ticket.second;
+    vector<string> res;
+    unordered_map<string, multiset<string>> m;
+    for (auto const &ticket : tickets) {
+      string from = ticket.first;
+      string to = ticket.second;
+      m[from].insert(to);
     }
+
+    dfs(m, "JFK", res);
+    return vector<string>{res.rbegin(), res.rend()};
   }
 };
