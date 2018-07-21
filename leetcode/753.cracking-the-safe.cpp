@@ -50,6 +50,7 @@ using namespace std;
  * k^n will be at most 4096.
  *
  *
+ * https://leetcode.com/problems/cracking-the-safe/discuss/110260/De-Bruijn-sequence-C++
  */
 class Solution {
 public:

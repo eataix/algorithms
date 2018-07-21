@@ -77,7 +77,7 @@ class Solution {
         auto used2 = used | (1 << (i * 3 + j));
         if (used2 > used &&
             (I % 2 || J % 2 || used2 & (1 << (I / 2 * 3 + J / 2)))) {
-          number += count(m - 1, n - 1, used2, i2, j2, i, j);
+          number += count(m - 1, n - 1, used2, i, j);
         }
       }
     }

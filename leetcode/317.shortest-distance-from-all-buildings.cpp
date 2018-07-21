@@ -1,3 +1,4 @@
+#include <iostream>
 #include <queue>
 #include <unordered_set>
 #include <vector>
@@ -50,7 +51,7 @@ class Solution {
   vector<pair<int, int>> dirs{{0, 1}, {0, -1}, {-1, 0}, {1, 0}};
 
 public:
-  int shortestDistance(vector<vector<int>> &grid) {
+  int shortestDistance(const vector<vector<int>> &grid) {
     if (grid.empty() || grid[0].empty()) {
       return -1;
     }
@@ -58,27 +59,64 @@ public:
     int numRows = grid.size();
     int numCols = grid[0].size();
 
-    auto total = grid;
+    vector<vector<int>> dists(numRows, vector<int>(numCols, 0));
+    vector<vector<int>> reach(numRows, vector<int>(numCols, 0));
 
+    int buildings = 0;
     for (int r = 0; r < numRows; ++r) {
       for (int c = 0; c < numCols; ++c) {
         if (grid[r][c] == 1) {
-          auto dist = grid;
+          buildings += 1;
+          vector<vector<bool>> visited(numRows, vector<bool>(numCols, false));
+
           queue<pair<pair<int, int>, int>> q;
           q.push({{r, c}, 0});
+          visited[r][c] = true;
 
           while (!q.empty()) {
             auto coord = q.front().first;
             auto dist = q.front().second;
             q.pop();
+            auto currRow = coord.first;
+            auto currCol = coord.second;
+
+            reach[currRow][currCol] += 1;
+            dists[currRow][currCol] += dist;
 
             for (auto dir : dirs) {
-              int newR = coord.first + dir.first;
-              int newC = coord.second + dir.second;
+              int newR = currRow + dir.first;
+              int newC = currCol + dir.second;
+
+              if (newR >= 0 && newR < numRows && newC >= 0 && newC < numCols) {
+                if (!visited[newR][newC] && grid[newR][newC] == 0) {
+                  visited[newR][newC] = true;
+                  q.push({{newR, newC}, dist + 1});
+                }
+              }
             }
           }
         }
       }
     }
+
+    int minV = numeric_limits<int>::max();
+    for (int r = 0; r < numRows; ++r) {
+      for (int c = 0; c < numCols; ++c) {
+        if (grid[r][c] == 0 && reach[r][c] == buildings && dists[r][c] < minV) {
+          minV = dists[r][c];
+        }
+      }
+    }
+
+    return minV == numeric_limits<int>::max() ? -1 : minV;
   }
 };
+
+#ifdef DEBUG
+int main() {
+  Solution sol;
+  cout << sol.shortestDistance(
+              {{{1, 0, 2, 0, 1}, {0, 0, 0, 0, 0}, {0, 0, 1, 0, 0}}})
+       << endl;
+}
+#endif
