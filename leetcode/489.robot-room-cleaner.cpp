@@ -118,9 +118,10 @@ public:
 #endif
 
 class Solution {
-  void dfs(Robot &robot, unordered_map<int, unordered_map<int, bool>> &visited, int x, int y, int currDir) {
+  void dfs(Robot &robot, unordered_map<int, unordered_map<int, bool>> &visited,
+           int x, int y, int currDir) {
     if (visited[x][y]) {
-        return;
+      return;
     }
 
     robot.clean();
@@ -132,18 +133,18 @@ class Solution {
         auto newY = y;
 
         switch (currDir) {
-          case 0:
-            newY += 1;
-            break;
-          case 1:
-            newX += 1;
-            break;
-          case 2:
-            newY -= 1;
-            break;
-          case 3:
-            newX -= 1;
-            break;
+        case 0:
+          newY += 1;
+          break;
+        case 1:
+          newX += 1;
+          break;
+        case 2:
+          newY -= 1;
+          break;
+        case 3:
+          newX -= 1;
+          break;
         }
 
         dfs(robot, visited, newX, newY, currDir);
