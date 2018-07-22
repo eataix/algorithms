@@ -41,41 +41,38 @@
 struct ListNode {
   int val;
   ListNode *next;
-  ListNode(int x) : val(x), next(NULL) {}
+  ListNode(int x) : val(x), next(nullptr) {}
 };
 #endif
 
 class Solution {
 public:
   ListNode *plusOne(ListNode *head) {
-    ListNode *prev = nullptr;
-    auto curr = head;
-    while (curr != nullptr) {
-      auto oldNext = curr->next;
-      curr->next = prev;
-      prev = curr;
-      curr = oldNext;
+    auto dummy = new ListNode(0);
+    dummy->next = head;
+
+    auto slow = dummy;
+    auto fast = dummy;
+
+    while (fast->next != nullptr) {
+      fast = fast->next;
+      if (fast->val != 9) {
+        slow = fast;
+      }
     }
 
-    auto revHead = prev;
-    prev = nullptr;
-    int carry = 1;
-    while (revHead != nullptr) {
-      auto oldNext = revHead->next;
-      int sum = carry + revHead->val;
-      carry = sum / 10;
-      revHead->val = sum % 10;
-      revHead->next = prev;
-      prev = revHead;
-      revHead = oldNext;
+    slow->val += 1;
+    slow = slow->next;
+
+    while (slow != nullptr) {
+      slow->val = 0;
+      slow = slow->next;
     }
 
-    auto newHead = head;
-    if (carry > 0) {
-      newHead = new ListNode(carry);
-      newHead->next = head;
+    if (dummy->val == 0) {
+      return dummy->next;
+    } else {
+      return dummy;
     }
-
-    return newHead;
   }
 };
