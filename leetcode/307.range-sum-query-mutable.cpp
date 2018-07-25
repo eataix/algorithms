@@ -35,13 +35,25 @@
  *
  *
  */
+
 class NumArray {
+  vector<int> sums;
+
 public:
-  NumArray(vector<int> nums) {}
+  NumArray(vector<int> nums) : sums(nums.size() + 1, 0) {
+    for (int i = 0; i < nums.size(); ++i) {
+      sums[i + 1] = sums[i] + nums[i];
+    }
+  }
 
-  void update(int i, int val) {}
+  void update(int i, int val) {
+    int diff = val - (sums[i + 1] - sums[i]);
+    for (int idx = i + 1; idx < sums.size(); ++idx) {
+      sums[idx] += diff;
+    }
+  }
 
-  int sumRange(int i, int j) {}
+  int sumRange(int i, int j) { return sums[j + 1] - sums[i]; }
 };
 
 /**

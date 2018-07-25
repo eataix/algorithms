@@ -32,6 +32,7 @@
  * types, not just integer?
  *
  */
+
 // Below is the interface for Iterator, which is already defined for you.
 // **DO NOT** modify the interface for Iterator.
 class Iterator {
@@ -49,6 +50,8 @@ public:
 };
 
 class PeekingIterator : public Iterator {
+  queue<int> q;
+
 public:
   PeekingIterator(const vector<int> &nums) : Iterator(nums) {
     // Initialize any member here.
@@ -57,11 +60,27 @@ public:
   }
 
   // Returns the next element in the iteration without advancing the iterator.
-  int peek() { return Iterator(*this).next(); }
+  int peek() {
+    if (q.empty()) {
+      auto r = Iterator::next();
+      q.push(r);
+      return r;
+    } else {
+      return q.front();
+    }
+  }
 
   // hasNext() and next() should behave the same as in the Iterator interface.
   // Override them if needed.
-  int next() { return Iterator::next(); }
+  int next() {
+    if (!q.empty()) {
+      auto r = q.front();
+      q.pop();
+      return r;
+    } else {
+      return Iterator::next();
+    }
+  }
 
-  bool hasNext() const { return Iterator::hasNext(); }
+  bool hasNext() const { return Iterator::hasNext() || !q.empty(); }
 };
