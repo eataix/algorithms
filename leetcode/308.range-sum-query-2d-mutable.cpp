@@ -1,3 +1,5 @@
+#include <vector>
+using namespace std;
 /*
  * [308] Range Sum Query 2D - Mutable
  *
@@ -45,40 +47,56 @@
  *
  *
  */
+
 class NumMatrix {
   vector<vector<int>> mat;
-  vector<vector<int>> colSum;
+  vector<vector<int>> bit;
+  int numRows;
+  int numCols;
+
+  static inline int lowbit(int i) { return i & (-i); }
+
+  int getSum(int row, int col) {
+    int res = 0;
+    for (int r = row; r > 0; r -= lowbit(r)) {
+      for (int c = col; c > 0; c -= lowbit(c)) {
+        res += bit[r][c];
+      }
+    }
+    return res;
+  }
 
 public:
-  NumMatrix(vector<vector<int>> matrix) {
+  NumMatrix(const vector<vector<int>> &matrix) {
     if (matrix.empty() || matrix[0].empty()) {
       return;
     }
-    mat = matrix;
-    int numRows = matrix.size();
-    int numCols = matrix[0].size();
-    colSum.resize(numRows + 1, vector<int>(numCols, 0));
-    for (int r = 1; r < numRows + 1; ++r) {
+    numRows = matrix.size();
+    numCols = matrix[0].size();
+    mat.resize(numRows + 1, vector<int>(numCols + 1, 0));
+    bit.resize(numRows + 1, vector<int>(numCols + 1, 0));
+
+    for (int r = 0; r < numRows; ++r) {
       for (int c = 0; c < numCols; ++c) {
-        colSum[r][c] = colSum[r - 1][c] + matrix[r - 1][c];
+        update(r, c, matrix[r][c]);
       }
     }
   }
 
   void update(int row, int col, int val) {
-    for (int r = row + 1; r < colSum.size(); ++r) {
-      colSum[r][col] += val - mat[row][col];
+    int diff = val - mat[row + 1][col + 1];
+    for (int r = row + 1; r <= numRows; r += lowbit(r)) {
+      for (int c = col + 1; c <= numCols; c += lowbit(c)) {
+        bit[r][c] += diff;
+      }
     }
-    mat[row][col] = val;
+
+    mat[row + 1][col + 1] = val;
   }
 
   int sumRegion(int row1, int col1, int row2, int col2) {
-    int res = 0;
-    for (int c = col1; c <= col2; ++c) {
-      res += colSum[row2 + 1][c] - colSum[row1][c];
-    }
-
-    return res;
+    return getSum(row2 + 1, col2 + 1) - getSum(row1, col2 + 1) -
+           getSum(row2 + 1, col1) + getSum(row1, col1);
   }
 };
 

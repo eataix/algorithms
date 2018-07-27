@@ -1,3 +1,5 @@
+#include <vector>
+using namespace std;
 /*
  * [307] Range Sum Query - Mutable
  *
@@ -37,23 +39,43 @@
  */
 
 class NumArray {
-  vector<int> sums;
+  vector<int> nums_;
+  int n_;
+  vector<int> BIT_;
+
+  void init(int i, int val) {
+    i += 1;
+    while (i <= n_) {
+      BIT_[i] += val;
+      i += (i & -i);
+    }
+  }
+
+  int getSum(int i) {
+    int sum = 0;
+    i += 1;
+
+    while (i > 0) {
+      sum += BIT_[i];
+      i -= (i & -i);
+    }
+    return sum;
+  }
 
 public:
-  NumArray(vector<int> nums) : sums(nums.size() + 1, 0) {
-    for (int i = 0; i < nums.size(); ++i) {
-      sums[i + 1] = sums[i] + nums[i];
+  NumArray(vector<int> nums) : nums_(nums), n_(nums_.size()), BIT_(n_ + 1, 0) {
+    for (int i = 0; i < n_; ++i) {
+      init(i, nums_[i]);
     }
   }
 
   void update(int i, int val) {
-    int diff = val - (sums[i + 1] - sums[i]);
-    for (int idx = i + 1; idx < sums.size(); ++idx) {
-      sums[idx] += diff;
-    }
+    int diff = val - nums_[i];
+    nums_[i] = val;
+    init(i, diff);
   }
 
-  int sumRange(int i, int j) { return sums[j + 1] - sums[i]; }
+  int sumRange(int i, int j) { return getSum(j) - getSum(i - 1); }
 };
 
 /**
@@ -62,3 +84,7 @@ public:
  * obj.update(i,val);
  * int param_2 = obj.sumRange(i,j);
  */
+
+#ifdef DEBUG
+int main() { NumArray array{{0, 9, 5, 7, 3}}; }
+#endif
