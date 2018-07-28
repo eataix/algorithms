@@ -28,27 +28,41 @@ using namespace std;
  *
  *
  */
+
+#include <cmath>
+using namespace std;
 class Solution {
-  void helper(const string &word, string out, vector<string> &res, int included,
-              int count) {
-    if (included == word.size()) {
-      if (count > 0) {
-        out += to_string(count);
-      }
-      res.push_back(out);
-      return;
-    }
-
-    helper(word, out, res, included + 1, count + 1);
-    helper(word, out + (count > 0 ? to_string(count) : "") + word[included],
-           res, included + 1, 0);
-  }
-
 public:
   vector<string> generateAbbreviations(string word) {
-    string out;
+    int len = word.size();
     vector<string> res;
-    helper(word, out, res, 0, 0);
+    for (int i = 0; i < pow(2, len); ++i) { // 00, 01, 10, 11
+      string st;
+      for (int j = 0; j < word.size(); ++j) {
+        if ((1 << j) & i) {
+          st += word[j];
+        } else {
+          st += '.';
+        }
+      }
+      int count = 0;
+      string st2;
+      for (char ch : st) {
+        if (ch == '.') {
+          count += 1;
+        } else {
+          if (count > 0) {
+            st2 += to_string(count);
+            count = 0;
+          }
+          st2 += ch;
+        }
+      }
+      if (count > 0) {
+        st2 += to_string(count);
+      }
+      res.push_back(st2);
+    }
     return res;
   }
 };

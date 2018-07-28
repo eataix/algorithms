@@ -66,8 +66,50 @@ using namespace std;
  *
  */
 class Solution {
+  int query(const vector<int> &sum, int i) {
+    int res = 0;
+    for (; i > 0; i -= i & -i) {
+      res += sum[i];
+    }
+    return res;
+  }
+  void update(vector<int> &sum, int i) {
+    for (; i < sum.size(); i += i & -i) {
+      sum[i] += 1;
+    }
+  }
+
 public:
   int kEmptySlots(vector<int> &flowers, int k) {
+    vector<int> sum(flowers.size() + 1, 0);
+    for (int i = 0; i < flowers.size(); ++i) {
+      int j = flowers[i];
+      update(sum, j);
+
+      if (j - k - 1 > 0) {
+        int a = query(sum, j - k - 2);
+        int b = query(sum, j - k - 1);
+        int c = query(sum, j - 1);
+
+        if (b - a == 1 && c - b == 0) {
+          return i + 1;
+        }
+      }
+
+      if (j + k + 1 < sum.size()) {
+        int a = query(sum, j);
+        int b = query(sum, j + k);
+        int c = query(sum, j + k + 1);
+
+        if (b - a == 0 && c - b == 1) {
+          return i + 1;
+        }
+      }
+    }
+    return -1;
+  }
+
+  int kEmptySlots2(vector<int> &flowers, int k) {
     vector<int> days(flowers.size());
     for (int i = 0; i < flowers.size(); ++i) {
       days[flowers[i] - 1] = i + 1;
@@ -77,14 +119,19 @@ public:
     auto right = k + 1;
     int res = flowers.size() + 1;
 
-    for (int i = 0; right < days.size(); ++i) {
-      if (days[i] < days[left] || days[i] <= days[right]) {
-        if (i == right) {
-          res = min(res, max(days[left], days[right]));
-        }
-        left = i;
-        right = k + 1 + i;
+    for (int i = 1; right < days.size(); i++) {
+      // current days[i] is valid, continue scanning
+      if (days[i] > days[left] && days[i] > days[right]) {
+        continue;
       }
+      // reach boundary of sliding window, since previous number are all valid,
+      // record result
+      if (i == right) {
+        res = min(res, max(days[left], days[right]));
+      }
+      // not valid, move the sliding window
+      left = i;
+      right = left + k + 1;
     }
 
     return res == flowers.size() + 1 ? -1 : res;

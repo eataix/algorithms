@@ -1,3 +1,7 @@
+#include <algorithm>
+#include <iostream>
+#include <set>
+#include <unordered_map>
 #include <vector>
 using namespace std;
 /*
@@ -28,9 +32,54 @@ using namespace std;
  *
  *
  */
+
+class FenwickTree {
+  int n_;
+  vector<int> sums_;
+  static inline int lowbit(int x) { return x & (-x); }
+
+public:
+  FenwickTree(int n) : n_(n), sums_(n + 1, 0) {}
+
+  void update(int i, int delta) {
+    while (i <= n_) {
+      sums_[i] += delta;
+      i += lowbit(i);
+    }
+  }
+
+  int query(int i) const {
+    int sum = 0;
+    while (i >= 1) {
+      sum += sums_[i];
+      i -= lowbit(i);
+    }
+    return sum;
+  }
+};
+
 class Solution {
 public:
-  vector<int> countSmaller(vector<int> &nums) {
+  vector<int> countSmaller(const vector<int> &nums) {
+    set<int> sorted{nums.cbegin(), nums.cend()};
+    unordered_map<int, int> ranks;
+
+    int rank = 0;
+    for (const int num : sorted) {
+      ranks[num] = ++rank;
+    }
+
+    vector<int> res;
+    FenwickTree tree(ranks.size());
+    for (int i = nums.size() - 1; i >= 0; --i) {
+      res.push_back(tree.query(ranks[nums[i]] - 1));
+      tree.update(ranks[nums[i]], 1);
+    }
+    reverse(res.begin(), res.end());
+    return res;
+  }
+
+  vector<int> countSmaller2(vector<int> &nums) {
     vector<int> tmp;
     vector<int> res(nums.size());
 
@@ -53,3 +102,10 @@ public:
     return res;
   }
 };
+
+#ifdef DEBUG
+int main() {
+  Solution sol;
+  sol.countSmaller({5, 2, 6, 1});
+}
+#endif
