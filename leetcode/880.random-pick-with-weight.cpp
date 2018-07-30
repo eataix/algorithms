@@ -1,3 +1,6 @@
+#include <random>
+#include <vector>
+using namespace std;
 /*
  * [912] Random Pick with Weight
  *
@@ -57,10 +60,36 @@
  *
  */
 class Solution {
-public:
-  Solution(vector<int> w) {}
+  vector<int> dp;
+  mt19937 rng{random_device{}()};
+  uniform_int_distribution<int> uni;
+  int tot = 0;
 
-  int pickIndex() {}
+public:
+  Solution(vector<int> w) {
+    tot = 0;
+    for (auto const &i : w) {
+      tot += i;
+      dp.push_back(tot);
+    }
+
+    uni = uniform_int_distribution<int>{0, tot - 1};
+  }
+
+  int pickIndex() {
+    int targ = uni(rng);
+
+    int lo = 0, hi = dp.size() - 1;
+    while (lo != hi) {
+      int mid = (lo + hi) / 2;
+      if (targ >= dp[mid]) {
+        lo = mid + 1;
+      } else {
+        hi = mid;
+      }
+    }
+    return lo;
+  }
 };
 
 /**
