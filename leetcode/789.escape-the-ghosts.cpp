@@ -68,15 +68,16 @@ using namespace std;
  *
  */
 class Solution {
-  int distance(pair<int, int> coordA, pair<int, int> coordB) {
+  int distance(const pair<int, int> &coordA, const pair<int, int> &coordB) {
     return abs(coordA.first - coordB.first) +
            abs(coordA.second - coordB.second);
   }
 
 public:
   bool escapeGhosts(vector<vector<int>> &ghosts, vector<int> &target) {
-    auto t = {target[0], target[1]};
-    auto dist = distance({0, 0}, t);
+    pair<int, int> t = {target[0], target[1]};
+    pair<int, int> origin = {0, 0};
+    auto dist = distance(origin, t);
 
     for (auto const &ghost : ghosts) {
       if (distance({ghost[0], ghost[1]}, t) <= dist) {

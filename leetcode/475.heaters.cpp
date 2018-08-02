@@ -1,3 +1,6 @@
+#include <algorithm>
+#include <vector>
+using namespace std;
 /*
  * [475] Heaters
  *
@@ -51,5 +54,28 @@
  */
 class Solution {
 public:
-  int findRadius(vector<int> &houses, vector<int> &heaters) {}
+  int findRadius(vector<int> &houses, vector<int> &heaters) {
+    int n = heaters.size();
+    int res = 0;
+    sort(heaters.begin(), heaters.end());
+    for (int house : houses) {
+      int left = 0;
+      int right = n;
+      while (left < right) {
+        int mid = left + (right - left) / 2;
+        if (heaters[mid] < house) {
+          left = mid + 1;
+        } else {
+          right = mid;
+        }
+
+        int dist1 =
+            (right == n) ? numeric_limits<int>::max() : heaters[right] - house;
+        int dist2 = (right == 0) ? numeric_limits<int>::max()
+                                 : house - heaters[right - 1];
+        res = max(res, min(dist1, dist2));
+      }
+    }
+    return res;
+  }
 };

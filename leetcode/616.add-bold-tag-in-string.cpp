@@ -48,22 +48,21 @@ using namespace std;
  */
 class Solution {
   vector<pair<int, int>> merge(vector<pair<int, int>> &pairs) {
-    vector<pair<int, int>> r;
+    vector<pair<int, int>> res;
     sort(pairs.begin(), pairs.end(),
          [](const pair<int, int> &p1, const pair<int, int> &p2) {
-           return p1.first < p2.first ||
-                  (p1.first == p2.first && p1.second < p2.second);
+           return p1.first < p2.first;
          });
 
-    for (int i = 0, j = -1; i < pairs.size(); ++i) {
-      if (j < 0 || pairs[i].first > r[j].second) {
-        r.push_back(pairs[i]);
-        j += 1;
+    for (auto const &p : pairs) {
+      if (!res.empty() && p.first <= res.back().second) {
+        res.back().second = max(res.back().second, p.second);
       } else {
-        r[j].second = max(r[j].second, pairs[i].second);
+        res.push_back(p);
       }
     }
-    return r;
+
+    return res;
   }
 
   vector<pair<int, int>> findPairs(const string &s,
