@@ -1,3 +1,5 @@
+#include<vector>
+using namespace std;
 /*
  * [875] Longest Mountain in Array
  *
@@ -54,8 +56,49 @@
  * Can you solve it in O(1) space?
  *
  *
+ *
+ * https://leetcode.com/problems/longest-mountain-in-array/discuss/135593/C++JavaPython-1-pass-and-O(1)-space
  */
 class Solution {
 public:
-  int longestMountain(vector<int> &A) {}
+  int longestMountain(vector<int> &A) {
+    int res = 0;
+    int up = 0;
+    int down = 0;
+
+    for (int i = 1; i < A.size(); ++i) {
+      if (A[i-1] == A[i] || (down > 0 && A[i - 1] < A[i])) {
+        up = down = 0;
+      }
+      up += A[i - 1] < A[i];
+      down += A[i - 1] > A[i];
+
+      if (up > 0 && down > 0) {
+        res = max(res, up + down + 1);
+      }
+    }
+    return res;
+  }
+
+  int longestMountain2(vector<int> &A) {
+    int n = A.size();
+    int res = 0;
+    vector<int> up(n, 0);
+    vector<int> down(n, 0);
+    for (int i = n - 2; i >= 0; --i) {
+      if (A[i] > A[i + 1]) {
+        down[i] = down[i + 1] + 1;
+      }
+    }
+
+    for (int i = 0; i < n; ++i) {
+      if (i > 0 && A[i] > A[i - 1]) {
+        up[i] = up[i - 1] + 1;
+      }
+      if (up[i] && down[i]) {
+        res = max(res, up[i] + down[i] + 1);
+      }
+    }
+    return res;
+  }
 };
