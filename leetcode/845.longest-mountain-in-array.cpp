@@ -1,4 +1,4 @@
-#include<vector>
+#include <vector>
 using namespace std;
 /*
  * [875] Longest Mountain in Array
@@ -67,7 +67,7 @@ public:
     int down = 0;
 
     for (int i = 1; i < A.size(); ++i) {
-      if (A[i-1] == A[i] || (down > 0 && A[i - 1] < A[i])) {
+      if (A[i - 1] == A[i] || (down > 0 && A[i - 1] < A[i])) {
         up = down = 0;
       }
       up += A[i - 1] < A[i];
