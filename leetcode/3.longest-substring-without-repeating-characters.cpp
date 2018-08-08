@@ -30,21 +30,6 @@ using namespace std;
 class Solution {
 public:
   int lengthOfLongestSubstring(string s) {
-    unordered_set<char> dictionary;
-
-    int ans = 0, i = 0, j = 0;
-    while (i < s.size() && j < s.size()) {
-      if (dictionary.find(s[j]) == dictionary.cend()) {
-        dictionary.insert(s[j++]);
-        ans = max(ans, j - i);
-      } else {
-        dictionary.erase(s[i++]);
-      }
-    }
-    return ans;
-  }
-
-  int lengthOfLongestSubstring2(string s) {
     unordered_map<char, int> map;
     int n = s.length(), ans = 0;
 

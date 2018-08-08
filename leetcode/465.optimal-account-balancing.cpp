@@ -75,13 +75,15 @@ class Solution {
     int res = numeric_limits<int>::max();
 
     for (int i = start + 1; i < n; ++i) {
-      if ((account[i] < 0 && account[start] > 0) ||
-          (account[i] > 0 && account[start] < 0)) {
-        account[i] += account[start];
-        res = min(res, helper(account, start + 1, n, num + 1));
-        account[i] -= account[start];
+      if (account[i] != 0) {
+        if ((account[i] > 0) ^ (account[start] > 0)) {
+          account[i] += account[start];
+          res = min(res, helper(account, start + 1, n, num + 1));
+          account[i] -= account[start];
+        }
       }
     }
+
     return res == numeric_limits<int>::max() ? num : res;
   }
 

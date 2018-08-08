@@ -51,23 +51,31 @@ using namespace std;
  *
  */
 class Solution {
-  void dfs(vector<string> &res, const string &num, const int target, string cur,
-           int pos, const long cv, const long pv, const char op) {
-    if (pos == num.size() && cv == target) {
-      res.push_back(cur);
-    } else {
-      for (int i = pos + 1; i <= num.size(); i++) {
-        string t = num.substr(pos, i - pos);
-        long now = stol(t);
-        if (to_string(now).size() != t.size()) {
-          continue;
-        }
-        dfs(res, num, target, cur + '+' + t, i, cv + now, now, '+');
-        dfs(res, num, target, cur + '-' + t, i, cv - now, now, '-');
-        dfs(res, num, target, cur + '*' + t, i,
-            (op == '-') ? cv + pv - pv * now
-                        : ((op == '+') ? cv - pv + pv * now : pv * now),
-            pv * now, op);
+  void helper(const string &num, int target, long long diff, long long currNum,
+              const string &out, vector<string> &res) {
+    if (num.empty()) {
+      if (currNum == target) {
+        res.push_back(out);
+      }
+      return;
+    }
+
+    for (int len = 1; len <= num.size(); len++) {
+      string curr = num.substr(0, len);
+      if (curr.size() > 1 && curr[0] == '0') {
+        return;
+      }
+      string next = num.substr(len);
+
+      if (!out.empty()) {
+        helper(next, target, stoll(curr), currNum + stoll(curr),
+               out + "+" + curr, res);
+        helper(next, target, -stoll(curr), currNum - stoll(curr),
+               out + "-" + curr, res);
+        helper(next, target, diff * stoll(curr),
+               (currNum - diff) + diff * stoll(curr), out + "*" + curr, res);
+      } else {
+        helper(next, target, stoll(curr), stoll(curr), curr, res);
       }
     }
   }
@@ -79,14 +87,8 @@ public:
       return res;
     }
 
-    for (int i = 1; i <= nums.size(); ++i) {
-      auto s = num.substr(0, i);
-      long curr = stol(s);
-      if (to_string(curr).size() != s.size()) {
-        continue;
-      }
-      dfs(res, num, target, s, i, curr, curr, '#');
-    }
+    helper(num, target, 0, 0, "", res);
+
     return res;
   }
 };

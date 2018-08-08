@@ -39,20 +39,20 @@ using namespace std;
  * Credits:Special thanks to @jianchao.li.fighter for adding this problem and
  * creating all test cases.
  */
+
 class Solution {
 public:
   int coinChange(vector<int> &coins, int amount) {
-    vector<int> dp(amount + 1, amount + 1);
-    dp[0] = 0;
+    vector<int> dp(amount + 1, numeric_limits<int>::max());
 
+    dp[0] = 0;
     for (int i = 1; i <= amount; ++i) {
-      for (auto const &coin : coins) {
-        if (coin <= i) {
+      for (int coin : coins) {
+        if (i - coin >= 0 && dp[i - coin] != numeric_limits<int>::max()) {
           dp[i] = min(dp[i], dp[i - coin] + 1);
         }
       }
     }
-
-    return dp[amount] > amount ? -1 : dp[amount];
+    return dp[amount] == numeric_limits<int>::max() ? -1 : dp[amount];
   }
 };

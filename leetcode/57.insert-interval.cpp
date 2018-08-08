@@ -55,24 +55,23 @@ class Solution {
 public:
   vector<Interval> insert(vector<Interval> &intervals, Interval newInterval) {
     vector<Interval> res;
-    int i = 0;
-    while (i < intervals.size() && intervals[i].end < newInterval.start) {
-      res.push_back(intervals[i]);
-      i += 1;
-    }
 
-    while (i < intervals.size() && intervals[i].start <= newInterval.end) {
-      newInterval.start = min(newInterval.start, intervals[i].start);
-      newInterval.end = max(newInterval.end, intervals[i].end);
-      i += 1;
+    int idx = 0;
+    for (; idx < intervals.size() && intervals[idx].end < newInterval.start;
+         idx += 1) {
+      res.push_back(intervals[idx]);
     }
 
     res.push_back(newInterval);
-    while (i < intervals.size()) {
-      res.push_back(intervals[i]);
-      i += 1;
-    }
 
+    for (; idx < intervals.size(); ++idx) {
+      if (intervals[idx].start <= res.back().end) {
+        res.back().start = min(res.back().start, intervals[idx].start);
+        res.back().end = max(res.back().end, intervals[idx].end);
+      } else {
+        res.push_back(intervals[idx]);
+      }
+    }
     return res;
   }
 };

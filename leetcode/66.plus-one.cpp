@@ -21,24 +21,22 @@ using namespace std;
  * The digits are stored such that the most significant digit is at the head of
  * the list.
  */
+
 class Solution {
 public:
   vector<int> plusOne(vector<int> &digits) {
     int carry = 1;
-    vector<int> result;
-    for (auto it = digits.crbegin(); it != digits.crend(); ++it) {
-      int newDigit = (*it) + carry;
-      if (newDigit >= 10) {
-        carry = 1;
-      } else {
-        carry = 0;
-      }
-      result.push_back(newDigit % 10);
+
+    for (auto it = digits.rbegin(); it != digits.rend(); ++it) {
+      *it += carry;
+
+      carry = *it / 10;
+      *it %= 10;
     }
-    if (carry == 1) {
-      result.push_back(1);
+
+    if (carry > 0) {
+      digits.insert(digits.begin(), carry);
     }
-    reverse(result.begin(), result.end());
-    return result;
+    return digits;
   }
 };

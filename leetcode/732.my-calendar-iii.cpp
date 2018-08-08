@@ -61,18 +61,18 @@ using namespace std;
  *
  */
 class MyCalendarThree {
-  map<int, int> delta;
+  map<int, int> m;
 
 public:
   MyCalendarThree() {}
 
   int book(int start, int end) {
-    delta[start] += 1;
-    delta[end] -= 1;
+    m[start] += 1;
+    m[end] -= 1;
 
     int active = 0;
     int res = 0;
-    for (auto const &kv : delta) {
+    for (auto const &kv : m) {
       auto d = kv.second;
       active += d;
       res = max(res, active);

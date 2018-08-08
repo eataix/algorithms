@@ -59,14 +59,12 @@ public:
   MyCalendar() {}
 
   bool book(int start, int end) {
-    auto next = bookings.lower_bound(
-        {start, end}); // first element with key not go before k (i.e., either
-                       // it is equivalent or goes after).
-    if (next != bookings.end() && next->first < end)
-      return false; // a existing book started within the new book (next)
-    if (next != bookings.begin() && start < (--next)->second)
-      return false; // new book started within a existing book (prev)
-    bookings.insert({start, end});
+    auto it = bookings.lower_bound({start, end});
+    if (it != bookings.end() && it->first < end)
+      return false;
+    if (it != bookings.begin() && prev(it)->second > start)
+      return false;
+    cal[start] = end;
     return true;
   }
 };

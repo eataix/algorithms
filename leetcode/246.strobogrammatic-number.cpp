@@ -45,18 +45,15 @@ public:
     unordered_map<char, char> m{
         {'0', '0'}, {'1', '1'}, {'6', '9'}, {'8', '8'}, {'9', '6'}};
 
-    int l = 0;
-    int r = num.size() - 1;
+    auto l = num.cbegin();
+    auto r = prev(num.cend());
 
     while (l <= r) {
-      char cl = num[l];
-      char cr = num[r];
-
-      if (m.find(cl) == m.cend()) {
+      if (!m.count(*l)) {
         return false;
       }
 
-      if (m[cl] != cr) {
+      if (m[*l] != *r) {
         return false;
       }
 

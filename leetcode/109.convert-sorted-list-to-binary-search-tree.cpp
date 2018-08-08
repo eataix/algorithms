@@ -66,30 +66,27 @@ struct TreeNode {
 #endif
 
 class Solution {
-  TreeNode *toBST(ListNode *begin, ListNode *end) {
-    if (begin == end) {
+  TreeNode *sortedArrayToBSTWithIndices(const vector<int> &nums, int start,
+                                        int end) {
+    if (start > end) {
       return nullptr;
     }
-
-    auto slow = begin;
-    auto fast = begin;
-
-    while (fast != end && fast->next != end) {
-      fast = fast->next->next;
-      slow = slow->next;
-    }
-
-    auto res = new TreeNode(slow->val);
-    res->left = toBST(begin, slow);
-    res->right = toBST(slow->next, end);
-    return res;
+    int mid = (start + end) / 2;
+    TreeNode *root = new TreeNode(nums[mid]);
+    root->left = sortedArrayToBSTWithIndices(nums, start, mid - 1);
+    root->right = sortedArrayToBSTWithIndices(nums, mid + 1, end);
+    return root;
   }
 
 public:
   TreeNode *sortedListToBST(ListNode *head) {
-    if (head == nullptr) {
-      return nullptr;
+    vector<int> vals;
+
+    while (head != nullptr) {
+      vals.push_back(head->val);
+      head = head->next;
     }
-    return toBST(head, nullptr);
+
+    return sortedArrayToBSTWithIndices(vals, 0, vals.size() - 1);
   }
 };

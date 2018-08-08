@@ -1,7 +1,5 @@
-#include <iostream>
 #include <string>
-#include <unordered_map>
-#include <unordered_set>
+#include <vector>
 using namespace std;
 /*
  * [205] Isomorphic Strings
@@ -35,34 +33,15 @@ using namespace std;
 class Solution {
 public:
   bool isIsomorphic(string s, string t) {
-    unordered_map<char, char> map;
-    unordered_set<char> mappedChars;
+    vector<int> ms(128, -1);
+    vector<int> mt(128, -1);
 
     for (int i = 0; i < s.size(); ++i) {
-      char ch1 = s[i];
-      char ch2 = t[i];
-
-      if (map.find(ch1) != map.cend()) {
-        if (map[ch1] != ch2) {
-          cout << map[ch1] << " != " << ch2 << endl;
-          return false;
-        }
-      } else {
-        if (mappedChars.find(ch2) != mappedChars.cend()) {
-          cout << ch2 << " is being remapped" << endl;
-          return false;
-        }
-        map[ch1] = ch2;
-        mappedChars.insert(ch2);
+      if (ms[s[i]] != mt[t[i]]) {
+        return false;
       }
+      ms[s[i]] = mt[t[i]] = i;
     }
     return true;
   }
 };
-
-#ifdef DEBUG
-int main() {
-  Solution sol;
-  cout << sol.isIsomorphic("egg", "add") << endl;
-}
-#endif

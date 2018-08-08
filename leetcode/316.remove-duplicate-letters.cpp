@@ -36,8 +36,8 @@ using namespace std;
 class Solution {
 public:
   string removeDuplicateLetters(string s) {
-    vector<int> count(256, 0);        // number of occurrences of each character
-    vector<bool> visited(256, false); // in result
+    vector<int> count(256, 0); // number of occurrences of each character
+    vector<bool> included(256, false); // in result
 
     for (char ch : s) {
       count[ch] += 1;
@@ -47,15 +47,15 @@ public:
 
     for (char ch : s) {
       count[ch] -= 1;
-      if (visited[ch]) {
-        continue;
-      } else {
+      if (!included[ch]) {
+        // Remove all characters that are in the result, provided that the
+        // characters have larger order and we can use the characters latter
         while (ch < res.back() && count[res.back()] > 0) {
-          visited[res.back()] = false;
+          included[res.back()] = false;
           res.pop_back();
         }
         res += ch;
-        visited[ch] = true;
+        included[ch] = true;
       }
     }
 

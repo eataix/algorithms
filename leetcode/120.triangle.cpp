@@ -36,14 +36,14 @@ using namespace std;
 class Solution {
 public:
   int minimumTotal(vector<vector<int>> &triangle) {
-    int n = triangle.size();
-    vector<int> minpath(triangle.back());
+    vector<int> dp = triangle.back();
+    int lvls = triangle.size();
 
-    for (int layer = n - 2; layer >= 0; --layer) {
-      for (int i = 0; i <= layer; ++i) {
-        minpath[i] = min(minpath[i], minpath[i + 1]) + triangle[layer][i];
+    for (int l = lvls - 2; l >= 0; --l) {
+      for (int i = 0; i <= l; ++i) {
+        dp[i] = min(dp[i], dp[i + 1]) + triangle[l][i];
       }
     }
-    return minpath[0];
+    return dp[0];
   }
 };

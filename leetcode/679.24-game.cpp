@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <cmath>
 #include <vector>
 using namespace std;
 /*
@@ -46,19 +47,13 @@ using namespace std;
  *
  *
  */
+
 class Solution {
+  double eps = 1e-6;
   vector<char> ops{'+', '-', '*', '/'};
-  double eps = 0.001;
-
-public:
-  bool judgePoint24(vector<int> &nums) {
-    vector<double> arr(nums.begin(), nums.end());
-    return helper(arr);
-  }
-
-  bool helper(vector<double> &nums) {
+  bool dfs(const vector<double> &nums) {
     if (nums.size() == 1) {
-      return abs(static_cast<double>(nums[0]) - 24.0) < eps;
+      return abs(nums[0] - 24.0) < eps;
     }
 
     for (int i = 0; i < nums.size(); ++i) {
@@ -66,42 +61,47 @@ public:
         if (i == j) {
           continue;
         }
-        vector<double> t;
+
+        vector<double> out;
         for (int k = 0; k < nums.size(); ++k) {
           if (k != i && k != j) {
-            t.push_back(nums[k]);
+            out.push_back(nums[k]);
           }
         }
 
         for (char op : ops) {
-          if ((op == '=' || op == '*') && i > j) {
+          if ((op == '+' || op == '*') && j < i) {
             continue;
           }
           if (op == '/' && nums[j] < eps) {
             continue;
           }
-
           switch (op) {
           case '+':
-            t.push_back(nums[i] + nums[j]);
+            out.push_back(nums[i] + nums[j]);
             break;
           case '-':
-            t.push_back(nums[i] - nums[j]);
+            out.push_back(nums[i] - nums[j]);
             break;
           case '*':
-            t.push_back(nums[i] * nums[j]);
+            out.push_back(nums[i] * nums[j]);
             break;
           case '/':
-            t.push_back(nums[i] / nums[j]);
+            out.push_back(nums[i] / nums[j]);
             break;
           }
-          if (helper(t))
+          if (dfs(out)) {
             return true;
-          t.pop_back();
+          }
+          out.pop_back();
         }
       }
     }
-
     return false;
+  }
+
+public:
+  bool judgePoint24(const vector<int> &nums) {
+    return dfs(vector<double>{nums.begin(), nums.end()});
   }
 };

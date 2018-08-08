@@ -46,10 +46,11 @@ using namespace std;
 class Solution {
 public:
   int numBusesToDestination(vector<vector<int>> &routes, int S, int T) {
-    unordered_map<int, unordered_set<int>> to_route;
+    unordered_map<int, unordered_set<int>> stopsAt;
+
     for (int i = 0; i < routes.size(); ++i) {
-      for (auto &j : routes[i]) {
-        to_route[j].insert(i);
+      for (auto const &stop : routes[i]) {
+        stopsAt[stop].insert(i);
       }
     }
 
@@ -58,17 +59,19 @@ public:
     unordered_set<int> seen{S};
     while (!q.empty()) {
       auto stop = q.front().first;
-      auto bus = q.front().second;
+      auto dist = q.front().second;
       q.pop();
-      if (stop == T)
-        return bus;
-      for (auto &route_i : to_route[stop]) {
-        for (auto &next_stop : routes[route_i])
-          if (seen.find(next_stop) == seen.end()) {
+      if (stop == T) {
+        return dist;
+      }
+      for (auto &bus : stopsAt[stop]) {
+        for (auto &next_stop : routes[bus]) {
+          if (!seen.count(next_stop)) {
             seen.insert(next_stop);
-            q.push({next_stop, bus + 1});
+            q.push({next_stop, dist + 1});
           }
-        routes[route_i].clear();
+        }
+        routes[bus].clear();
       }
     }
     return -1;

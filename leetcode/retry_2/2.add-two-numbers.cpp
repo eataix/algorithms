@@ -42,23 +42,26 @@ struct ListNode {
 #endif
 class Solution {
 public:
-  ListNode *addTwoNumbers(ListNode *l1, ListNode *l2) {
-    ListNode dummy(-1);
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+	    ListNode dummy(-1);
 
-    ListNode *curr = &dummy;
-    int carry = 0;
+	    ListNode *curr = &dummy;
+	    int sum = 0;
 
-    while (l1 != nullptr || l2 != nullptr || carry != 0) {
-      int v1 = l1 ? l1->val : 0;
-      int v2 = l2 ? l2->val : 0;
-      int newVal = carry + v1 + v2;
-      carry = newVal / 10;
-      curr->next = new ListNode(newVal % 10);
-      curr = curr->next;
-      l1 = l1 ? l1->next : nullptr;
-      l2 = l2 ? l2->next : nullptr;
+	    while (l1 != nullptr || l2 != nullptr || sum != 0) {
+		    if (l1 != nullptr) {
+                sum += l1->val;
+                l1 = l1->next;
+            }
+            if (l2 != nullptr) {
+                sum += l2->val;
+                l2 = l2->next;
+            }
+		    curr->next = new ListNode(sum % 10);
+		    curr = curr->next;
+            sum /= 10;
+	    }
+
+	    return dummy.next;
     }
-
-    return dummy.next;
-  }
 };

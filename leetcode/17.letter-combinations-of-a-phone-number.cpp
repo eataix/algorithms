@@ -34,38 +34,33 @@ using namespace std;
  * in any order you want.
  *
  */
+
 vector<string> dictionary{
     {},      {},      {"abc"},  {"def"}, {"ghi"},
     {"jkl"}, {"mno"}, {"pqrs"}, {"tuv"}, {"wxyz"},
 };
-
 class Solution {
-public:
-  vector<string> letterCombinations(string digits) {
-    if (digits.size() == 0) {
-      return vector<string>{};
+  void dfs(const string &digits, int pos, string &out, vector<string> &res) {
+    if (pos == digits.size()) {
+      res.push_back(out);
+      return;
     }
-    auto res = dfs(digits, 0, "");
-    for (string str : res) {
-      cout << str << endl;
+    for (char next : dictionary[digits[pos] - '0']) {
+      out.push_back(next);
+      dfs(digits, pos + 1, out, res);
+      out.pop_back();
     }
-    return res;
   }
 
-  vector<string> dfs(const string &digits, int i, string prev) {
-    if (i == digits.size()) {
-      return vector<string>{prev};
-    } else {
-      int v = digits[i] - '0';
-      vector<string> ret;
-      for (char ch : dictionary[v]) {
-        vector<string> nextStrings = dfs(digits, i + 1, prev + ch);
-        for (string str : nextStrings) {
-          ret.push_back(str);
-        }
-      }
-      return ret;
+public:
+  vector<string> letterCombinations(string digits) {
+    if (digits.empty()) {
+      return {};
     }
+    string out;
+    vector<string> res;
+    dfs(digits, 0, out, res);
+    return res;
   }
 };
 

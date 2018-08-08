@@ -69,64 +69,47 @@ using namespace std;
  *
  *
  */
+
 class Solution {
 public:
   bool backspaceCompare(string S, string T) {
-    int i = S.size() - 1;
-    int j = T.size() - 1;
-    int skipS = 0;
-    int skipT = 0;
-    while (i >= 0 || j >= 0) {
-      while (i >= 0) {
-        if (S[i] == '#') {
-          skipS += 1;
-          i -= 1;
-        } else if (skipS > 0) {
-          skipS -= 1;
-          i -= 1;
+    int c1 = 0;
+    int c2 = 0;
+
+    auto it1 = S.crbegin();
+    auto it2 = T.crbegin();
+
+    while (it1 != S.crend() || it2 != T.crend()) {
+      while (it1 != S.crend() && (*it1 == '#' || c1 > 0)) {
+        if (*it1 == '#') {
+          c1 += 1;
         } else {
-          break;
+          c1 -= 1;
         }
+        it1 += 1;
       }
 
-      while (j >= 0) {
-        if (T[j] == '#') {
-          skipT += 1;
-          j -= 1;
-        } else if (skipT > 0) {
-          skipT -= 1;
-          j -= 1;
+      while (it2 != T.crend() && (*it2 == '#' || c2 > 0)) {
+        if (*it2 == '#') {
+          c2 += 1;
         } else {
-          break;
+          c2 -= 1;
         }
+        it2 += 1;
       }
 
-      if (i >= 0 && j >= 0 && S[i] != T[j]) {
+      if (it1 == S.crend() || it2 == T.crend()) {
+        break;
+      }
+
+      if (*it1 != *it2) {
         return false;
+      } else {
+        it1 += 1;
+        it2 += 1;
       }
-
-      if ((i >= 0) != (j >= 0)) {
-        return false;
-      }
-
-      i -= 1;
-      j -= 1;
     }
-    return true;
+
+    return it1 == S.crend() && it2 == T.crend();
   }
 };
-
-#ifdef DEBUG
-int main() {
-  Solution sol;
-  // cout << sol.backspaceCompare("ab#c", "ad#c") << endl;
-  // cout << sol.backspaceCompare("ab##", "c#d#") << endl;
-  // cout << sol.backspaceCompare("a##c", "#a#c") << endl;
-  // cout << sol.backspaceCompare("a#c", "b") << endl;
-  // cout << sol.backspaceCompare("xywrrmp", "xywrrmu#p") << endl;
-  // cout << sol.backspaceCompare("bxj##tw", "bxj###tw") << endl;
-  cout << sol.backspaceCompare("nzp#o#g", "b#nzp#o#g") << endl;
-  cout << endl;
-  cout << sol.backspaceCompare("bbbextm", "bbb#extm") << endl;
-}
-#endif

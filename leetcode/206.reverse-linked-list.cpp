@@ -1,5 +1,3 @@
-#include <cstddef>
-using namespace std;
 /*
  * [206] Reverse Linked List
  *
@@ -32,7 +30,7 @@ using namespace std;
 struct ListNode {
   int val;
   ListNode *next;
-  ListNode(int x) : val(x), next(NULL) {}
+  ListNode(int x) : val(x), next(nullptr) {}
 };
 #endif
 
@@ -40,15 +38,14 @@ class Solution {
 public:
   ListNode *reverseList(ListNode *head) {
 
-    ListNode *curr = head;
-    ListNode *prev = NULL;
-    ListNode *next = NULL;
+    auto curr = head;
+    ListNode *prev = nullptr;
 
-    while (curr != NULL) {
-      next = curr->next;
+    while (curr != nullptr) {
+      auto oldNext = curr->next;
       curr->next = prev;
       prev = curr;
-      curr = next;
+      curr = oldNext;
     }
 
     return prev;

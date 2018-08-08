@@ -64,6 +64,21 @@ using namespace std;
  *
  */
 class Solution {
+  bool dfs(const vector<vector<int>> &graph, int node, vector<int> &colour,
+           int col) {
+    if (colour[node] != -1) {
+      return colour[node] == col;
+    }
+    colour[node] = col;
+    for (int next : graph[node]) {
+      if (!dfs(graph, next, colour, 1 - col)) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
 public:
   bool isBipartite(vector<vector<int>> &graph) {
     int n = graph.size();
@@ -71,21 +86,8 @@ public:
 
     for (int start = 0; start < n; ++start) {
       if (colour[start] == -1) {
-        stack<int> s;
-        s.push(start);
-        colour[start] = 0;
-
-        while (s.size()) {
-          int node = s.top();
-          s.pop();
-          for (int nei : graph[node]) {
-            if (colour[nei] == -1) {
-              s.push(nei);
-              colour[nei] = 1 - colour[node];
-            } else if (colour[nei] == colour[node]) {
-              return false;
-            }
-          }
+        if (!dfs(graph, start, colour, 0)) {
+          return false;
         }
       }
     }

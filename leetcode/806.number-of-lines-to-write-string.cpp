@@ -73,11 +73,11 @@ public:
 
     for (char ch : S) {
       int w = widths[ch - 'a'];
-      usedCharacters += w;
-      if (usedCharacters > 100) {
+      if ((usedCharacters + w) > 100) {
         numLines += 1;
-        usedCharacters = w;
+        usedCharacters = 0;
       }
+      usedCharacters += w;
     }
     return {numLines, usedCharacters};
   }

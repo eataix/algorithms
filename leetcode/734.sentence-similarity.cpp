@@ -61,10 +61,7 @@ public:
       string s1 = p.first;
       string s2 = p.second;
 
-      m[s1].insert(s1);
       m[s1].insert(s2);
-
-      m[s2].insert(s2);
       m[s2].insert(s1);
     }
 
@@ -74,10 +71,7 @@ public:
       string s1 = words1[i];
       string s2 = words2[i];
 
-      m[s1].insert(s1);
-      m[s2].insert(s2);
-
-      if (m[s1].find(s2) == m[s1].cend()) {
+      if (!m[s1].count(s2) && s1 != s2) {
         return false;
       }
     }

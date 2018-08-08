@@ -64,44 +64,39 @@ public:
     if (k == 0) {
       return str;
     }
-
-    int n = str.size();
-
-    string res;
-    unordered_map<char, int> dict;
-    priority_queue<pair<int, char>> q;
+    priority_queue<pair<int, char>> pq;
+    unordered_map<char, int> m;
 
     for (char ch : str) {
-      dict[ch] += 1;
+      m[ch] += 1;
     }
 
-    for (auto const &kv : dict) {
-      q.push({kv.second, kv.first});
+    for (auto const &kv : m) {
+      auto ch = kv.first;
+      auto freq = kv.second;
+      pq.push({freq, ch});
     }
 
-    while (!q.empty()) {
-      vector<pair<int, char>> cache;
+    string res;
+    while (!pq.empty()) {
+      int sz = min(static_cast<int>(str.size() - res.size()), k);
 
-      int count = min(k, n);
-
-      for (int i = 0; i < count; ++i) {
-        if (q.empty()) {
+      vector<pair<int, int>> pairs;
+      for (int i = 0; i < sz; ++i) {
+        if (pq.empty()) {
           return "";
         }
-
-        auto kv = q.top();
-        q.pop();
-        res.push_back(kv.second);
-        if (--kv.first > 0) {
-          cache.push_back(kv);
-        }
-        n -= 1;
+        pairs.push_back(pq.top());
+        pq.pop();
       }
 
-      for (auto const &kv : cache) {
-        q.push(kv);
+      for (auto &pair : pairs) {
+        res += pair.second;
+        if (--pair.first > 0) {
+          pq.push(pair);
+        }
       }
     }
-    return res;
+    return res.size() == str.size() ? res : "";
   }
 };

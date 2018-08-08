@@ -58,12 +58,13 @@ public:
 
     for (auto kv : s) {
       if (kv.second > 0) {
-        for (int i = W - 1; i >= 0; --i) {
-          s[kv.first + i] -= kv.second;
-          if (s[kv.first + i] < 0) {
+        for (int i = 1; i <= W - 1; ++i) {
+          if (s[kv.first + i] < kv.second) {
             return false;
           }
+          s[kv.first + i] -= kv.second;
         }
+        kv.second = 0;
       }
     }
     return true;

@@ -33,13 +33,18 @@ using namespace std;
 class Solution {
 public:
   int removeDuplicates(vector<int> &nums) {
-    int len = 0;
-    for (int num : nums) {
-      if (len < 1 || num > num[len - 1]) {
-        nums[len] = num;
-        len += 1;
+    int k = 1;
+    if (nums.size() <= k) {
+      return nums.size();
+    }
+
+    int lastIdx = 0;
+    for (int i = k; i < nums.size(); ++i) {
+      if (nums[i] != nums[lastIdx]) {
+        nums[lastIdx + k] = nums[i];
+        lastIdx += 1;
       }
     }
-    return len;
+    return lastIdx + k;
   }
 };

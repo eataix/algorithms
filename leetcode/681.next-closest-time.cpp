@@ -40,79 +40,60 @@ using namespace std;
  *
  *
  */
+
 class Solution {
+  static inline int timeDiff(int t1, int t2) {
+    if (t1 == t2) {
+      return numeric_limits<int>::max();
+    }
+
+    return ((t2 - t1) + 1440) % 1440;
+  }
+
+  static inline int toTime(int h, int m) { return h * 60 + m; }
+
+  void dfs(const vector<int> &digits, int included, string &out, int &best,
+           const int target) {
+    if (included == 4) {
+      int curr_h = out[0] * 10 + out[1];
+      int curr_m = out[2] * 10 + out[3];
+      if (curr_h > 23 || curr_m > 59) {
+        return;
+      }
+      int curr_time = toTime(curr_h, curr_m);
+      if (timeDiff(target, curr_time) < timeDiff(target, best)) {
+        best = curr_time;
+      }
+      return;
+    }
+
+    for (int digit : digits) {
+      out.push_back(digit);
+      dfs(digits, included + 1, out, best, target);
+      out.pop_back();
+    }
+  }
+
 public:
   string nextClosestTime(string time) {
-    string hours = time.substr(0, 2);
-    string minutes = time.substr(3);
+    vector<int> digits{time[0] - '0', time[1] - '0', time[3] - '0',
+                       time[4] - '0'};
+    string out;
+    vector<bool> included(4, false);
 
-    int start = stoi(hours) * 60 + stoi(minutes);
+    int h = digits[0] * 10 + digits[1];
+    int m = digits[2] * 10 + digits[3];
 
-    int ans = start;
-    int elapsed = 24 * 60;
+    int now = toTime(h, m);
+    int best = now;
 
-    unordered_set<int> allowed;
+    dfs(digits, 0, out, best, now);
 
-    for (char ch : time) {
-      if (ch == ':') {
-        continue;
-      }
+    int best_h = best / 60;
+    int best_m = best % 60;
 
-      allowed.insert(ch - '0');
-    }
-
-    for (int h1 : allowed) {
-      for (int h2 : allowed) {
-        if (h1 * 10 + h2 >= 24) {
-          continue;
-        }
-
-        for (int m1 : allowed) {
-          for (int m2 : allowed) {
-            if (m1 * 10 + m2 >= 60) {
-              continue;
-            }
-
-            int curr = 60 * (h1 * 10 + h2) + (m1 * 10 + m2);
-
-            int candElapsed =
-                (curr - start < 0) ? curr - start + 24 * 60 : curr - start;
-
-            if (candElapsed > 0 && candElapsed < elapsed) {
-              ans = curr;
-              elapsed = candElapsed;
-            }
-#ifdef DEBUG
-            cout << "testing: "
-                 << to_string(curr / 60) + ":" + to_string(curr % 60)
-                 << " with " << candElapsed << endl;
-#endif
-          }
-        }
-      }
-    }
-
-    string res;
-    int h = ans / 60;
-    if (h < 10) {
-      res += '0';
-    }
-    res += to_string(h);
-    res += ':';
-    int m = ans % 60;
-    if (m < 10) {
-      res += '0';
-    }
-    res += to_string(m);
-
-    return res;
+    char buff[5];
+    sprintf(buff, "%02d:%02d", best / 60, best % 60);
+    return string(buff);
   }
 };
-
-#ifdef DEBUG
-int main() {
-  Solution sol;
-  cout << sol.nextClosestTime("23:59") << endl;
-  cout << sol.nextClosestTime("01:32") << endl;
-}
-#endif

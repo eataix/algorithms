@@ -19,7 +19,7 @@ using namespace std;
  * at the location (i, j), the brick (if it exists) on that location will
  * disappear, and then some other bricks may drop because of that erasure.
  *
- * numRowseturn an array representing the number of bricks that will drop after
+ * Return an array representing the number of bricks that will drop after
  * each erasure in sequence.
  *
  *
@@ -106,8 +106,10 @@ class Solution {
 public:
   vector<int> hitBricks(vector<vector<int>> &grid, vector<vector<int>> &hits) {
     int numRows = grid.size(), numCols = grid[0].size();
-    vector<int> dr = {1, 0, -1, 0};
-    vector<int> dc = {0, 1, 0, -1};
+
+#define ID(r, c) ((r)*numCols + (c))
+
+    int SB = numRows * numCols;
 
     auto A = grid;
     for (auto const &hit : hits) {
@@ -118,41 +120,48 @@ public:
     for (int r = 0; r < numRows; ++r) {
       for (int c = 0; c < numCols; ++c) {
         if (A[r][c] == 1) {
-          int i = r * numCols + c;
-          if (r == 0)
-            dsu.union_set(i, numRows * numCols);
-          if (r > 0 && A[r - 1][c] == 1)
-            dsu.union_set(i, (r - 1) * numCols + c);
-          if (c > 0 && A[r][c - 1] == 1)
-            dsu.union_set(i, r * numCols + c - 1);
+          int id = ID(r, c);
+          if (r == 0) {
+            dsu.union_set(id, SB);
+          }
+          if (r > 0 && A[r - 1][c] == 1) {
+            dsu.union_set(id, ID(r - 1, c));
+          }
+          if (c > 0 && A[r][c - 1] == 1) {
+            dsu.union_set(id, ID(r, c - 1));
+          }
         }
       }
     }
-    int t = hits.size();
-    vector<int> ans(t--);
 
-    while (t >= 0) {
-      int r = hits[t][0];
-      int c = hits[t][1];
-      int prenumRowsoof = dsu.top();
-      if (grid[r][c] == 0) {
-        t--;
-      } else {
-        int i = r * numCols + c;
+    vector<int> ans;
+
+    for (auto it = hits.crbegin(); it != hits.crend(); ++it) {
+      auto hit = *it;
+      int r = hit[0];
+      int c = hit[1];
+      if (grid[r][c] == 1) {
+        int id = ID(r, c);
+        int prenumRowsoof = dsu.top();
         for (auto const &dir : dirs) {
           int nr = r + dir.first;
           int nc = c + dir.second;
           if (0 <= nr && nr < numRows && 0 <= nc && nc < numCols &&
-              A[nr][nc] == 1)
-            dsu.union_set(i, nr * numCols + nc);
+              A[nr][nc] == 1) {
+            dsu.union_set(id, ID(nr, nc));
+          }
         }
-        if (r == 0)
-          dsu.union_set(i, numRows * numCols);
+        if (r == 0) {
+          dsu.union_set(id, SB);
+        }
         A[r][c] = 1;
-        ans[t--] = max(0, dsu.top() - prenumRowsoof - 1);
+        ans.push_back(max(0, dsu.top() - prenumRowsoof - 1));
+      } else {
+        ans.push_back(0);
       }
     }
 
+    reverse(ans.begin(), ans.end());
     return ans;
   }
 };

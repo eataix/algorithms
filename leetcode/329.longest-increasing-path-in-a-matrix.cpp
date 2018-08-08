@@ -56,17 +56,20 @@ class Solution {
       return dp[row][col];
     }
 
+    dp[row][col] = 1;
+
     for (auto dir : dirs) {
       int newRow = row + dir.first;
       int newCol = col + dir.second;
 
       if (newRow >= 0 && newRow < numRows && newCol >= 0 && newCol < numCols) {
         if (matrix[newRow][newCol] > matrix[row][col]) {
-          dp[row][col] = max(dp[row][col], dfs(matrix, newRow, newCol, dp));
+          dp[row][col] = max(dp[row][col], 1 + dfs(matrix, newRow, newCol, dp));
         }
       }
     }
-    return ++dp[row][col];
+
+    return dp[row][col];
   }
 
 public:

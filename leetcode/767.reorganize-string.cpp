@@ -44,10 +44,10 @@ using namespace std;
 class Solution {
 public:
   string reorganizeString(string S) {
-    string res;
+    int k = 2;
 
-    unordered_map<char, int> m;
     priority_queue<pair<int, char>> pq;
+    unordered_map<char, int> m;
 
     for (char ch : S) {
       m[ch] += 1;
@@ -56,33 +56,29 @@ public:
     for (auto const &kv : m) {
       auto ch = kv.first;
       auto freq = kv.second;
-      if (freq > (S.size() + 1) / 2) {
-        return "";
-      }
       pq.push({freq, ch});
     }
 
-    while (pq.size() >= 2) {
-      auto t1 = pq.top();
-      pq.pop();
-      auto t2 = pq.top();
-      pq.pop();
+    string res;
+    while (!pq.empty()) {
+      int sz = min(static_cast<int>(S.size() - res.size()), k);
 
-      res.push_back(t1.second);
-      res.push_back(t2.second);
-
-      if (--t1.first > 0) {
-        pq.push(t1);
+      vector<pair<int, int>> pairs;
+      for (int i = 0; i < sz; ++i) {
+        if (pq.empty()) {
+          return "";
+        }
+        pairs.push_back(pq.top());
+        pq.pop();
       }
 
-      if (--t2.first > 0) {
-        pq.push(t2);
+      for (auto &pair : pairs) {
+        res += pair.second;
+        if (--pair.first > 0) {
+          pq.push(pair);
+        }
       }
     }
-
-    if (pq.size() > 0) {
-      res.push_back(pq.top().second);
-    }
-    return res;
+    return res.size() == S.size() ? res : "";
   }
 };

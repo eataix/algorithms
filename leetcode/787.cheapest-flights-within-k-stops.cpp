@@ -60,15 +60,15 @@ using namespace std;
  *
  */
 
+const int maxDistance = 1e9;
 class Solution {
 public:
   int findCheapestPrice(int n, vector<vector<int>> &flights, int src, int dst,
                         int K) {
-    const int maxDistance = 10000 * 100 + 1;
-    vector<vector<int>> fromSrc(n, vector<int>(K + 2, maxDistance));
+    vector<vector<int>> dp(n, vector<int>(K + 2, maxDistance));
 
     for (int i = 0; i < K + 2; ++i) {
-      fromSrc[src][i] = 0;
+      dp[src][i] = 0;
     }
 
     for (int i = 1; i < K + 2; ++i) {
@@ -76,11 +76,11 @@ public:
         int u = flight[0];
         int v = flight[1];
         int w = flight[2];
-        fromSrc[v][i] = min(fromSrc[v][i], fromSrc[u][i - 1] + w);
+        dp[v][i] = min(dp[v][i], dp[u][i - 1] + w);
       }
     }
 
-    int minV = fromSrc[dst][K + 1];
+    int minV = dp[dst][K + 1];
     return minV == maxDistance ? -1 : minV;
   }
 };

@@ -1,7 +1,7 @@
-#include<sstream>
-#include<vector>
-#include<cmath>
+#include <cmath>
+#include <sstream>
 #include <string>
+#include <vector>
 using namespace std;
 /*
  * [752] IP to CIDR

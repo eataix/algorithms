@@ -62,12 +62,16 @@ public:
         vector<int> right = diffWaysToComputeRecursive(input.substr(i + 1), m);
         for (int l : left) {
           for (int r : right) {
-            if (ch == '+') {
+            switch (ch) {
+            case '+':
               res.push_back(l + r);
-            } else if (ch == '-') {
+              break;
+            case '-':
               res.push_back(l - r);
-            } else if (ch == '*') {
+              break;
+            case '*':
               res.push_back(l * r);
+              break;
             }
           }
         }
@@ -77,7 +81,6 @@ public:
       res.push_back(stoi(input));
     }
 
-    m[input] = res;
-    return res;
+    return m[input] = res;
   }
 };
