@@ -1,3 +1,5 @@
+#include <vector>
+using namespace std;
 /*
  * [413] Arithmetic Slices
  *
@@ -41,6 +43,18 @@
  *
  */
 class Solution {
-public:
-  int numberOfArithmeticSlices(vector<int> &A) {}
+ public:
+  int numberOfArithmeticSlices(const vector<int> &A) {
+    int count = 0;
+    int sum = 0;
+    for (int i = 2; i < A.size(); ++i) {
+      if (A[i] - A[i - 1] == A[i-1] -A[i -2] ) {
+        count += 1;
+      } else {
+        sum += (count + 1) * count / 2;
+        count = 0;
+      }
+    }
+    return sum += count * (count + 1) / 2;
+  }
 };
