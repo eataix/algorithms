@@ -46,7 +46,7 @@ using namespace std;
  *
  */
 class Solution {
- public:
+public:
   int countBinarySubstrings(string s) {
     int res = 0;
     int prev = 0;

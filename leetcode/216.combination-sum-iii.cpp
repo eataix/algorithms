@@ -55,7 +55,7 @@ class Solution {
     }
   }
 
- public:
+public:
   vector<vector<int>> combinationSum3(int k, int n) {
     vector<int> out;
     vector<vector<int>> res;
@@ -64,10 +64,9 @@ class Solution {
   }
 };
 
-
 #ifdef DEBUG
 int main() {
-    Solution sol;
-    sol.combinationSum3(3, 7);
+  Solution sol;
+  sol.combinationSum3(3, 7);
 }
 #endif

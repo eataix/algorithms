@@ -54,11 +54,13 @@ TreeNode {
 class Solution {
   TreeNode *buildTree(vector<int> &inorder, int iLeft, int iRight,
                       vector<int> &postorder, int pLeft, int pRight) {
-    if (iLeft > iRight || pLeft > pRight) return NULL;
+    if (iLeft > iRight || pLeft > pRight)
+      return NULL;
     TreeNode *cur = new TreeNode(postorder[pRight]);
     int i = 0;
     for (i = iLeft; i < inorder.size(); ++i) {
-      if (inorder[i] == cur->val) break;
+      if (inorder[i] == cur->val)
+        break;
     }
     cur->left = buildTree(inorder, iLeft, i - 1, postorder, pLeft,
                           pLeft + i - iLeft - 1);
@@ -67,7 +69,7 @@ class Solution {
     return cur;
   }
 
- public:
+public:
   TreeNode *buildTree(vector<int> &inorder, vector<int> &postorder) {
     return buildTree(inorder, 0, inorder.size() - 1, postorder, 0,
                      postorder.size() - 1);
