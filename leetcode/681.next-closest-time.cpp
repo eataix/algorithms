@@ -1,6 +1,5 @@
-#include <iostream>
 #include <string>
-#include <unordered_set>
+#include <vector>
 using namespace std;
 /*
  * [681] Next Closest Time
@@ -88,9 +87,6 @@ public:
     int best = now;
 
     dfs(digits, 0, out, best, now);
-
-    int best_h = best / 60;
-    int best_m = best % 60;
 
     char buff[5];
     sprintf(buff, "%02d:%02d", best / 60, best % 60);

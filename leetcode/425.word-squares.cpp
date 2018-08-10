@@ -104,8 +104,8 @@ TrieNode *buildWords(const vector<string> &words) {
       if (!curr->children[ch - 'a']) {
         curr->children[ch - 'a'] = new TrieNode();
       }
-      curr->startsWith.push_back(word);
       curr = curr->children[ch - 'a'];
+      curr->startsWith.push_back(word);
     }
   }
 
@@ -137,22 +137,18 @@ class Solution {
     }
 
     for (const string &nextWord : find(root, prefix)) {
-      out[level] = nextWord;
+      out.push_back(nextWord);
       dfs(level + 1, root, res, out, words);
+      out.pop_back();
     }
   }
 
 public:
   vector<vector<string>> wordSquares(const vector<string> &words) {
-    if (words.empty()) {
-      return {};
-    }
-
     vector<vector<string>> res;
     auto root = buildWords(words);
-    vector<string> out(words[0].size());
     for (auto const &word : words) {
-      out[0] = word;
+      vector<string> out{word};
       dfs(1, root, res, out, words);
     }
     return res;
