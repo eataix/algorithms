@@ -38,6 +38,8 @@ using namespace std;
  *
  */
 
+static inline int lowBit(int i) { return i & -i; }
+
 class NumArray {
   vector<int> nums_;
   int n_;
@@ -47,7 +49,7 @@ class NumArray {
     i += 1;
     while (i <= n_) {
       BIT_[i] += val;
-      i += (i & -i);
+      i += lowBit(i);
     }
   }
 
@@ -57,7 +59,7 @@ class NumArray {
 
     while (i > 0) {
       sum += BIT_[i];
-      i -= (i & -i);
+      i -= lowBit(i);
     }
     return sum;
   }

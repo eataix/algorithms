@@ -1,5 +1,4 @@
 #include <algorithm>
-
 using namespace std;
 /*
  * [687] Longest Univalue Path
@@ -115,6 +114,8 @@ private:
       rightVal = right + 1;
     }
 
+    // Note: The length of path between two nodes is represented by the number
+    // of edges between them.
     ans = max(ans, leftVal + rightVal);
 
     return max(leftVal, rightVal);

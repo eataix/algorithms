@@ -45,51 +45,55 @@ using namespace std;
  * result in no division by zero and there is no contradiction.
  *
  */
+
 class Solution {
-  double check(string num, string den,
-               unordered_map<string, unordered_map<string, double>> &edges,
-               unordered_set<string> &visited) {
-    if (edges[num].count(den)) {
-      return edges[num][den];
+  bool dfs(string num, string den,
+           unordered_map<string, unordered_map<string, double>> &edgeWeights,
+           unordered_set<string> &visited, double &res) {
+    if (edgeWeights[num].count(den)) {
+      res = edgeWeights[num][den];
+      return true;
     }
 
-    for (auto edge : edges[num]) {
+    for (auto const &edge : edgeWeights[num]) {
       auto nei = edge.first;
-      auto w = edge.second;
+      auto weight = edge.second;
       if (!visited.count(nei)) {
         visited.insert(nei);
-        auto r = check(nei, den, edges, visited);
-        if (r) {
-          return w * r;
+        if (dfs(nei, den, edgeWeights, visited, res)) {
+          res *= weight;
+          return true;
         }
       }
     }
-    return 0;
+
+    return false;
   }
 
 public:
   vector<double> calcEquation(vector<pair<string, string>> equations,
                               vector<double> &values,
                               vector<pair<string, string>> queries) {
-    unordered_map<string, unordered_map<string, double>> edges;
-    vector<double> res;
-    for (int i = 0; i < values.size(); ++i) {
-      auto u = equations[i].first;
-      auto v = equations[i].second;
-      edges[u][v] = values[i];
-      if (values[i] != 0) {
-        edges[v][u] = 1 / values[i];
-      }
+
+    int n = equations.size();
+
+    unordered_map<string, unordered_map<string, double>> edgeWeights;
+    for (int i = 0; i < n; ++i) {
+      auto eq = equations[i];
+      auto num = eq.first;
+      auto den = eq.second;
+      edgeWeights[num][den] = values[i];
+      edgeWeights[den][num] = 1.0 / values[i];
     }
 
+    vector<double> res;
     for (auto const &query : queries) {
-      unordered_set<string> s;
-      auto r = check(query.first, query.second, edges, s);
-      if (r) {
-        res.push_back(r);
-      } else {
-        res.push_back(-1);
-      }
+      auto num = query.first;
+      auto den = query.second;
+      unordered_set<string> visited{num};
+      double v = -1.0;
+      dfs(num, den, edgeWeights, visited, v);
+      res.push_back(v);
     }
     return res;
   }

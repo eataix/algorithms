@@ -62,6 +62,22 @@ using namespace std;
 class Solution {
 public:
   string licenseKeyFormatting(string S, int K) {
+    int included = 0;
+    string res;
+    for (auto it = S.crbegin(); it != S.crend(); ++it) {
+      if (isalnum(*it)) {
+        if (included > 0 && included % K == 0) {
+          res += '-';
+        }
+        res += toupper(*it);
+        included += 1;
+      }
+    }
+    reverse(res.begin(), res.end());
+    return res;
+  }
+
+  string licenseKeyFormatting1(string S, int K) {
     string res;
     for (auto it = S.crbegin(); it != S.crend(); ++it) {
       if (*it != '-') {

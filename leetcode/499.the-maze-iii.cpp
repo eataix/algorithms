@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <iostream>
 #include <queue>
 #include <string>
 #include <unordered_map>
@@ -92,43 +93,32 @@ using namespace std;
  *
  *
  */
-class Solution {
-  unordered_map<char, pair<int, int>> dirs{
-      {'u', {-1, 0}}, {'d', {1, 0}}, {'l', {0, -1}}, {'r', {0, 1}}};
 
+vector<pair<char, pair<int, int>>> dirs{
+    {'d', {1, 0}},
+    {'l', {0, -1}},
+    {'r', {0, 1}},
+    {'u', {-1, 0}},
+};
+
+class Solution {
 public:
   string findShortestWay(vector<vector<int>> &maze, vector<int> &ball,
                          vector<int> &hole) {
-    if (maze.empty() || maze[0].empty()) {
-      return "impossible";
-    }
-
     int numRows = maze.size();
     int numCols = maze[0].size();
-
-    vector<vector<int>> distances(
-        numRows, vector<int>(numCols, numeric_limits<int>::max()));
-    vector<vector<char>> directions(numRows, vector<char>(numCols, ' '));
-    vector<vector<pair<int, int>>> parents(numRows,
-                                           vector<pair<int, int>>(numCols));
-
+    vector<vector<int>> dists(numRows,
+                              vector<int>(numCols, numeric_limits<int>::max()));
     queue<pair<int, int>> q;
-
+    unordered_map<int, string> m;
+    dists[ball[0]][ball[1]] = 0;
     q.push({ball[0], ball[1]});
-    distances[ball[0]][ball[1]] = 0;
-
     while (!q.empty()) {
-      auto curr = q.front();
+      auto t = q.front();
       q.pop();
-      int currRow = curr.first;
-      int currCol = curr.second;
-
-      cout << currRow << " " << currCol << endl;
       for (auto const &dir : dirs) {
-        int newRow = currRow;
-        int newCol = currCol;
-        int dist = distances[currRow][currCol];
-
+        int newRow = t.first, newCol = t.second, dist = dists[newRow][newCol];
+        string path = m[newRow * numCols + newCol];
         while (newRow >= 0 && newRow < numRows && newCol >= 0 &&
                newCol < numCols && maze[newRow][newCol] == 0 &&
                (newRow != hole[0] || newCol != hole[1])) {
@@ -136,41 +126,28 @@ public:
           newCol += dir.second.second;
           dist += 1;
         }
-
         if (newRow != hole[0] || newCol != hole[1]) {
           newRow -= dir.second.first;
           newCol -= dir.second.second;
           dist -= 1;
         }
-
-        if (dist < distances[newRow][newCol]) {
-          distances[newRow][newCol] = dist;
-          directions[newRow][newCol] = dir.first;
-          parents[newRow][newCol] = {currRow, currCol};
+        path.push_back(dir.first);
+        if (dists[newRow][newCol] > dist) {
+          dists[newRow][newCol] = dist;
+          m[newRow * numCols + newCol] = path;
+          if (newRow != hole[0] || newCol != hole[1]) {
+            q.push({newRow, newCol});
+          }
+        } else if (dists[newRow][newCol] == dist &&
+                   m[newRow * numCols + newCol].compare(path) > 0) {
+          m[newRow * numCols + newCol] = path;
           if (newRow != hole[0] || newCol != hole[1]) {
             q.push({newRow, newCol});
           }
         }
       }
     }
-
-    if (distances[hole[0]][hole[1]] == numeric_limits<int>::max()) {
-      return "impossible";
-    } else {
-      string res;
-      int row = hole[0];
-      int col = hole[1];
-
-      while (directions[row][col] != ' ') {
-        res += directions[row][col];
-
-        auto p = parents[row][col];
-        row = p.first;
-        col = p.second;
-      }
-
-      reverse(res.begin(), res.end());
-      return res;
-    }
+    string res = m[hole[0] * numCols + hole[1]];
+    return res.empty() ? "impossible" : res;
   }
 };

@@ -40,20 +40,20 @@ using namespace std;
  *
  */
 
-class Solution {
-  static inline int timeDiff(int t1, int t2) {
-    if (t1 == t2) {
-      return numeric_limits<int>::max();
-    }
-
-    return ((t2 - t1) + 1440) % 1440;
+static inline int timeDiff(int t1, int t2) {
+  if (t1 == t2) {
+    return numeric_limits<int>::max();
   }
 
-  static inline int toTime(int h, int m) { return h * 60 + m; }
+  return ((t2 - t1) + 1440) % 1440;
+}
 
-  void dfs(const vector<int> &digits, int included, string &out, int &best,
+static inline int toTime(int h, int m) { return h * 60 + m; }
+
+class Solution {
+  void dfs(const vector<int> &digits, vector<int> &out, int &best,
            const int target) {
-    if (included == 4) {
+    if (out.size() == 4) {
       int curr_h = out[0] * 10 + out[1];
       int curr_m = out[2] * 10 + out[3];
       if (curr_h > 23 || curr_m > 59) {
@@ -68,7 +68,7 @@ class Solution {
 
     for (int digit : digits) {
       out.push_back(digit);
-      dfs(digits, included + 1, out, best, target);
+      dfs(digits, out, best, target);
       out.pop_back();
     }
   }
@@ -77,16 +77,15 @@ public:
   string nextClosestTime(string time) {
     vector<int> digits{time[0] - '0', time[1] - '0', time[3] - '0',
                        time[4] - '0'};
-    string out;
-    vector<bool> included(4, false);
+    vector<int> out;
 
-    int h = digits[0] * 10 + digits[1];
-    int m = digits[2] * 10 + digits[3];
+    int h = stoi(time.substr(0, 2));
+    int m = stoi(time.substr(3));
 
     int now = toTime(h, m);
     int best = now;
 
-    dfs(digits, 0, out, best, now);
+    dfs(digits, out, best, now);
 
     char buff[5];
     sprintf(buff, "%02d:%02d", best / 60, best % 60);

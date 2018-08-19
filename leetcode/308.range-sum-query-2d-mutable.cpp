@@ -57,6 +57,8 @@ class NumMatrix {
   static inline int lowbit(int i) { return i & (-i); }
 
   int getSum(int row, int col) {
+    row += 1;
+    col += 1;
     int res = 0;
     for (int r = row; r > 0; r -= lowbit(r)) {
       for (int c = col; c > 0; c -= lowbit(c)) {
@@ -84,19 +86,21 @@ public:
   }
 
   void update(int row, int col, int val) {
-    int diff = val - mat[row + 1][col + 1];
-    for (int r = row + 1; r <= numRows; r += lowbit(r)) {
-      for (int c = col + 1; c <= numCols; c += lowbit(c)) {
+    row += 1;
+    col += 1;
+    int diff = val - mat[row][col];
+    for (int r = row; r <= numRows; r += lowbit(r)) {
+      for (int c = col; c <= numCols; c += lowbit(c)) {
         bit[r][c] += diff;
       }
     }
 
-    mat[row + 1][col + 1] = val;
+    mat[row][col] = val;
   }
 
   int sumRegion(int row1, int col1, int row2, int col2) {
-    return getSum(row2 + 1, col2 + 1) - getSum(row1, col2 + 1) -
-           getSum(row2 + 1, col1) + getSum(row1, col1);
+    return getSum(row2, col2) - getSum(row1 - 1, col2) -
+           getSum(row2, col1 - 1) + getSum(row1 - 1, col1 - 1);
   }
 };
 

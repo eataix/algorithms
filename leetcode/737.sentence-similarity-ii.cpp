@@ -46,48 +46,45 @@ using namespace std;
  * The length of each words[i] and pairs[i][j] will be in the range [1, 20].
  *
  */
-class Solution {
-  string find(unordered_map<string, string> &m, string s) {
-    if (!m.count(s)) {
-      return m[s] = s;
-    } else {
-      if (m[s] == s) {
-        return s;
-      } else {
-        return find(m, m[s]);
-      }
-    }
+static inline string find_id(unordered_map<string, string> &m,
+                             const string &s) {
+  if (!m.count(s)) {
+    return m[s] = s;
   }
+  if (m[s] == s) {
+    return s;
+  } else {
+    return m[s] = find_id(m, m[s]);
+  }
+}
 
+class Solution {
 public:
   bool areSentencesSimilarTwo(vector<string> &words1, vector<string> &words2,
                               vector<pair<string, string>> pairs) {
     if (words1.size() != words2.size()) {
       return false;
     }
-
     unordered_map<string, string> m;
-
-    for (auto p : pairs) {
+    for (auto const &p : pairs) {
       auto s1 = p.first;
       auto s2 = p.second;
 
-      auto p1 = find(m, s1);
-      auto p2 = find(m, s2);
-
-      if (p1 != p2) {
-        m[p1] = p2;
+      auto g1 = find_id(m, s1);
+      auto g2 = find_id(m, s2);
+      if (g1 != g2) {
+        m[g1] = g2;
       }
     }
 
     for (int i = 0; i < words1.size(); ++i) {
-      auto word1 = words1[i];
-      auto word2 = words2[i];
-      if (word1 != word2 && find(m, word1) != find(m, word2)) {
+      auto s1 = words1[i];
+      auto s2 = words2[i];
+
+      if (s1 != s2 && find_id(m, s1) != find_id(m, s2)) {
         return false;
       }
     }
-
     return true;
   }
 };

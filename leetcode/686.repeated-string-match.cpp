@@ -30,20 +30,20 @@ using namespace std;
 class Solution {
 public:
   int repeatedStringMatch(string A, string B) {
-    string res = A;
-
-    while (res.size() < B.size()) {
-      res += A;
+    auto newA = A;
+    while (newA.size() < B.size()) {
+      newA += A;
     }
 
-    int cnt = res.size() / A.size();
-
-    if (res.find(B) != string::npos) {
-      return cnt;
+    if (newA.find(B) != string::npos) {
+      return newA.size() / A.size();
     }
 
-    res += A;
-
-    return res.find(B) != string::npos ? res.size() / A.size() : -1;
+    newA += A;
+    if (newA.find(B) != string::npos) {
+      return newA.size() / A.size();
+    } else {
+      return -1;
+    }
   }
 };

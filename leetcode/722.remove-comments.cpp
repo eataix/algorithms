@@ -15,7 +15,7 @@ public:
           if (i + 1 == line.size()) {
             i += 1;
           } else {
-            if (line[i] == '*' && line[i + 1] == '/') {
+            if (line.substr(i, 2) == "*/") {
               inBlock = false;
               i += 2;
             } else {
@@ -26,10 +26,10 @@ public:
           if (i + 1 == line.size()) {
             sf += line[i++];
           } else {
-            if (line[i] == '/' && line[i + 1] == '*') {
+            if (line.substr(i, 2) == "/*") {
               inBlock = true;
               i += 2;
-            } else if (line[i] == '/' && line[i + 1] == '/') {
+            } else if (line.substr(i, 2) == "//") {
               break;
             } else {
               sf += line[i++];

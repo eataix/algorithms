@@ -107,7 +107,7 @@ public:
   vector<int> hitBricks(vector<vector<int>> &grid, vector<vector<int>> &hits) {
     int numRows = grid.size(), numCols = grid[0].size();
 
-#define ID(r, c) ((r)*numCols + (c))
+    auto ID = [&numCols](int r, int c) { return r * numCols + c; };
 
     int SB = numRows * numCols;
 

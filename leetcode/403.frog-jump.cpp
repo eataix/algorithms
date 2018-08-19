@@ -60,23 +60,27 @@ using namespace std;
  *
  *
  */
+
 class Solution {
 public:
   bool canCross(vector<int> &stones) {
-    unordered_map<int, unordered_set<int>> map;
-    unordered_set<int> stone_set{stones.cbegin(), stones.cend()};
+    unordered_map<int, unordered_set<int>> powers;
+    unordered_set<int> dict{stones.cbegin(), stones.cend()};
+    powers[0].insert(0);
 
-    map[0].insert(0);
-
-    for (const int &stone : stones) {
-      for (const int &k : map[stone]) {
-        for (int step = k - 1; step <= k + 1; ++step) {
-          if (step > 0 && stone_set.find(step + stone) != stone_set.cend()) {
-            map[stone + step].insert(step);
+    for (int s : stones) {
+      for (int p : powers[s]) {
+        for (int step = p - 1; step <= p + 1; ++step) {
+          if (step <= 0) {
+            continue;
+          }
+          int newLoc = s + step;
+          if (dict.count(newLoc)) {
+            powers[newLoc].insert(step);
           }
         }
       }
     }
-    return !map[stones[stones.size() - 1]].empty();
+    return !powers[stones.back()].empty();
   }
 };
