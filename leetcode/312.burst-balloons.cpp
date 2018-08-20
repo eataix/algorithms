@@ -46,29 +46,21 @@ public:
     int n = nums.size();
     nums.insert(nums.begin(), 1);
     nums.push_back(1);
-
     vector<vector<int>> dp(nums.size(), vector<int>(nums.size(), 0));
-
     for (int len = 1; len <= n; ++len) {
-      for (int left = 1; left <= n - len + 1; ++left) {
-        int right = left + len - 1;
-        for (int k = left; k <= right; ++k) {
-          dp[left][right] =
-              max(dp[left][right],
-                  dp[left][k - 1] + nums[left - 1] * nums[k] * nums[right + 1] +
-                      dp[k + 1][right]);
+      for (int start = 1; start <= n; ++start) {
+        int end = start + len - 1;
+        if (end > n) {
+          break;
+        }
+
+        for (int i = start; i <= end; ++i) {
+          dp[start][end] =
+              max(dp[start][end], nums[start - 1] * nums[i] * nums[end + 1] +
+                                      dp[start][i - 1] + dp[i + 1][end]);
         }
       }
     }
-
-#ifdef DEBUG
-    for (int r = 0; r < dp.size(); ++r) {
-      for (int c = 0; c < dp.size(); ++c) {
-        cout << dp[r][c] << " ";
-      }
-      cout << endl;
-    }
-#endif
     return dp[1][n];
   }
 };

@@ -34,24 +34,28 @@ using namespace std;
  */
 class Solution {
 public:
-  int minPathSum(const vector<vector<int>> &grid) {
-    int rows = grid.size();
-    int cols = grid[0].size();
-    vector<int> dp(cols);
+  int minPathSum(vector<vector<int>> &grid) {
+    if (grid.empty() || grid[0].empty()) {
+      return 0;
+    }
+    int numRows = grid.size();
+    int numCols = grid[0].size();
+    vector<vector<int>> dp = grid;
+    for (int r = 0; r < numRows; ++r) {
+      for (int c = 0; c < numCols; ++c) {
+        if (r == 0 && c == 0) {
+          continue;
+        }
 
-    for (int r = rows - 1; r >= 0; --r) {
-      for (int c = cols - 1; c >= 0; --c) {
-        if (r == rows - 1 && c == cols - 1) {
-          dp[c] = grid[r][c];
-        } else if (r == rows - 1 && c != cols - 1) {
-          dp[c] = grid[r][c] + dp[c + 1];
-        } else if (r != rows - 1 && c == cols - 1) {
-          dp[c] = grid[r][c] + dp[c];
+        if (r == 0) {
+          dp[r][c] += dp[r][c - 1];
+        } else if (c == 0) {
+          dp[r][c] += dp[r - 1][c];
         } else {
-          dp[c] = grid[r][c] + min(dp[c], dp[c + 1]);
+          dp[r][c] += min(dp[r - 1][c], dp[r][c - 1]);
         }
       }
     }
-    return dp[0];
+    return dp.back().back();
   }
 };

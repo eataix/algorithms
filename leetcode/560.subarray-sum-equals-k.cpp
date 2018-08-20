@@ -33,32 +33,15 @@ using namespace std;
 class Solution {
 public:
   int subarraySum(vector<int> &nums, int k) {
-    int cnt = 0;
-    int sum = 0;
+    int total = 0;
     unordered_map<int, int> m;
-
     m[0] = 1;
-    for (int i = 0; i < nums.size(); ++i) {
-      sum += nums[i];
-      if (m.count(sum - k)) {
-        cnt += m[sum - k];
-      }
-      m[sum] += 1;
+    int res = 0;
+    for (int num : nums) {
+      total += num;
+      res += m[total - k];
+      m[total] += 1;
     }
-    return cnt;
-  }
-
-  int subarraySum1(vector<int> &nums, int k) {
-    int count = 0;
-    for (int start = 0; start < nums.size(); ++start) {
-      int sum = 0;
-      for (int end = start; end < nums.size(); ++end) {
-        sum += nums[end];
-        if (sum == k) {
-          count += 1;
-        }
-      }
-    }
-    return count;
+    return res;
   }
 };

@@ -41,21 +41,21 @@ using namespace std;
 class Solution {
 public:
   int maxSubArrayLen(vector<int> &nums, int k) {
-    unordered_map<int, int> m;
-
-    int total = 0;
-    int res = 0;
+    vector<int> presum(nums.size() + 1, 0);
     for (int i = 0; i < nums.size(); ++i) {
-      total += nums[i];
+      presum[i + 1] = presum[i] + nums[i];
+    }
 
-      if (total == k) {
-        res = i + 1;
-      } else if (m.count(total - k)) {
-        res = max(res, i - m[total - k]);
+    unordered_map<int, int> m;
+    int res = 0;
+    for (int i = 0; i < presum.size(); ++i) {
+      int comp = presum[i] - k;
+      if (m.count(comp)) {
+        res = max(res, i - m[comp]);
       }
 
-      if (!m.count(total)) {
-        m[total] = i;
+      if (!m.count(presum[i])) {
+        m[presum[i]] = i;
       }
     }
     return res;

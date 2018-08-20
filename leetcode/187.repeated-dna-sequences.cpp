@@ -30,23 +30,24 @@ using namespace std;
  *
  *
  */
+const int mask = 0x7ffffff;
 class Solution {
-  int mask = 0x7ffffff;
-
 public:
   vector<string> findRepeatedDnaSequences(string s) {
     unordered_set<string> res;
     unordered_set<int> st;
-    unordered_map<int, int> m{{'A', 0}, {'C', 1}, {'G', 2}, {'T', 3}};
-    int cur = 0, i = 0;
-    while (i < 9)
-      cur = cur << 2 | m[s[i++]];
-    while (i < s.size()) {
-      cur = ((cur & 0x3ffff) << 2) | (m[s[i++]]);
-      if (st.count(cur)) {
-        res.insert(s.substr(i - 10, 10));
-      } else {
-        st.insert(cur);
+
+    int curr = 0;
+    for (int i = 0; i < s.size(); ++i) {
+      curr = (curr & mask) << 3;
+      curr |= s[i] & 0b111;
+
+      if (i >= 9) {
+        if (st.count(curr)) {
+          res.insert(s.substr(i - 9, 10));
+        } else {
+          st.insert(curr);
+        }
       }
     }
     return vector<string>(res.begin(), res.end());

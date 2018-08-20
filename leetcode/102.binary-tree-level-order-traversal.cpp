@@ -1,3 +1,4 @@
+#include <queue>
 #include <vector>
 using namespace std;
 /*
@@ -55,29 +56,51 @@ struct TreeNode {
 #endif
 
 class Solution {
+  void dfs(TreeNode *node, vector<vector<int>> &res, int level) {
+    if (node == nullptr) {
+      return;
+    }
+
+    if (level == res.size()) {
+      res.push_back({});
+    }
+
+    res[level].push_back(node->val);
+    dfs(node->left, res, level + 1);
+    dfs(node->right, res, level + 1);
+  }
+
 public:
   vector<vector<int>> levelOrder(TreeNode *root) {
     vector<vector<int>> res;
-    vector<TreeNode *> curr;
-    if (root != nullptr) {
-      curr.push_back(root);
-    }
-    while (curr.size() > 0) {
-      vector<int> values;
-      for (auto const &t : curr) {
-        values.push_back(t->val);
-      }
-      res.push_back(values);
+    dfs(root, res, 0);
+    return res;
+  }
 
-      auto parent = curr;
-      curr.clear();
-      for (auto const &t : parent) {
-        if (t->left != nullptr) {
-          curr.push_back(t->left);
-        }
-        if (t->right != nullptr) {
-          curr.push_back(t->right);
-        }
+  vector<vector<int>> levelOrder2(TreeNode *root) {
+    if (root == nullptr) {
+      return {};
+    }
+
+    queue<pair<TreeNode *, int>> q;
+    q.push({root, 0});
+    vector<vector<int>> res;
+    while (!q.empty()) {
+      auto f = q.front();
+      q.pop();
+      auto node = f.first;
+      auto level = f.second;
+
+      if (level == res.size()) {
+        res.push_back({});
+      }
+
+      res[level].push_back(node->val);
+      if (node->left != nullptr) {
+        q.push({node->left, level + 1});
+      }
+      if (node->right != nullptr) {
+        q.push({node->right, level + 1});
       }
     }
     return res;

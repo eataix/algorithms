@@ -31,22 +31,19 @@ using namespace std;
 class Solution {
 public:
   int longestConsecutive(vector<int> &nums) {
-    unordered_set<int> num_set{cbegin(nums), cend(nums)};
+    unordered_set<int> s{nums.begin(), nums.end()};
 
-    int longestStreak = 0;
-
+    int res = 0;
     for (int num : nums) {
-      if (num_set.find(num - 1) == cend(num_set)) {
-        int currNum = num;
-        int currStreak = 1;
+      if (!s.count(num - 1)) {
+        int streak = 1;
 
-        while (num_set.find(currNum + 1) != cend(num_set)) {
-          currNum += 1;
-          currStreak += 1;
+        while (s.count(num + streak)) {
+          streak += 1;
         }
-        longestStreak = max(longestStreak, currStreak);
+        res = max(res, streak);
       }
     }
-    return longestStreak;
+    return res;
   }
 };

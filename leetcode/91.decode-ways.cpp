@@ -45,23 +45,24 @@ using namespace std;
 class Solution {
 public:
   int numDecodings(string s) {
-    if (s.empty()) {
-      return 0;
-    }
-    vector<int> dp(s.size() + 1, 0);
-
+    vector<int> dp(s.size() + 1);
     dp[0] = 1;
 
-    for (int i = 1; i < dp.size(); ++i) {
+    for (int i = 1; i <= s.size(); ++i) {
+      // S = c1 c2 c3 c4 ... ci-1 [ci]
       if (s[i - 1] != '0') {
-        dp[i] += dp[i - 1];
+        dp[i] = dp[i - 1];
+      } else {
+        dp[i] = 0;
       }
 
-      if (i >= 2 && s.substr(i - 2, 2) <= "26" && s.substr(i - 2, 2) >= "10") {
-        dp[i] += dp[i - 2];
+      if (i > 1) {
+        int v = stoi(s.substr(i - 2, 2));
+        if (v >= 10 && v <= 26) {
+          dp[i] += dp[i - 2];
+        }
       }
     }
-
     return dp.back();
   }
 };

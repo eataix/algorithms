@@ -29,40 +29,45 @@ using namespace std;
  * ]
  *
  */
+
 class Solution {
 public:
-  vector<vector<int>> threeSum(vector<int> &nums) {
-    vector<vector<int>> res;
+  vector<vector<int>> threeSum(const vector<int> &nums) {
     if (nums.size() < 3) {
-      return res;
+      return {};
     }
 
+    int target = 0;
     sort(nums.begin(), nums.end());
-
+    vector<vector<int>> res;
     for (int i = 0; i < nums.size() - 2; ++i) {
       if (i > 0 && nums[i] == nums[i - 1]) {
         continue;
       }
-      int currTarget = -nums[i];
-      int left = i + 1;
-      int right = nums.size() - 1;
-      while (left < right) {
-        int currSum = nums[left] + nums[right];
-        if (currSum == currTarget) {
-          vector<int> sol = {nums[i], nums[left], nums[right]};
-          left += 1;
-          right -= 1;
-          while (nums[left] == nums[left - 1]) {
-            left += 1;
-          }
-          while (nums[right] == nums[right + 1]) {
-            right -= 1;
-          }
-          res.push_back(sol);
-        } else if (currSum < currTarget) {
-          left += 1;
+
+      int firstNum = nums[i];
+
+      int j = i + 1;
+      int k = nums.size() - 1;
+
+      while (j < k) {
+        int secondNum = nums[j];
+        int thirdNum = nums[k];
+
+        int sum = firstNum + secondNum + thirdNum;
+
+        if (sum > target) {
+          k -= 1;
+        } else if (sum < target) {
+          j += 1;
         } else {
-          right -= 1;
+          res.push_back({firstNum, secondNum, thirdNum});
+          while (j < k && nums[j] == secondNum) {
+            j += 1;
+          }
+          while (j < k && nums[k] == thirdNum) {
+            k -= 1;
+          }
         }
       }
     }

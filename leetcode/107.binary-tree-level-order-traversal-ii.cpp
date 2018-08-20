@@ -1,3 +1,4 @@
+#include <queue>
 #include <vector>
 using namespace std;
 /*
@@ -54,24 +55,25 @@ struct TreeNode {
 };
 #endif
 class Solution {
-  void dfs(TreeNode *node, vector<vector<int>> &res, int level) {
-    if (node == nullptr) {
+  void dfs(TreeNode *root, int depth, vector<vector<int>> &res) {
+    if (root == nullptr) {
       return;
     }
 
-    if (level == res.size()) {
+    if (depth == res.size()) {
       res.push_back({});
     }
 
-    res[level].push_back(node->val);
-    dfs(node->left, res, level + 1);
-    dfs(node->right, res, level + 1);
+    res[depth].push_back(root->val);
+    dfs(root->left, depth + 1, res);
+    dfs(root->right, depth + 1, res);
   }
 
 public:
   vector<vector<int>> levelOrderBottom(TreeNode *root) {
     vector<vector<int>> res;
-    dfs(root, res, 0);
-    return vector<vector<int>>{res.crbegin(), res.crend()};
+    dfs(root, 0, res);
+    reverse(res.begin(), res.end());
+    return res;
   }
 };

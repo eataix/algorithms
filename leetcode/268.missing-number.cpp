@@ -63,7 +63,8 @@ public:
 
     return res;
   }
-  int missingNumber2(vector<int> &nums) {
+
+  int missingNumber3(vector<int> &nums) {
     int res = 0;
     for (int i = 0; i < nums.size(); ++i) {
       res ^= (i + 1) ^ nums[i];

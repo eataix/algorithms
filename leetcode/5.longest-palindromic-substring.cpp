@@ -39,9 +39,8 @@ public:
     int minStart = -1;
     int maxLen = 0;
     for (int i = 0; i < s.size(); ++i) {
-      int len1 = expandAroundCenters(s, i, i);
-      int len2 = expandAroundCenters(s, i, i + 1);
-      int len = max(len1, len2);
+      int len =
+          max(expandAroundCenters(s, i, i), expandAroundCenters(s, i, i + 1));
       if (len > maxLen) {
         minStart = i - (len - 1) / 2;
         maxLen = len;
@@ -49,10 +48,7 @@ public:
     }
     return minStart == -1 ? "" : s.substr(minStart, maxLen);
   }
-  int expandAroundCenters(const string &s, int left, int right) {
-    int l = left;
-    int r = right;
-
+  int expandAroundCenters(const string &s, int l, int r) {
     while (l >= 0 && r < s.size() && s[l] == s[r]) {
       l -= 1;
       r += 1;

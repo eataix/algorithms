@@ -59,25 +59,25 @@ struct TreeNode {
 #endif
 
 class Solution {
-  unordered_map<TreeNode *, int> m;
+  int depth(TreeNode *root, int &res) {
+    if (root == nullptr) {
+      return 0;
+    }
+
+    auto l = depth(root->left, res);
+    auto r = depth(root->right, res);
+    res = max(res, l + r + 1);
+
+    return max(l, r) + 1;
+  }
 
 public:
   int diameterOfBinaryTree(TreeNode *root) {
-    int res = 0;
-    maxDepth(root, res);
-    return res;
-  }
-  int maxDepth(TreeNode *node, int &res) {
-    if (node == nullptr) {
+    if (root == nullptr) {
       return 0;
     }
-    if (m.count(node) > 0) {
-      return m[node];
-    }
-    int left = maxDepth(node->left, res);
-    int right = maxDepth(node->right, res);
-    res = max(res, left + right);
-    m[node] = max(left, right) + 1;
-    return m[node];
+    int res = 0;
+    depth(root, res);
+    return res - 1;
   }
 };

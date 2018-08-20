@@ -31,13 +31,11 @@ using namespace std;
 class Solution {
 public:
   int titleToNumber(string s) {
-    int total = 0;
-    int power = 0;
-    for (int i = s.size() - 1; i >= 0; --i) {
-      int v = s[i] - 'A' + 1;
-      total += v * pow(26, power);
-      power += 1;
+    int res = 0;
+    for (char ch : s) {
+      res *= 26;
+      res += ch - 'A' + 1;
     }
-    return total;
+    return res;
   }
 };
