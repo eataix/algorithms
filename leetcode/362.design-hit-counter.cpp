@@ -59,39 +59,26 @@ using namespace std;
  * test cases.
  */
 class HitCounter {
-  queue<pair<int, int>> hits;
-  int cnt;
+  queue<int> q;
 
 public:
   /** Initialize your data structure here. */
-  HitCounter() { cnt = 0; }
+  HitCounter() {}
 
   /** Record a hit.
       @param timestamp - The current timestamp (in seconds granularity). */
   void hit(int timestamp) {
-    while (!hits.empty() && timestamp - hits.front().first >= 300) {
-      cnt -= hits.front().second;
-      hits.pop();
-    }
-
-    cnt += 1;
-
-    if (!hits.empty() && timestamp == hits.back().first) {
-      hits.back().second += 1;
-    } else {
-      hits.push({timestamp, 1});
-    }
+    q.push(timestamp);
   }
 
   /** Return the number of hits in the past 5 minutes.
       @param timestamp - The current timestamp (in seconds granularity). */
   int getHits(int timestamp) {
-    while (!hits.empty() && timestamp - hits.front().first >= 300) {
-      cnt -= hits.front().second;
-      hits.pop();
+    while (!q.empty() && timestamp - q.front() >= 300) {
+      q.pop();
     }
 
-    return cnt;
+    return q.size();
   }
 };
 

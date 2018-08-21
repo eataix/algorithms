@@ -52,20 +52,24 @@ class Solution {
 
 public:
   string longestWord(vector<string> &words) {
-    sort(words.begin(), words.end());
+    unordered_set<string> dict{words.cbegin(), words.cend()};
 
-    unordered_set<string> s;
-
-    string res;
+    sort(words.begin(), words.end(), [](auto const &str1, auto const &str2) {
+      return str1.size() > str2.size() ||
+             (str1.size() == str2.size() && str1 < str2);
+    });
 
     for (auto const &word : words) {
-      if (word.size() == 1 || s.count(word.substr(0, word.size() - 1))) {
-        if (word.size() > res.size()) {
-          res = word;
+      int prefixLen = 1;
+      for (; prefixLen < word.size(); ++prefixLen) {
+        if (!dict.count(word.substr(0, prefixLen))) {
+          break;
         }
-        s.insert(word);
+      }
+      if (prefixLen == word.size()) {
+        return word;
       }
     }
-    return res;
+    return "";
   }
 };

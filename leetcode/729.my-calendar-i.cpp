@@ -64,7 +64,7 @@ public:
       return false;
     if (it != bookings.begin() && prev(it)->second > start)
       return false;
-    cal[start] = end;
+    bookings.insert({start, end});
     return true;
   }
 };

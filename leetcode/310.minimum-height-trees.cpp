@@ -68,50 +68,49 @@ using namespace std;
  *
  *
  */
+
 class Solution {
 public:
   vector<int> findMinHeightTrees(int n, vector<pair<int, int>> &edges) {
-    if (n == 1) {
-      return {0};
-    }
-
-    vector<int> res;
-    vector<unordered_set<int>> adj(n);
+    vector<int> indegress(n, 0);
+    vector<vector<int>> m(n);
     for (auto const &edge : edges) {
       auto u = edge.first;
       auto v = edge.second;
-      adj[u].insert(v);
-      adj[v].insert(u);
+      m[u].push_back(v);
+      m[v].push_back(u);
+      indegress[u] += 1;
+      indegress[v] += 1;
     }
 
     queue<int> q;
+
+    unordered_set<int> s;
     for (int i = 0; i < n; ++i) {
-      if (adj[i].size() == 1) {
+      if (indegress[i] == 1) {
+        q.push(i);
+      }
+      s.insert(i);
+    }
+
+    while (s.size() > 2) {
+      vector<int> toBeAdded;
+      while (!q.empty()) {
+        auto leave = q.front();
+        q.pop();
+
+        s.erase(leave);
+        for (int next : m[leave]) {
+          if (--indegress[next] == 1) {
+            toBeAdded.push_back(next);
+          }
+        }
+      }
+      for (int i : toBeAdded) {
         q.push(i);
       }
     }
 
-    while (n > 2) {
-      auto size = q.size();
-      n -= size;
-
-      for (int i = 0; i < size; ++i) {
-        int t = q.front();
-        q.pop();
-        for (auto a : adj[t]) {
-          adj[a].erase(t);
-          if (adj[a].size() == 1) {
-            q.push(a);
-          }
-        }
-      }
-    }
-
-    while (!q.empty()) {
-      res.push_back(q.front());
-      q.pop();
-    }
-
-    return res;
+    return vector<int>{s.cbegin(), s.cend()};
   }
 };
