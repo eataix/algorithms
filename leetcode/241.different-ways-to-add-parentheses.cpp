@@ -41,27 +41,28 @@ using namespace std;
  *
  */
 class Solution {
-public:
-  vector<int> diffWaysToCompute(const string &input) {
-    unordered_map<string, vector<int>> m;
-    return diffWaysToComputeRecursive(input, m);
-  }
 
-  vector<int>
-  diffWaysToComputeRecursive(const string &input,
-                             unordered_map<string, vector<int>> &m) {
-    if (m.find(input) != cend(m)) {
+  vector<int> helper(const string &input,
+                     unordered_map<string, vector<int>> &m) {
+    if (m.count(input)) {
       return m[input];
     }
+
     vector<int> res;
 
     for (int i = 0; i < input.size(); ++i) {
       char ch = input[i];
-      if (ch == '-' || ch == '+' || ch == '*') {
-        vector<int> left = diffWaysToComputeRecursive(input.substr(0, i), m);
-        vector<int> right = diffWaysToComputeRecursive(input.substr(i + 1), m);
-        for (int l : left) {
-          for (int r : right) {
+      switch (ch) {
+      case '+':
+      case '-':
+      case '*':
+        auto leftSubStr = input.substr(0, i);
+        auto rightSubStr = input.substr(i + 1);
+        auto leftRes = helper(leftSubStr, m);
+        auto rightRes = helper(rightSubStr, m);
+
+        for (auto const &l : leftRes) {
+          for (auto const &r : rightRes) {
             switch (ch) {
             case '+':
               res.push_back(l + r);
@@ -80,7 +81,13 @@ public:
     if (res.empty()) {
       res.push_back(stoi(input));
     }
-
     return m[input] = res;
+  }
+
+public:
+  vector<int> diffWaysToCompute(string input) {
+    unordered_map<string, vector<int>> m;
+
+    return helper(input, m);
   }
 };

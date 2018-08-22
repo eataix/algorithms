@@ -1,3 +1,5 @@
+#include <vector>
+using namespace std;
 /*
  * [304] Range Sum Query 2D - Immutable
  *
@@ -46,34 +48,25 @@
  */
 
 class NumMatrix {
-  vector<vector<int>> rowSums;
-  int numRows;
-  int numCols;
+  size_t numRows;
+  size_t numCols;
+  vector<vector<int>> presum;
 
 public:
-  NumMatrix(vector<vector<int>> matrix) {
-    numRows = matrix.size();
-    if (numRows == 0) {
-      numCols = 0;
-      return;
-    }
-    numCols = matrix[0].size();
-    rowSums.resize(numRows);
-    for (int r = 0; r < numRows; ++r) {
-      rowSums[r].resize(numCols + 1);
-      rowSums[r][0] = 0;
-      for (int c = 0; c < numCols; ++c) {
-        rowSums[r][c + 1] = rowSums[r][c] + matrix[r][c];
+  NumMatrix(vector<vector<int>> matrix)
+      : numRows{matrix.size()}, numCols{numRows == 0 ? 0 : matrix[0].size()},
+        presum(numRows + 1, vector<int>(numCols + 1, 0)) {
+    for (int r = 1; r <= numRows; ++r) {
+      for (int c = 1; c <= numCols; ++c) {
+        presum[r][c] = presum[r][c - 1] + presum[r - 1][c] +
+                       matrix[r - 1][c - 1] - presum[r - 1][c - 1];
       }
     }
   }
 
   int sumRegion(int row1, int col1, int row2, int col2) {
-    int res = 0;
-    for (int r = row1; r <= row2; ++r) {
-      res += rowSums[r][col2 + 1] - rowSums[r][col1];
-    }
-    return res;
+    return presum[row2 + 1][col2 + 1] - presum[row1][col2 + 1] -
+           presum[row2 + 1][col1] + presum[row1][col1];
   }
 };
 

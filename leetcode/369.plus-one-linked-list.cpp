@@ -51,28 +51,24 @@ public:
     auto dummy = new ListNode(0);
     dummy->next = head;
 
-    auto slow = dummy;
-    auto fast = dummy;
+    auto nonNine = dummy;
 
-    while (fast->next != nullptr) {
-      fast = fast->next;
-      if (fast->val != 9) {
-        slow = fast;
+    auto curr = head;
+    while (curr != nullptr) {
+      if (curr->val != 9) {
+        nonNine = curr;
       }
+      curr = curr->next;
     }
 
-    slow->val += 1;
-    slow = slow->next;
+    nonNine->val += 1;
 
-    while (slow != nullptr) {
-      slow->val = 0;
-      slow = slow->next;
+    curr = nonNine->next;
+    while (curr != nullptr) {
+      curr->val = 0;
+      curr = curr->next;
     }
 
-    if (dummy->val == 0) {
-      return dummy->next;
-    } else {
-      return dummy;
-    }
+    return dummy->val == 0 ? dummy->next : dummy;
   }
 };

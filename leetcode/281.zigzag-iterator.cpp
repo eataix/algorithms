@@ -53,12 +53,11 @@ class ZigzagIterator {
 
 public:
   ZigzagIterator(vector<int> &v1, vector<int> &v2) {
-    if (!v1.empty()) {
-      q.push({v1.cbegin(), v1.cend()});
-    }
+    v.push_back(v1);
+    v.push_back(v2);
 
-    if (!v2.empty()) {
-      q.push({v2.cbegin(), v2.cend()});
+    for (auto const &i : v) {
+      q.push({i.cbegin(), i.cend()});
     }
   }
 
@@ -71,7 +70,12 @@ public:
     return *p.first;
   }
 
-  bool hasNext() { return !q.empty(); }
+  bool hasNext() {
+    while (!q.empty() && q.front().first == q.front().second) {
+      q.pop();
+    }
+    return !q.empty();
+  }
 };
 
 /**

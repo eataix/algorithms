@@ -37,19 +37,20 @@ using namespace std;
  *
  *
  */
-class Solution {
-  string shift(const string &s) {
-    string t;
+static inline string shift(const string &s) {
+  string t;
 
-    for (int i = 1; i < s.size(); ++i) {
-      int diff = s[i] - s[i - 1];
-      if (diff < 0) {
-        diff += 26;
-      }
-      t += 'a' + diff + ',';
+  for (int i = 1; i < s.size(); ++i) {
+    int diff = s[i] - s[i - 1];
+    if (diff < 0) {
+      diff += 26;
     }
-    return t;
+    t += 'a' + diff + ',';
   }
+  return t;
+}
+
+class Solution {
 
 public:
   vector<vector<string>> groupStrings(const vector<string> &strings) {
@@ -60,9 +61,7 @@ public:
 
     vector<vector<string>> groups;
     for (auto const &kv : m) {
-      auto group = kv.second;
-      sort(group.begin(), group.end());
-      groups.push_back(group);
+      groups.push_back(kv.second);
     }
     return groups;
   }

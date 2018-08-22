@@ -44,30 +44,39 @@ using namespace std;
  *
  *
  */
+
 class Solution {
 public:
   int largestOverlap(vector<vector<int>> &A, vector<vector<int>> &B) {
+    if (A.empty() || A[0].empty()) {
+      return 0;
+    }
+
+    int numRows = A.size();
+    int numCols = A[0].size();
+
+    auto id = [&numCols](int r, int c) { return r * numCols * 2 + c; };
+
     vector<int> LA;
     vector<int> LB;
-    auto N = A.size();
-    unordered_map<int, int> count;
-
-    for (int i = 0; i < N * N; ++i) {
-      if (A[i / N][i % N] == 1) {
-        LA.push_back(i / N * 100 + i % N);
-      }
-      if (B[i / N][i % N] == 1) {
-        LB.push_back(i / N * 100 + i % N);
+    for (int r = 0; r < numRows; ++r) {
+      for (int c = 0; c < numCols; ++c) {
+        if (A[r][c] == 1) {
+          LA.push_back(id(r, c));
+        }
+        if (B[r][c] == 1) {
+          LB.push_back(id(r, c));
+        }
       }
     }
+    unordered_map<int, int> m;
     for (int i : LA) {
       for (int j : LB) {
-        count[i - j] += 1;
+        m[i - j] += 1;
       }
     }
-
     int res = 0;
-    for (auto kv : count) {
+    for (auto const &kv : m) {
       res = max(res, kv.second);
     }
     return res;

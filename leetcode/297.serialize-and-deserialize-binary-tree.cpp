@@ -60,42 +60,52 @@ struct TreeNode {
   TreeNode(int x) : val(x), left(NULL), right(NULL) {}
 };
 #endif
+
 class Codec {
-  void serialize(TreeNode *root, ostringstream &out) {
+  void serialize(Node *root, ostringstream &out) {
     if (root == nullptr) {
       out << "# ";
-    } else {
-      out << root->val << ' ';
-      serialize(root->left, out);
-      serialize(root->right, out);
-    }
-  }
-
-  TreeNode *deserialize(istringstream &in) {
-    string val;
-    in >> val;
-    if (val == "#") {
-      return nullptr;
+      return;
     }
 
-    TreeNode *root = new TreeNode(stoi(val));
+    out << root->val << " ";
+    out << root->children.size() << " ";
 
-    root->left = deserialize(in);
-    root->right = deserialize(in);
-    return root;
+    for (auto const &c : root->children) {
+      serialize(c, out);
+    }
   }
 
 public:
   // Encodes a tree to a single string.
-  string serialize(TreeNode *root) {
+  string serialize(Node *root) {
     ostringstream out;
     serialize(root, out);
     return out.str();
   }
 
+  Node *deserialize(istringstream &in) {
+    string str;
+    in >> str;
+    if (str == "#") {
+      return nullptr;
+    }
+
+    int val = stoi(str);
+    int numC;
+    in >> numC;
+    auto newNode = new Node();
+    newNode->val = val;
+    for (int i = 0; i < numC; ++i) {
+      newNode->children.push_back(deserialize(in));
+    }
+
+    return newNode;
+  }
+
   // Decodes your encoded data to tree.
-  TreeNode *deserialize(string data) {
-    istringstream in(data);
+  Node *deserialize(string data) {
+    istringstream in{data};
     return deserialize(in);
   }
 };

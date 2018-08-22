@@ -62,15 +62,15 @@ public:
       res.push_back(intervals[idx]);
     }
 
+    for (; idx < intervals.size() && intervals[idx].start <= newInterval.end;
+         ++idx) {
+      newInterval.start = min(newInterval.start, intervals[idx].start);
+      newInterval.end = max(newInterval.end, intervals[idx].end);
+    }
     res.push_back(newInterval);
 
-    for (; idx < intervals.size(); ++idx) {
-      if (intervals[idx].start <= res.back().end) {
-        res.back().start = min(res.back().start, intervals[idx].start);
-        res.back().end = max(res.back().end, intervals[idx].end);
-      } else {
-        res.push_back(intervals[idx]);
-      }
+    while (idx < intervals.size()) {
+      res.push_back(intervals[idx++]);
     }
     return res;
   }

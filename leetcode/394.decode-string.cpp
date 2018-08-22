@@ -37,38 +37,38 @@ using namespace std;
  *
  *
  */
+
 class Solution {
 public:
   string decodeString(string s) {
-    string res = "";
-    string t = "";
-    stack<int> s_num;
-    stack<string> s_str;
+    stack<int> numS;
+    stack<string> strS;
 
-    int cnt = 0;
-    for (int i = 0; i < s.size(); ++i) {
-      if (isdigit(s[i])) {
-        cnt = 10 * cnt + s[i] - '0';
-      } else if (s[i] == '[') {
-        s_num.push(cnt);
-        s_str.push(t);
-        cnt = 0;
-        t.clear();
-      } else if (s[i] == ']') {
-        int k = s_num.top();
-        s_num.pop();
-
+    int num = 0;
+    string str;
+    for (char ch : s) {
+      if (isdigit(ch)) {
+        num *= 10;
+        num += ch - '0';
+      } else if (ch == '[') {
+        numS.push(num);
+        num = 0;
+        strS.push(str);
+        str.clear();
+      } else if (ch == ']') {
+        int k = numS.top();
+        numS.pop();
+        string s;
         for (int j = 0; j < k; ++j) {
-          s_str.top() += t;
+          s += str;
         }
-
-        t = s_str.top();
-        s_str.pop();
+        str = strS.top() + s;
+        strS.pop();
       } else {
-        t += s[i];
+        str += ch;
       }
     }
 
-    return s_str.empty() ? t : s_str.top();
+    return str;
   }
 };

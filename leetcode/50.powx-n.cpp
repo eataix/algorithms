@@ -45,54 +45,29 @@ using namespace std;
  * https://www.cnblogs.com/grandyang/p/4383775.html
  *
  */
+
 class Solution {
-public:
-  double myPow(double x, int n) {
-    long long p = n;
-    if (p < 0) {
-      x = 1 / x;
-      p = -p;
+  double myPow2(double x, long long n) {
+    if (n == 0) {
+      return 1.0;
     }
 
-    if (p == 0) {
-      return 1;
+    if (n < 0) {
+      return 1 / myPow2(x, -n);
     }
+
     double residual = 1;
-    while (p > 1) {
-      if (p % 2 == 1) {
+    while (n > 1) {
+      if (n % 2 == 1) {
         residual *= x;
+        n -= 1;
       }
-      x = x * x;
-      p /= 2;
+      x *= x;
+      n /= 2;
     }
     return x * residual;
   }
 
-  double myPow2(double x, int n) {
-    if (n < 0) {
-      return 1 / p(x, -n);
-    } else {
-      return p(x, n);
-    }
-  }
-
-  double p(double x, int n) {
-    if (n == 0) {
-      return 1;
-    }
-
-    double v = p(x, n / 2);
-    if (n % 2 == 0) {
-      return v * v;
-    } else {
-      return v * v * x;
-    }
-  }
+public:
+  double myPow(double x, int n) { return myPow2(x, static_cast<long long>(n)); }
 };
-
-#ifdef DEBUG
-int main() {
-  Solution sol;
-  sol.myPow(2.1, 3);
-}
-#endif
