@@ -49,17 +49,16 @@ public:
 
     for (int len = 2; len <= n; ++len) {
       for (int start = 0; start <= n; ++start) {
-        auto end = start + len - 1;
+        int end = start + len - 1;
         if (end > n) {
           break;
         }
-        auto minV = numeric_limits<int>::max();
-        for (auto piv = start; piv < end; ++piv) {
-          auto v = piv + max(dp[start][piv - 1], dp[piv + 1][end]);
-          minV = min(minV, v);
+        dp[start][end] = numeric_limits<int>::max();
+        for (int k = start; k <= end; ++k) {
+          dp[start][end] = min(dp[start][end],
+                               k + max((start <= k - 1 ? dp[start][k - 1] : 0),
+                                       (k + 1 <= end ? dp[k + 1][end] : 0)));
         }
-
-        dp[start][end] = minV;
       }
     }
 

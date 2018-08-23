@@ -29,7 +29,6 @@ public:
 
     for (auto it = digits.rbegin(); it != digits.rend(); ++it) {
       *it += carry;
-
       carry = *it / 10;
       *it %= 10;
     }
