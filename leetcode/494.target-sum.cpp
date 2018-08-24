@@ -65,14 +65,14 @@ public:
   }
 
   int findTargetSumWays2(vector<int> &nums, int S) {
-    auto n = nums.size();
+    int n = nums.size();
     vector<unordered_map<int, int>> dp(n + 1);
 
     dp[0][0] = 1;
     for (int i = 0; i < n; ++i) {
-      for (auto &a : dp[i]) {
-        auto sum = a.first;
-        auto cnt = a.second;
+      for (auto const &kv : dp[i]) {
+        auto sum = kv.first;
+        auto cnt = kv.second;
 
         dp[i + 1][sum + nums[i]] += cnt;
         dp[i + 1][sum - nums[i]] += cnt;

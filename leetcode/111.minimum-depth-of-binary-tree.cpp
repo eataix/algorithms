@@ -54,12 +54,9 @@ public:
   int minDepth(TreeNode *root) {
     if (root == nullptr) {
       return 0;
-    }
-    if (root->left == nullptr && root->right == nullptr) {
+    } else if (root->left == nullptr && root->right == nullptr) {
       return 1;
-    }
-
-    if (root->left == nullptr) {
+    } else if (root->left == nullptr) {
       return minDepth(root->right) + 1;
     } else if (root->right == nullptr) {
       return minDepth(root->left) + 1;

@@ -41,11 +41,21 @@ using namespace std;
  * You may assume that all words are consist of lowercase letters a-z.
  *
  */
+
+static inline int id(char ch) {
+  if (isalpha(ch)) {
+    return ch - 'a';
+  } else {
+    return 26;
+  }
+}
+
 class TrieNode {
 public:
-  unordered_map<char, vector<TrieNode *>> children;
+  vector<vector<TrieNode *>> children;
   bool isEnd;
-  TrieNode() : isEnd(false) {}
+
+  TrieNode() : children(27), isEnd(false) {}
 };
 
 class WordDictionary {
@@ -60,38 +70,39 @@ public:
     auto curr = root;
 
     for (char ch : word) {
-      if (curr->children[ch].empty()) {
+      int i = id(ch);
+      if (curr->children[i].empty()) {
         auto newNode = new TrieNode();
-        curr->children[ch].push_back(newNode);
-        curr->children['.'].push_back(newNode);
+        curr->children[i].push_back(newNode);
+        curr->children[id('.')].push_back(newNode);
       }
-      curr = curr->children[ch][0];
+      curr = curr->children[i][0];
     }
-
     curr->isEnd = true;
   }
 
-  /** Returns if the word is in the data structure. A word could contain the dot
-   * character '.' to represent any one letter. */
-  bool search(string word) { return search(word, root, 0); }
-
-  bool search(string word, TrieNode *node, int idx) {
-    if (idx == word.size()) {
-      return node != nullptr && node->isEnd;
+  bool helper(const string &word, int len, TrieNode *curr) {
+    if (len == word.size()) {
+      return curr != nullptr && curr->isEnd;
     }
 
-    char ch = word[idx];
-    if (!node->children.count(ch)) {
+    char ch = word[len];
+    int i = id(ch);
+
+    if (curr->children[i].empty()) {
       return false;
     }
 
-    for (auto next : node->children[ch]) {
-      if (search(word, next, idx + 1)) {
+    for (auto const &next : curr->children[i]) {
+      if (helper(word, len + 1, next)) {
         return true;
       }
     }
     return false;
   }
+  /** Returns if the word is in the data structure. A word could contain the dot
+   * character '.' to represent any one letter. */
+  bool search(string word) { return helper(word, 0, root); }
 };
 
 /**

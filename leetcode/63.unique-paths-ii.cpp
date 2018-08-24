@@ -62,12 +62,8 @@ public:
           dp[r][c] = 0;
         } else if (r == 0 && c == 0) {
           dp[r][c] = 1;
-        } else if (r == 0 && c > 0) {
-          dp[r][c] = dp[r][c - 1];
-        } else if (r > 0 && c == 0) {
-          dp[r][c] = dp[r - 1][c];
         } else {
-          dp[r][c] = dp[r - 1][c] + dp[r][c - 1];
+          dp[r][c] = (r > 0 ? dp[r - 1][c] : 0) + (c > 0 ? dp[r][c - 1] : 0);
         }
       }
     }

@@ -52,26 +52,28 @@ public:
   LRUCache(int capacity) { cap = capacity; }
 
   int get(int key) {
-    auto it = m.find(key);
-    if (it == m.cend()) {
+    if (!m.count(key)) {
       return -1;
     }
 
-    l.splice(l.begin(), l, it->second);
-    return it->second->second;
+    auto it = m[key];
+    l.splice(l.begin(), l, it);
+    return it->second;
   }
 
   void put(int key, int value) {
-    auto it = m.find(key);
-    if (it != m.cend()) {
-      l.erase(it->second);
+    if (m.count(key)) {
+      l.erase(m[key]);
+      m.erase(key);
     }
-    l.push_front(make_pair(key, value));
+
+    l.push_front({key, value});
     m[key] = l.begin();
+
     if (m.size() > cap) {
-      int k = l.rbegin()->first;
+      auto p = l.back();
+      m.erase(p.first);
       l.pop_back();
-      m.erase(k);
     }
   }
 

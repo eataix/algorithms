@@ -68,4 +68,24 @@ public:
     }
     s.resize(endIdx);
   }
+
+  void reverseWords1(string &s) {
+    istringstream in{s};
+
+    string str;
+    stack<string> st;
+    while (in >> str) {
+      st.push(str);
+    }
+
+    string res;
+    while (!st.empty()) {
+      res += st.top();
+      st.pop();
+      if (!st.empty()) {
+        res += ' ';
+      }
+    }
+    s = res;
+  }
 };

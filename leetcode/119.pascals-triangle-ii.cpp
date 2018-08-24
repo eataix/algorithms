@@ -24,30 +24,15 @@ using namespace std;
 class Solution {
 public:
   vector<int> getRow(int rowIndex) {
-    int numRows = rowIndex + 1;
-    vector<int> res(numRows, 0);
-    cout << res.size() << endl;
+    vector<int> dp(rowIndex + 1, 0);
+    dp[0] = 1;
 
-    res[0] = 1;
-
-    for (int i = 1; i <= numRows; ++i) {
-      for (int j = i - 1; j >= 0; --j) {
-        if (j == 0 || j == i - 1) {
-          res[j] = 1;
-        } else {
-          res[j] = res[j] + res[j - 1];
-        }
+    for (int r = 1; r <= rowIndex; ++r) {
+      for (int c = r; c >= 1; --c) {
+        dp[c] = dp[c] + dp[c - 1];
       }
     }
-
-#ifdef DEBUG
-    for (int k = 0; k < res.size(); ++k) {
-      cout << res[k] << " ";
-    }
-    cout << endl;
-#endif
-
-    return res;
+    return dp;
   }
 };
 

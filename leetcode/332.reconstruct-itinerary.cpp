@@ -55,15 +55,15 @@ using namespace std;
  */
 
 class Solution {
-  void dfs(unordered_map<string, multiset<string>> &m, const string &s,
+  void dfs(unordered_map<string, multiset<string>> &m, const string &currCity,
            vector<string> &res) {
-    while (!m[s].empty()) {
-      auto b = m[s].begin();
-      string t = *b;
-      m[s].erase(b);
-      dfs(m, t, res);
+    while (!m[currCity].empty()) {
+      auto it = m[currCity].begin();
+      auto nextCity = *it;
+      m[currCity].erase(it);
+      dfs(m, nextCity, res);
     }
-    res.push_back(s);
+    res.push_back(currCity);
   }
 
 public:

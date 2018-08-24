@@ -44,18 +44,6 @@ public:
     for (int i = 1; i <= num; ++i) {
       res[i] = res[i >> 1] + (res & 1);
     }
-  }
   return res;
-}
-
-vector<int>
-countBits2(int num) {
-  vector<int> res(num + 1, 0);
-
-  for (int i = 1; i <= num; ++i) {
-    res[i] = res[i & (i - 1)] + 1;
   }
-  return res;
-}
-}
-;
+};

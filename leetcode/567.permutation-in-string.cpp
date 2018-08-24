@@ -50,6 +50,34 @@ class Solution {
 
 public:
   bool checkInclusion(string s1, string s2) {
+    if (s1.size() > s2.size()) {
+      return false;
+    }
+
+    vector<int> needed(26, 0);
+    for (char ch : s1) {
+      needed[ch - 'a'] += 1;
+    }
+
+    vector<int> included(26, 0);
+
+    for (int idx = 0; idx < s2.size(); ++idx) {
+      char ch = s2[idx];
+      included[ch - 'a'] += 1;
+
+      int out = idx - s1.size();
+      if (out >= 0) {
+        included[s2[out] - 'a'] -= 1;
+      }
+
+      if (included == needed) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  bool checkInclusion2(string s1, string s2) {
     int len1 = s1.size();
     int len2 = s2.size();
     if (len1 > len2) {

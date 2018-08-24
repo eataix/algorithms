@@ -35,51 +35,54 @@ using namespace std;
  *
  *
  */
+
+const vector<pair<int, int>> dirs{{0, 1}, {0, -1}, {-1, 0}, {1, 0}};
+
 class Solution {
+  bool dfs(const vector<vector<char>> &board, const string &word, int row,
+           int col, int len, vector<vector<bool>> &visited) {
+    if (len == word.size()) {
+      return true;
+    }
+    int numRows = board.size();
+    int numCols = board[0].size();
+
+    if (row < 0 || row >= numRows || col < 0 || col >= numCols ||
+        board[row][col] != word[len] || visited[row][col]) {
+      return false;
+    }
+
+    visited[row][col] = true;
+
+    for (auto const &dir : dirs) {
+      auto newRow = row + dir.first;
+      auto newCol = col + dir.second;
+      if (dfs(board, word, newRow, newCol, len + 1, visited)) {
+        return true;
+      }
+    }
+
+    visited[row][col] = false;
+    return false;
+  }
+
 public:
-  bool exist(const vector<vector<char>> &board, string word) {
+  bool exist(vector<vector<char>> &board, string word) {
     if (board.empty() || board[0].empty()) {
       return false;
     }
-    int n = board.size();
-    int m = board[0].size();
-    vector<vector<bool>> visited(n, vector<bool>(m, false));
+    int numRows = board.size();
+    int numCols = board[0].size();
 
-    for (int i = 0; i < n; ++i) {
-      for (int j = 0; j < m; ++j) {
-        if (findWord(board, i, j, word, 0, visited)) {
+    vector<vector<bool>> visited(numRows, vector<bool>(numRows, false));
+
+    for (int r = 0; r < numRows; ++r) {
+      for (int c = 0; c < numCols; ++c) {
+        if (dfs(board, word, r, c, 0, visited)) {
           return true;
         }
       }
     }
-    return false;
-  }
-
-  bool findWord(const vector<vector<char>> &board, int i, int j,
-                const string &word, int idx, vector<vector<bool>> &visited) {
-
-    if (idx == word.size()) {
-      return true;
-    }
-    if (i < 0 || i >= board.size() || j < 0 || j >= board[0].size() ||
-        visited[i][j] || board[i][j] != word[idx]) {
-      return false;
-    }
-
-    visited[i][j] = true;
-    if (findWord(board, i, j - 1, word, idx + 1, visited)) {
-      return true;
-    }
-    if (findWord(board, i, j + 1, word, idx + 1, visited)) {
-      return true;
-    }
-    if (findWord(board, i - 1, j, word, idx + 1, visited)) {
-      return true;
-    }
-    if (findWord(board, i + 1, j, word, idx + 1, visited)) {
-      return true;
-    }
-    visited[i][j] = false;
     return false;
   }
 };

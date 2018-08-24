@@ -21,10 +21,6 @@ using namespace std;
 class Solution {
 public:
   bool containsDuplicate(vector<int> &nums) {
-    unordered_set<int> unique;
-    for (int num : nums) {
-      unique.insert(num);
-    }
-    return unique.size() < nums.size();
+    return unordered_set<int>{nums.cbegin(), nums.cend()}.size() < nums.size();
   }
 };
