@@ -44,6 +44,6 @@ public:
     for (int i = 1; i <= num; ++i) {
       res[i] = res[i >> 1] + (res & 1);
     }
-  return res;
+    return res;
   }
 };

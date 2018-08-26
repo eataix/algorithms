@@ -40,35 +40,49 @@ using namespace std;
  *
  */
 
+static inline int toMinutes(int h, int m) { return h * 60 + m; }
+
+static inline bool isValid(const vector<int> &time) {
+  int h = time[0] * 10 + time[1];
+  int m = time[2] * 10 + time[3];
+  return h <= 23 && m <= 59;
+}
+
+static inline int toMinute(const vector<int> &time) {
+  int h = time[0] * 10 + time[1];
+  int m = time[2] * 10 + time[3];
+  return toMinutes(h, m);
+}
+
 static inline int timeDiff(int t1, int t2) {
   if (t1 == t2) {
     return numeric_limits<int>::max();
   }
-
-  return ((t2 - t1) + 1440) % 1440;
+  return (t1 - t2 + 1440) % 1440;
 }
 
-static inline int toTime(int h, int m) { return h * 60 + m; }
+static inline int timeDiff(const vector<int> &t1, const vector<int> &t2) {
+  return timeDiff(toMinute(t1), toMinute(t2));
+}
+
+static inline string toStr(const vector<int> &time) {
+  return to_string(time[0]) + to_string(time[1]) + ":" + to_string(time[2]) +
+         to_string(time[3]);
+}
 
 class Solution {
-  void dfs(const vector<int> &digits, vector<int> &out, int &best,
-           const int target) {
+  void dfs(vector<int> &out, const vector<int> &digits, vector<int> &best,
+           const vector<int> &target) {
     if (out.size() == 4) {
-      int curr_h = out[0] * 10 + out[1];
-      int curr_m = out[2] * 10 + out[3];
-      if (curr_h > 23 || curr_m > 59) {
-        return;
-      }
-      int curr_time = toTime(curr_h, curr_m);
-      if (timeDiff(target, curr_time) < timeDiff(target, best)) {
-        best = curr_time;
+      if (isValid(out) && timeDiff(out, target) < timeDiff(best, target)) {
+        best = out;
       }
       return;
     }
 
-    for (int digit : digits) {
-      out.push_back(digit);
-      dfs(digits, out, best, target);
+    for (int d : digits) {
+      out.push_back(d);
+      dfs(out, digits, best, target);
       out.pop_back();
     }
   }
@@ -78,17 +92,11 @@ public:
     vector<int> digits{time[0] - '0', time[1] - '0', time[3] - '0',
                        time[4] - '0'};
     vector<int> out;
+    vector<int> now = digits;
+    vector<int> best = now;
 
-    int h = stoi(time.substr(0, 2));
-    int m = stoi(time.substr(3));
+    dfs(out, digits, best, now);
 
-    int now = toTime(h, m);
-    int best = now;
-
-    dfs(digits, out, best, now);
-
-    char buff[5];
-    sprintf(buff, "%02d:%02d", best / 60, best % 60);
-    return string(buff);
+    return toStr(best);
   }
 };

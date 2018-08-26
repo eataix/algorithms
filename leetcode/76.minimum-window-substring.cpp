@@ -35,22 +35,21 @@ using namespace std;
 class Solution {
 public:
   string minWindow(string s, string t) {
-    string res = "";
     if (t.size() > s.size()) {
-      return res;
+      return "";
     }
 
-    int left = 0;
-    int count = 0;
+    string res;
     int minLen = s.size() + 1;
 
     vector<int> tm(256, 0);
-    vector<int> sm(256, 0);
-
     for (const auto &ch : t) {
       tm[ch] += 1;
     }
 
+    vector<int> sm(256, 0);
+    int left = 0;
+    int count = 0;
     for (int right = 0; right < s.size(); ++right) {
       if (tm[s[right]] > 0) {
         sm[s[right]] += 1;
@@ -59,8 +58,9 @@ public:
         }
 
         while (count == t.size()) {
-          if (right - left + 1 < minLen) {
-            minLen = right - left + 1;
+          int currLen = right - left + 1;
+          if (currLen < minLen) {
+            minLen = currLen;
             res = s.substr(left, minLen);
           }
           if (tm[s[left]] > 0) {
@@ -73,6 +73,7 @@ public:
         }
       }
     }
+
     return res;
   }
 };

@@ -75,27 +75,19 @@ class Solution:
         for i, f in enumerate(flowers):
             days[f - 1] = i + 1
 
-        left = 0
-        right = left + k + 1
-
+        left, right = 0, k + 1
         res = len(flowers) + 1
 
         curr = 1
         while right < len(flowers):
+            if days[curr] <= days[left] or days[curr] <= days[right]:
+                if curr == right:
+                    res = min(res, max(days[left], days[right]))
 
-            if days[curr] > days[left] and days[curr] > days[right]:
-                curr += 1
-                continue
-
-            if curr == right:
-                res = min(res, max(days[left], days[right]))
-
-            left = curr
-            right = left + k + 1
+                left, right = curr, curr + k + 1
 
             curr += 1
 
         if res == len(flowers) + 1:
             return -1
-        else:
-            return res
+        return res

@@ -33,19 +33,20 @@ using namespace std;
 class Solution {
 public:
   int minSubArrayLen(int s, vector<int> &nums) {
-    int n = nums.size();
-    int res = n + 1;
-
-    int left = 0;
     int sum = 0;
-    for (int i = 0; i < n; ++i) {
-      sum += nums[i];
+    int left = 0;
+    int minLen = nums.size() + 1;
+    for (int right = 0; right < nums.size(); ++right) {
+      sum += nums[right];
       while (sum >= s) {
-        res = min(res, i - left + 1);
+        int currLen = right - left + 1;
+        minLen = min(minLen, currLen);
+
         sum -= nums[left];
         left += 1;
       }
     }
-    return res > n ? 0 : res;
+
+    return minLen > nums.size() ? 0 : minLen;
   }
 };

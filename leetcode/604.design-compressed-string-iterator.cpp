@@ -56,41 +56,37 @@ using namespace std;
  *
  */
 class StringIterator {
+  int idx = 0;
+  int repeat = 0;
   string str;
-  int i;
-  long rep;
   char ch;
 
 public:
-  StringIterator(string compressedString) {
-    str = compressedString;
-    i = 0;
-    rep = 0;
-    ch = ' ';
-  }
-
-  char next() {
-    if (rep > 0) {
-      rep -= 1;
-      return ch;
-    } else if (i < str.size()) {
-      ch = str[i];
-      int j = i + 1;
-
-      while (j < str.size() && isdigit(str[j])) {
-        j += 1;
-      }
-
-      auto num = str.substr(i + 1, j - 1 - i);
-      rep = stol(num) - 1;
-      i = j;
-      return ch;
-    } else {
-      return ' ';
+  StringIterator(string compressedString) : str(compressedString) {
+    if (!str.empty()) {
+      ch = str[0];
     }
   }
 
-  bool hasNext() { return rep > 0 || i < str.size(); }
+  char next() {
+    if (!hasNext()) {
+      return ' ';
+    }
+
+    if (repeat == 0) {
+      ch = str[idx++];
+      int num = 0;
+      while (idx < str.size() && isdigit(str[idx])) {
+        num = num * 10 + str[idx] - '0';
+        idx += 1;
+      }
+      repeat = num;
+    }
+    repeat -= 1;
+    return ch;
+  }
+
+  bool hasNext() { return repeat != 0 || idx < str.size(); }
 };
 
 /**
