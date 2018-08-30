@@ -33,33 +33,33 @@ using namespace std;
 struct ListNode {
   int val;
   ListNode *next;
-  ListNode(int x) : val(x), next(NULL) {}
+  ListNode(int x) : val(x), next(nullptr) {}
 };
 #endif
 
 class Solution {
 public:
   ListNode *mergeTwoLists(ListNode *l1, ListNode *l2) {
-    ListNode *head = new ListNode(-1);
-    ListNode *l = head;
-    while (l1 != NULL && l2 != NULL) {
-      if (l1->val <= l2->val) {
-        l->next = l1;
+    ListNode dummy{-1};
+    auto curr = &dummy;
+
+    while (l1 != nullptr && l2 != nullptr) {
+      if (l1->val < l2->val) {
+        curr->next = l1;
         l1 = l1->next;
       } else {
-        l->next = l2;
+        curr->next = l2;
         l2 = l2->next;
       }
-      l = l->next;
+      curr = curr->next;
     }
 
-    if (l1 != NULL) {
-      l->next = l1;
+    if (l1 != nullptr) {
+      curr->next = l1;
     }
-    if (l2 != NULL) {
-      l->next = l2;
+    if (l2 != nullptr) {
+      curr->next = l2;
     }
-
-    return head->next;
+    return dummy.next;
   }
 };

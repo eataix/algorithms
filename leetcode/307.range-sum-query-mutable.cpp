@@ -38,46 +38,51 @@ using namespace std;
  *
  */
 
-static inline int lowBit(int i) { return i & -i; }
+static inline int low_bit(int i) { return i & -i; }
+
+class BIT {
+  vector<int> nums;
+
+public:
+  BIT(int n) : nums(n + 1, 0) {}
+
+  int query(int i) {
+    i += 1;
+    int res = 0;
+    while (i > 0) {
+      res += nums[i];
+      i -= low_bit(i);
+    }
+    return res;
+  }
+
+  void update(int i, int val) {
+    i += 1;
+    while (i < nums.size()) {
+      nums[i] += val;
+      i += low_bit(i);
+    }
+  }
+};
 
 class NumArray {
   vector<int> nums_;
-  int n_;
-  vector<int> BIT_;
-
-  void init(int i, int val) {
-    i += 1;
-    while (i <= n_) {
-      BIT_[i] += val;
-      i += lowBit(i);
-    }
-  }
-
-  int getSum(int i) {
-    int sum = 0;
-    i += 1;
-
-    while (i > 0) {
-      sum += BIT_[i];
-      i -= lowBit(i);
-    }
-    return sum;
-  }
+  BIT bit;
 
 public:
-  NumArray(vector<int> nums) : nums_(nums), n_(nums_.size()), BIT_(n_ + 1, 0) {
-    for (int i = 0; i < n_; ++i) {
-      init(i, nums_[i]);
+  NumArray(vector<int> nums) : bit(nums.size()), nums_(nums.size(), 0) {
+    for (int i = 0; i < nums.size(); ++i) {
+      update(i, nums[i]);
     }
   }
 
   void update(int i, int val) {
-    int diff = val - nums_[i];
+    int delta = val - nums_[i];
     nums_[i] = val;
-    init(i, diff);
+    bit.update(i, delta);
   }
 
-  int sumRange(int i, int j) { return getSum(j) - getSum(i - 1); }
+  int sumRange(int i, int j) { return bit.query(j) - bit.query(i - 1); }
 };
 
 /**
@@ -86,7 +91,3 @@ public:
  * obj.update(i,val);
  * int param_2 = obj.sumRange(i,j);
  */
-
-#ifdef DEBUG
-int main() { NumArray array{{0, 9, 5, 7, 3}}; }
-#endif

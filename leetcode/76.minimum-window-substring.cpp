@@ -1,4 +1,5 @@
 #include <string>
+#include <unordered_set>
 #include <vector>
 using namespace std;
 /*
@@ -32,40 +33,40 @@ using namespace std;
  *
  *
  */
+
 class Solution {
 public:
   string minWindow(string s, string t) {
-    if (t.size() > s.size()) {
-      return "";
+    int required = unordered_set<char>(t.cbegin(), t.cend()).size();
+    vector<int> tCount(128, 0);
+    for (char ch : t) {
+      tCount[ch] += 1;
     }
 
-    string res;
-    int minLen = s.size() + 1;
+    vector<int> sCount(128, 0);
 
-    vector<int> tm(256, 0);
-    for (const auto &ch : t) {
-      tm[ch] += 1;
-    }
-
-    vector<int> sm(256, 0);
     int left = 0;
     int count = 0;
+    int res = numeric_limits<int>::max();
+    int minStart = -1;
     for (int right = 0; right < s.size(); ++right) {
-      if (tm[s[right]] > 0) {
-        sm[s[right]] += 1;
-        if (sm[s[right]] <= tm[s[right]]) {
+      char ch = s[right];
+      if (tCount[ch] > 0) {
+
+        sCount[ch] += 1;
+        if (sCount[ch] == tCount[ch]) {
           count += 1;
         }
 
-        while (count == t.size()) {
-          int currLen = right - left + 1;
-          if (currLen < minLen) {
-            minLen = currLen;
-            res = s.substr(left, minLen);
+        while (count == required) {
+          auto len = right - left + 1;
+          if (len < res) {
+            minStart = left;
+            res = len;
           }
-          if (tm[s[left]] > 0) {
-            sm[s[left]] -= 1;
-            if (sm[s[left]] < tm[s[left]]) {
+          if (tCount[s[left]] > 0) {
+            sCount[s[left]] -= 1;
+            if (sCount[s[left]] < tCount[s[left]]) {
               count -= 1;
             }
           }
@@ -73,7 +74,6 @@ public:
         }
       }
     }
-
-    return res;
+    return minStart == -1 ? "" : s.substr(minStart, res);
   }
 };

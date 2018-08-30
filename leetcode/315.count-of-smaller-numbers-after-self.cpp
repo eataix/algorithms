@@ -32,26 +32,25 @@ using namespace std;
  *
  *
  */
-
-class FenwickTree {
-  int n_;
-  vector<int> sums_;
-  static inline int lowbit(int x) { return x & (-x); }
-
+static inline int lowbit(int i) { return i & -i; }
+class BIT {
 public:
-  FenwickTree(int n) : n_(n), sums_(n + 1, 0) {}
+  vector<int> sums;
+  BIT(int n) : sums(n + 1, 0) {}
 
-  void update(int i, int delta) {
-    while (i <= n_) {
-      sums_[i] += delta;
+  void add(int i, int val) {
+    i += 1;
+    while (i < sums.size()) {
+      sums[i] += val;
       i += lowbit(i);
     }
   }
 
-  int query(int i) const {
+  int get(int i) {
+    i += 1;
     int sum = 0;
-    while (i >= 1) {
-      sum += sums_[i];
+    while (i > 0) {
+      sum += sums[i];
       i -= lowbit(i);
     }
     return sum;
@@ -66,14 +65,15 @@ public:
 
     int rank = 0;
     for (const int num : sorted) {
-      ranks[num] = ++rank;
+      ranks[num] = rank;
+      rank += 1;
     }
 
     vector<int> res;
-    FenwickTree tree(ranks.size());
-    for (int i = nums.size() - 1; i >= 0; --i) {
-      res.push_back(tree.query(ranks[nums[i]] - 1));
-      tree.update(ranks[nums[i]], 1);
+    BIT tree(ranks.size());
+    for (auto it = nums.crbegin(); it != nums.crend(); ++it) {
+      res.push_back(tree.get(ranks[*it] - 1));
+      tree.add(ranks[*it], 1);
     }
     reverse(res.begin(), res.end());
     return res;

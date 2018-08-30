@@ -120,10 +120,10 @@ class Solution:
                 else:
                     return str(tmp[0] * tmp[1])
 
-            else: #let
-                for i in range(1, len(tokens)-1, 2):
-                    if tokens[i+1]:
-                        d[tokens[i]] = getval(tokens[i+1])
+            else:  #let
+                for i in range(1, len(tokens) - 1, 2):
+                    if tokens[i + 1]:
+                        d[tokens[i]] = getval(tokens[i + 1])
                 return getval(tokens[-1])
 
         for c in expression:
@@ -131,7 +131,7 @@ class Solution:
                 if tokens[0] == 'let':
                     evaluate(tokens)
                 st.append((tokens, dict(d)))
-                tokens =  ['']
+                tokens = ['']
             elif c == ' ':
                 tokens.append('')
             elif c == ')':

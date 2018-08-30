@@ -1,6 +1,8 @@
+#include <algorithm>
 #include <list>
 #include <string>
 #include <unordered_map>
+#include <unordered_set>
 #include <vector>
 using namespace std;
 /*
@@ -83,80 +85,52 @@ class Solution {
     return matches;
   }
 
-  string bestCandidate(const list<string> &remaining,
-                       const vector<vector<int>> &probs) {
-    auto bestIt = remaining.cbegin();
-    int maxScore = 0;
-    for (auto it = remaining.cbegin(); it != remaining.cend(); ++it) {
-      auto word = *it;
-      int score = 1;
-      for (int i = 0; i < 6; ++i) {
-        score *= probs[i][word[i] - 'a'];
+  int maxEquidistantSetSize(const string &word,
+                            const unordered_set<string> &candidates) {
+    vector<int> hist(word.size() + 1, 0);
+    for (auto &guess : candidates) {
+      ++hist[match(word, guess)];
+    }
+    return *max_element(hist.cbegin(), hist.cend());
+  }
 
-        if (score > maxScore) {
-          maxScore = score;
-          bestIt = it;
-        }
+  string maxPartitionGuess(const vector<string> &wordList,
+                           const unordered_set<string> &candidates) {
+    auto res = wordList.cend();
+
+    int minMax = wordList.size();
+    for (auto it = wordList.cbegin(); it != wordList.cend(); ++it) {
+      int currMax = maxEquidistantSetSize(*it, candidates);
+      if (currMax < minMax) {
+        minMax = currMax;
+        res = it;
       }
     }
-    return *bestIt;
+    return *res;
   }
 
 public:
   void findSecretWord(vector<string> &wordlist, Master &master) {
-    vector<vector<int>> probs(6, vector<int>(26, 0));
-    list<string> remWords{wordlist.begin(), wordlist.end()};
+    unordered_set<string> candidates{wordlist.cbegin(), wordlist.cend()};
 
-    for (auto const &word : remWords) {
-      for (auto i = 0; i < 6; ++i) {
-        probs[i][word[i] - 'a'] += 1;
+    while (candidates.size() > 1) {
+      auto guessWord = maxPartitionGuess(wordlist, candidates);
+      int d = master.guess(guessWord);
+      if (d == guessWord.size()) {
+        return;
       }
-    }
 
-    for (int matched = 0; matched < 6;) {
-      auto candidate = bestCandidate(remWords, probs);
-
-      matched = master.guess(candidate);
-
-      for (auto it = remWords.begin(); it != remWords.end();) {
-        if (match(*it, candidate) != matched) {
-          for (int i = 0; i < 6; ++i) {
-            probs[i][(*it)[i] - 'a'] -= 1;
-          }
-          it = remWords.erase(it);
+      for (auto it = candidates.begin(); it != candidates.end();) {
+        if (match(*it, guessWord) != d) {
+          it = candidates.erase(it);
         } else {
           ++it;
         }
       }
     }
-  }
 
-  void findSecretWord2(vector<string> &wordlist, Master &master) {
-    for (int i = 0, matched = 0; i < 10 && matched < 6; ++i) {
-      unordered_map<string, int> count;
-      for (auto const &w1 : wordlist) {
-        for (auto const &w2 : wordlist) {
-          if (match(w1, w2) == 0) {
-            count[w1] += 1;
-          }
-        }
-      }
-
-      pair<string, int> minimax = {wordlist[0], numeric_limits<int>::max()};
-      for (auto const &word : wordlist) {
-        if (count[word] <= minimax.second) {
-          minimax = {word, count[word]};
-        }
-      }
-      matched = master.guess(minimax.first);
-
-      vector<string> wordlist2;
-      for (auto const &word : wordlist) {
-        if (match(minimax.first, word) == matched) {
-          wordlist2.push_back(word);
-        }
-      }
-      wordlist = wordlist2;
+    if (!candidates.empty()) {
+      master.guess(*candidates.cbegin());
     }
   }
 };

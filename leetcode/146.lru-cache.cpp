@@ -48,8 +48,12 @@ using namespace std;
  *
  */
 class LRUCache {
+  unordered_map<int, list<pair<int, int>>::iterator> m;
+  list<pair<int, int>> l;
+  int cap;
+
 public:
-  LRUCache(int capacity) { cap = capacity; }
+  LRUCache(int capacity) : cap(capacity) {}
 
   int get(int key) {
     if (!m.count(key)) {
@@ -71,16 +75,10 @@ public:
     m[key] = l.begin();
 
     if (m.size() > cap) {
-      auto p = l.back();
-      m.erase(p.first);
+      m.erase(l.back().first);
       l.pop_back();
     }
   }
-
-private:
-  int cap;
-  list<pair<int, int>> l;
-  unordered_map<int, list<pair<int, int>>::iterator> m;
 };
 
 /**
