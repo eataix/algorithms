@@ -46,12 +46,10 @@
 #
 #
 class MagicDictionary:
-
     def __init__(self):
         """
         Initialize your data structure here.
         """
-
 
     def buildDict(self, words):
         """
@@ -75,6 +73,7 @@ class MagicDictionary:
         n = len(word)
         if n not in self.dictionary:
             return False
+
         def countDifference(s1, s2):
             cnt = 0
             for c1, c2 in zip(s1, s2):
@@ -84,6 +83,7 @@ class MagicDictionary:
                         break
 
             return cnt
+
         for w in self.dictionary[n]:
             if countDifference(w, word) == 1:
                 return True

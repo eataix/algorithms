@@ -53,35 +53,29 @@ using namespace std;
  *
  *
  */
-
 class Solution {
 public:
   vector<string> topKFrequent(vector<string> &words, int k) {
-    unordered_map<string, int> m;
+    map<string, int> m;
     for (auto const &word : words) {
       m[word] += 1;
     }
 
-    auto cmp = [](const pair<string, int> &p1, const pair<string, int> &p2) {
-      if (p1.second == p2.second) {
-        return p1.first < p2.first;
-      } else {
-        return p1.second > p2.second;
-      }
+    typedef pair<string, int> record;
+    auto cmp = [](const record &p1, const record &p2) {
+      return p1.second > p2.second ||
+             (p1.second == p2.second && p1.first < p2.first);
     };
 
-    priority_queue<pair<string, int>, vector<pair<string, int>>, decltype(cmp)>
-        pq{cmp};
-
+    priority_queue<record, vector<record>, decltype(cmp)> pq{cmp};
     for (auto const &kv : m) {
       pq.push(kv);
-      if (pq.size() > k) {
+      while (pq.size() > k) {
         pq.pop();
       }
     }
 
     vector<string> res;
-
     while (!pq.empty()) {
       res.push_back(pq.top().first);
       pq.pop();

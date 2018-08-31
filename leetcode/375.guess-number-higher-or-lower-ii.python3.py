@@ -41,6 +41,7 @@
 # and creating all test cases.
 #
 
+
 class Solution:
     def getMoneyAmount(self, n):
         """
@@ -60,12 +61,13 @@ class Solution:
                 for k in range(start, end + 1):
                     if k == start:
                         dp[start][end] = min(dp[start][end],
-                                            dp[k+1][end] + k)
+                                             dp[k + 1][end] + k)
                     elif k == end:
                         dp[start][end] = min(dp[start][end],
-                                            dp[start][k - 1] + k)
+                                             dp[start][k - 1] + k)
                     else:
-                        dp[start][end] = min(dp[start][end],
-                                             k + max(dp[start][k - 1], dp[k + 1][end]))
+                        dp[start][end] = min(
+                            dp[start][end],
+                            k + max(dp[start][k - 1], dp[k + 1][end]))
 
         return dp[1][n]

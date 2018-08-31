@@ -58,6 +58,7 @@
 #
 from collections import defaultdict
 
+
 class Solution:
     def canCross(self, stones):
         """
@@ -71,7 +72,7 @@ class Solution:
 
         for stone in stones:
             for power in powers[stone]:
-                for step in [power - 1, power, power +1]:
+                for step in [power - 1, power, power + 1]:
                     if step > 0 and stone + step in stones_set:
                         powers[stone + step].add(step)
 

@@ -41,6 +41,8 @@
 #
 #
 from collections import defaultdict
+
+
 class Solution:
     def areSentencesSimilar(self, words1, words2, pairs):
         """

@@ -65,6 +65,6 @@ class Solution:
                 wordLen = len(word)
                 start = sLen - wordLen
                 if sLen >= wordLen:
-                    dp[sLen] = dp[sLen] or (s[start:start+wordLen] == word and dp[start])
+                    dp[sLen] = dp[sLen] or (s[start:start + wordLen] == word
+                                            and dp[start])
         return dp[-1]
-

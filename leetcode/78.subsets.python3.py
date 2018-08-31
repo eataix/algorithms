@@ -37,3 +37,16 @@ class Solution:
         :type nums: List[int]
         :rtype: List[List[int]]
         """
+        n = len(nums)
+        out = []
+        res = []
+
+        def dfs(start):
+            res.append(list(out))
+            for i in range(start, n):
+                out.append(nums[i])
+                dfs(i + 1)
+                out.pop()
+
+        dfs(0)
+        return res

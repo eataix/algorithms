@@ -49,6 +49,7 @@ class Solution:
         :type nums: List[int]
         :rtype: bool
         """
+
         def isZero(n):
             return n < 1e-6
 
@@ -65,14 +66,16 @@ class Solution:
                 if i == j:
                     continue
 
-                nextNums = [elem for idx, elem in enumerate(nums) if idx != i and idx != j]
+                nextNums = [
+                    elem for idx, elem in enumerate(nums)
+                    if idx != i and idx != j
+                ]
 
                 for op in ['+', '-', '*', '/']:
                     if (op == '+' or op == '*') and i < j:
                         continue
                     if op == '/' and isZero(n2):
                         continue
-
 
                     if op == '+':
                         n = n1 + n2
@@ -89,4 +92,3 @@ class Solution:
             return False
 
         return backtrack(nums)
-

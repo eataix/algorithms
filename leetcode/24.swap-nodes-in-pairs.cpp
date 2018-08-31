@@ -47,6 +47,19 @@ public:
       return head;
     }
 
+    auto curr = head;
+    auto next = head->next;
+
+    curr->next = swapPairs(next->next);
+    next->next = curr;
+    return next;
+  }
+
+  ListNode *swapPairs2(ListNode *head) {
+    if (head == nullptr || head->next == nullptr) {
+      return head;
+    }
+
     ListNode *newHead = head->next;
     ListNode *curr = head;
     ListNode *prev = nullptr;

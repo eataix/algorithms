@@ -44,12 +44,14 @@ class Solution:
         while start < n:
             streak = 1
 
-            while start + streak < n and nums[start + streak] == nums[start] + streak:
+            while start + streak < n and nums[start +
+                                              streak] == nums[start] + streak:
                 streak += 1
 
             if streak == 1:
                 res.append(str(nums[start]))
             else:
-                res.append("{}->{}".format(nums[start], nums[start + streak - 1]))
+                res.append("{}->{}".format(nums[start],
+                                           nums[start + streak - 1]))
             start += streak
         return res

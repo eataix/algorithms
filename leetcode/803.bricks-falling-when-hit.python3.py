@@ -57,6 +57,8 @@
 #
 #
 from copy import deepcopy
+
+
 class UnionFind:
     def __init__(self, n):
         self.parents = [i for i in range(n)]
@@ -85,6 +87,7 @@ class UnionFind:
 
     def size(self, i):
         return self.sizes[self.find_set(i)]
+
 
 class Solution:
     def hitBricks(self, grid, hits):
@@ -115,8 +118,8 @@ class Solution:
                         uf.union_set(SB, ID(r, c))
                     if r > 0 and A[r - 1][c] == 1:
                         uf.union_set(ID(r, c), ID(r - 1, c))
-                    if c > 0 and A[r][c-1] == 1:
-                        uf.union_set(ID(r, c), ID(r, c-1))
+                    if c > 0 and A[r][c - 1] == 1:
+                        uf.union_set(ID(r, c), ID(r, c - 1))
         directions = [(1, 0), (-1, 0), (0, 1), (0, -1)]
         res = []
         for hit in hits[::-1]:
@@ -138,7 +141,7 @@ class Solution:
                 A[r][c] = 1
                 after = uf.size(SB)
 
-                res.append(max(0, after - pre -1))
+                res.append(max(0, after - pre - 1))
             else:
                 res.append(0)
 

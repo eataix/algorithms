@@ -32,24 +32,9 @@
 # all test cases.
 #
 class Solution:
-    def wordPattern(self, pattern, sentence):
+    def wordPattern(self, pattern, str):
         """
         :type pattern: str
         :type str: str
         :rtype: bool
         """
-        words = sentence.split()
-        if len(pattern) != len(words):
-            return False
-        from collections import defaultdict
-
-        mp = defaultdict(lambda: -1)
-        mw = defaultdict(lambda: -1)
-        for idx, (p, w) in enumerate(zip(pattern, words)):
-            if p in mp or w in mw:
-                if mp[p] != mw[w]:
-                    return False
-            else:
-                mp[p] = mw[w] = idx
-
-        return True

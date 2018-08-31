@@ -1,3 +1,5 @@
+#include <vector>
+using namespace std;
 /*
  * [47] Permutations II
  *

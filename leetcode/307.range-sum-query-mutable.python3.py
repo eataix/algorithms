@@ -35,8 +35,10 @@
 #
 #
 
+
 def low_bit(i):
     return i & -i
+
 
 class BIT:
     def __init__(self, n):
@@ -56,8 +58,8 @@ class BIT:
             i -= low_bit(i)
         return res
 
-class NumArray:
 
+class NumArray:
     def __init__(self, nums):
         """
         :type nums: List[int]

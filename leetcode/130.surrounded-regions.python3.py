@@ -44,6 +44,7 @@
 #
 dirs = [(-1, 0), (1, 0), (0, 1), (0, -1)]
 
+
 class Solution:
     def solve(self, board):
         """
@@ -57,7 +58,8 @@ class Solution:
         numCols = len(board[0])
 
         def dfs(row, col, visited):
-            if row < 0 or row >= numRows or col < 0 or col >= numCols or (row, col) in visited or board[row][col] != 'O':
+            if row < 0 or row >= numRows or col < 0 or col >= numCols or (
+                    row, col) in visited or board[row][col] != 'O':
                 return
             board[row][col] = '$'
             visited.add((row, col))
@@ -69,7 +71,6 @@ class Solution:
                 dfs(newRow, newCol, visited)
 
             visited.remove((row, col))
-
 
         for r in range(numRows):
             for c in range(numCols):
