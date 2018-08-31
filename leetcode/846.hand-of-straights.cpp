@@ -51,20 +51,23 @@ using namespace std;
 class Solution {
 public:
   bool isNStraightHand(vector<int> &hand, int W) {
-    map<int, int> s;
+    map<int, int> m;
     for (int h : hand) {
-      s[h] += 1;
+      m[h] += 1;
     }
 
-    for (auto kv : s) {
-      if (kv.second > 0) {
-        for (int i = 1; i <= W - 1; ++i) {
-          if (s[kv.first + i] < kv.second) {
-            return false;
-          }
-          s[kv.first + i] -= kv.second;
+    for (auto const &kv : m) {
+      int h = kv.first;
+      int count = kv.second;
+      if (count == 0) {
+        continue;
+      }
+
+      for (int i = h; i < h + W; ++i) {
+        if (m[i] < count) {
+          return false;
         }
-        kv.second = 0;
+        m[i] -= count;
       }
     }
     return true;

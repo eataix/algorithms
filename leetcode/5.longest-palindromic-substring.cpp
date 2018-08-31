@@ -48,6 +48,7 @@ public:
     }
     return minStart == -1 ? "" : s.substr(minStart, maxLen);
   }
+
   int expandAroundCenters(const string &s, int l, int r) {
     while (l >= 0 && r < s.size() && s[l] == s[r]) {
       l -= 1;

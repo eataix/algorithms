@@ -30,37 +30,37 @@ using namespace std;
  *
  */
 class Solution {
-  void find(const string &low, const string &high, const string &out,
-            int &res) {
+  void dfs(const string &low, const string &high, const string &out, int &res) {
     if (out.size() >= low.size() && out.size() <= high.size()) {
-      if ((out.size() == low.size() && out.compare(low) < 0) ||
-          (out.size() == high.size() && out.compare(high) > 0)) {
+      if (out.size() == low.size() && out.compare(low) < 0) {
         return;
       }
 
-      if (!(out.size() > 1 && out[0] == '0')) {
-        res += 1;
+      if (out.size() == high.size() && out.compare(high) > 0) {
+        return;
       }
+
+      res += to_string(stoi(out)) == out;
     }
 
     if (out.size() + 2 > high.size()) {
       return;
     }
 
-    find(low, high, "0" + out + "0", res);
-    find(low, high, "1" + out + "1", res);
-    find(low, high, "6" + out + "9", res);
-    find(low, high, "8" + out + "8", res);
-    find(low, high, "9" + out + "6", res);
+    dfs(low, high, "0" + out + "0", res);
+    dfs(low, high, "1" + out + "1", res);
+    dfs(low, high, "6" + out + "9", res);
+    dfs(low, high, "8" + out + "8", res);
+    dfs(low, high, "9" + out + "6", res);
   }
 
 public:
-  int strobogrammaticInRange(string low, string high) {
+  int strobogrammaticInRange(const string &low, const string &high) {
     int res = 0;
-    find(low, high, "", res);
-    find(low, high, "0", res);
-    find(low, high, "1", res);
-    find(low, high, "8", res);
+    dfs(low, high, "", res);
+    dfs(low, high, "0", res);
+    dfs(low, high, "1", res);
+    dfs(low, high, "8", res);
     return res;
   }
 };

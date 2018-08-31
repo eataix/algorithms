@@ -40,6 +40,7 @@
 # The length of each words[i] and pairs[i][j] will be in the range [1, 20].
 #
 #
+from collections import defaultdict
 class Solution:
     def areSentencesSimilar(self, words1, words2, pairs):
         """
@@ -48,3 +49,19 @@ class Solution:
         :type pairs: List[List[str]]
         :rtype: bool
         """
+        m = len(words1)
+        n = len(words2)
+        if m != n:
+            return False
+        mapping = defaultdict(set)
+        for w1, w2 in pairs:
+            mapping[w1].add(w2)
+            mapping[w2].add(w1)
+
+        for w1, w2 in zip(words1, words2):
+            if w1 == w2:
+                continue
+            if w1 not in mapping[w2]:
+                return False
+
+        return True

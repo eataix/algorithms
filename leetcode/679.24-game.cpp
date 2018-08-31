@@ -48,52 +48,60 @@ using namespace std;
  *
  */
 
+constexpr double epsilon = 1e-6;
+
+static inline bool isZero(double x) { return x < epsilon; }
+
+static inline bool doubleEqual(double x, double y) {
+  return isZero(abs(x - y));
+}
+
+const string ops = "+-*/";
+
 class Solution {
-  double eps = 1e-6;
-  vector<char> ops{'+', '-', '*', '/'};
-  bool dfs(const vector<double> &nums) {
-    if (nums.size() == 1) {
-      return abs(nums[0] - 24.0) < eps;
+  bool dfs(const vector<double> &curr) {
+    if (curr.size() == 1) {
+      return doubleEqual(curr[0], 24.0);
     }
 
-    for (int i = 0; i < nums.size(); ++i) {
-      for (int j = 0; j < nums.size(); ++j) {
+    for (int i = 0; i < curr.size(); ++i) {
+      for (int j = 0; j < curr.size(); ++j) {
         if (i == j) {
           continue;
         }
-
-        vector<double> out;
-        for (int k = 0; k < nums.size(); ++k) {
+        vector<double> next;
+        for (int k = 0; k < curr.size(); ++k) {
           if (k != i && k != j) {
-            out.push_back(nums[k]);
+            next.push_back(curr[k]);
           }
         }
 
         for (char op : ops) {
-          if ((op == '+' || op == '*') && j < i) {
+          if ((op == '+' || op == '*') && i > j) {
             continue;
           }
-          if (op == '/' && nums[j] < eps) {
+          if (op == '/' && isZero(curr[j])) {
             continue;
           }
+
           switch (op) {
           case '+':
-            out.push_back(nums[i] + nums[j]);
+            next.push_back(curr[i] + curr[j]);
             break;
           case '-':
-            out.push_back(nums[i] - nums[j]);
+            next.push_back(curr[i] - curr[j]);
             break;
           case '*':
-            out.push_back(nums[i] * nums[j]);
+            next.push_back(curr[i] * curr[j]);
             break;
           case '/':
-            out.push_back(nums[i] / nums[j]);
+            next.push_back(curr[i] / curr[j]);
             break;
           }
-          if (dfs(out)) {
+          if (dfs(next)) {
             return true;
           }
-          out.pop_back();
+          next.pop_back();
         }
       }
     }
@@ -101,7 +109,7 @@ class Solution {
   }
 
 public:
-  bool judgePoint24(const vector<int> &nums) {
-    return dfs(vector<double>{nums.begin(), nums.end()});
+  bool judgePoint24(vector<int> &nums) {
+    return dfs(vector<double>{nums.cbegin(), nums.cend()});
   }
 };

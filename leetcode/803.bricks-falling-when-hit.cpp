@@ -60,108 +60,103 @@ using namespace std;
  *
  */
 
-class DSU {
-  vector<int> parent;
-  vector<int> rank;
-  vector<int> sz;
+class UnionFind {
+  vector<int> parents;
+  vector<int> sizes;
+  vector<int> ranks;
 
 public:
-  DSU(int N) : parent(N), rank(N), sz(N, 1) {
-    for (int i = 0; i < N; ++i) {
-      parent[i] = i;
+  UnionFind(int n) : parents(n), sizes(n, 1), ranks(n, 0) {
+    for (int i = 0; i < n; ++i) {
+      parents[i] = i;
     }
   }
 
-  int find(int x) {
-    if (parent[x] != x) {
-      parent[x] = find(parent[x]);
+  int find_set(int i) {
+    if (parents[i] != i) {
+      parents[i] = find_set(parents[i]);
     }
-    return parent[x];
+    return parents[i];
   }
 
-  void union_set(int x, int y) {
-    int xr = find(x), yr = find(y);
-    if (xr == yr)
+  void union_set(int i, int j) {
+    auto p = find_set(i);
+    auto q = find_set(j);
+    if (p == q) {
       return;
-
-    if (rank[xr] < rank[yr]) {
-      swap(xr, yr);
-    }
-    if (rank[xr] == rank[yr]) {
-      rank[xr]++;
     }
 
-    parent[yr] = xr;
-    sz[xr] += sz[yr];
+    if (ranks[p] < ranks[q]) {
+      swap(p, q);
+    }
+
+    if (ranks[p] == ranks[q]) {
+      ranks[p] += 1;
+    }
+
+    parents[q] = p;
+    sizes[p] += sizes[q];
   }
 
-  int size(int x) { return sz[find(x)]; }
-
-  int top() { return size(sz.size() - 1) - 1; }
+  int size(int i) { return sizes[find_set(i)]; }
 };
-
 class Solution {
-  vector<pair<int, int>> dirs{{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
-
 public:
   vector<int> hitBricks(vector<vector<int>> &grid, vector<vector<int>> &hits) {
-    int numRows = grid.size(), numCols = grid[0].size();
-
-    auto ID = [&numCols](int r, int c) { return r * numCols + c; };
-
-    int SB = numRows * numCols;
+    int numRows = grid.size();
+    int numCols = grid[0].size();
 
     auto A = grid;
-    for (auto const &hit : hits) {
-      A[hit[0]][hit[1]] = 0;
+    for (auto const &h : hits) {
+      A[h[0]][h[1]] = 0;
     }
 
-    DSU dsu{numRows * numCols + 1};
+    UnionFind uf{numRows * numCols + 1};
+    auto ID = [&numCols](int r, int c) { return r * numCols + c; };
+    const int SB = numRows * numCols;
     for (int r = 0; r < numRows; ++r) {
       for (int c = 0; c < numCols; ++c) {
         if (A[r][c] == 1) {
-          int id = ID(r, c);
           if (r == 0) {
-            dsu.union_set(id, SB);
+            uf.union_set(ID(r, c), SB);
           }
           if (r > 0 && A[r - 1][c] == 1) {
-            dsu.union_set(id, ID(r - 1, c));
+            uf.union_set(ID(r, c), ID(r - 1, c));
           }
           if (c > 0 && A[r][c - 1] == 1) {
-            dsu.union_set(id, ID(r, c - 1));
+            uf.union_set(ID(r, c), ID(r, c - 1));
           }
         }
       }
     }
-
-    vector<int> ans;
-
+    vector<pair<int, int>> dirs = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+    vector<int> res;
     for (auto it = hits.crbegin(); it != hits.crend(); ++it) {
-      auto hit = *it;
-      int r = hit[0];
-      int c = hit[1];
-      if (grid[r][c] == 1) {
-        int id = ID(r, c);
-        int prenumRowsoof = dsu.top();
-        for (auto const &dir : dirs) {
-          int nr = r + dir.first;
-          int nc = c + dir.second;
-          if (0 <= nr && nr < numRows && 0 <= nc && nc < numCols &&
-              A[nr][nc] == 1) {
-            dsu.union_set(id, ID(nr, nc));
-          }
-        }
-        if (r == 0) {
-          dsu.union_set(id, SB);
-        }
-        A[r][c] = 1;
-        ans.push_back(max(0, dsu.top() - prenumRowsoof - 1));
-      } else {
-        ans.push_back(0);
-      }
-    }
+      auto r = (*it)[0];
+      auto c = (*it)[1];
 
-    reverse(ans.begin(), ans.end());
-    return ans;
+      if (grid[r][c] == 0) {
+        res.push_back(0);
+        continue;
+      }
+      int pre = uf.size(SB);
+
+      for (auto const &dir : dirs) {
+        auto newR = r + dir.first;
+        auto newC = c + dir.second;
+
+        if (newR >= 0 && newR < numRows && newC >= 0 && newC < numCols &&
+            A[newR][newC] == 1) {
+          uf.union_set(ID(newR, newC), ID(r, c));
+        }
+      }
+      if (r == 0) {
+        uf.union_set(ID(r, c), SB);
+      }
+      A[r][c] = 1;
+      res.push_back(max(0, uf.size(SB) - pre - 1));
+    }
+    reverse(res.begin(), res.end());
+    return res;
   }
 };
