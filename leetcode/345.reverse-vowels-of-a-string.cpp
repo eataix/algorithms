@@ -34,32 +34,32 @@ using namespace std;
  *
  */
 
-const unordered_set<char> vowels{'a', 'e', 'i', 'o', 'u',
-                                 'A', 'E', 'I', 'O', 'U'};
+unordered_set<char> vowels{'a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U'};
 
 class Solution {
 public:
   string reverseVowels(string s) {
-    string res{s};
-    stack<char> seenVowels;
-    deque<int> positions;
-    for (int i = 0; i < res.size(); ++i) {
-      char ch = res[i];
-      if (vowels.find(ch) != vowels.cend()) {
-        seenVowels.push(ch);
-        positions.push_back(i);
+    int left = 0;
+    int right = s.size() - 1;
+
+    while (left < right) {
+      while (left < right && !vowels.count(s[left])) {
+        left += 1;
       }
-    }
 
-    while (!positions.empty()) {
-      int p = positions.front();
-      positions.pop_front();
-      char ch = seenVowels.top();
-      seenVowels.pop();
-      res[p] = ch;
-    }
+      while (left < right && !vowels.count(s[right])) {
+        right -= 1;
+      }
 
-    return res;
+      if (left >= right) {
+        break;
+      }
+
+      swap(s[left], s[right]);
+      left += 1;
+      right -= 1;
+    }
+    return s;
   }
 };
 

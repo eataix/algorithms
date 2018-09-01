@@ -45,46 +45,33 @@ bool comp(const Interval &i1, const Interval &i2) {
   return i1.start < i2.start;
 }
 
+/**
+ * Definition for an interval.
+ * struct Interval {
+ *     int start;
+ *     int end;
+ *     Interval() : start(0), end(0) {}
+ *     Interval(int s, int e) : start(s), end(e) {}
+ * };
+ */
 class Solution {
 public:
   vector<Interval> merge(vector<Interval> &intervals) {
+    vector<Interval> res;
+
     sort(intervals.begin(), intervals.end(),
-         [](const Interval &i1, const Interval &i2) {
-           return i1.start < i2.start;
+         [](auto const &i1, auto const &i2) {
+           return i1.start < i2.start ||
+                  (i1.start == i2.start && i1.end < i2.end);
          });
 
-    vector<Interval> res;
-
-    for (int i = 0; i < intervals.size(); ++i) {
-      if (!res.empty() && intervals[i].start <= res.back().end) {
-        res.back().end = max(res.back().end, intervals[i].end);
+    for (auto const &i : intervals) {
+      if (!res.empty() && res.back().end >= i.start) {
+        res.back().end = max(res.back().end, i.end);
       } else {
-        res.push_back(intervals[i]);
+        res.push_back(i);
       }
     }
-    return res;
-  }
-
-  vector<Interval> merge2(vector<Interval> &intervals) {
-    if (intervals.size() <= 1) {
-      return intervals;
-    }
-    vector<Interval> res;
-    sort(intervals.begin(), intervals.end(), comp);
-
-    int prevStart = intervals[0].start;
-    int prevEnd = intervals[0].end;
-    for (int i = 1; i < intervals.size(); ++i) {
-      Interval curr = intervals[i];
-      if (curr.start > prevEnd) {
-        res.emplace_back(prevStart, prevEnd);
-        prevStart = curr.start;
-        prevEnd = curr.end;
-      } else {
-        prevEnd = max(prevEnd, curr.end);
-      }
-    }
-    res.emplace_back(prevStart, prevEnd);
     return res;
   }
 };

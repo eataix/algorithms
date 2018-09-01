@@ -72,17 +72,41 @@ struct TreeNode {
 };
 #endif
 
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
 class Solution {
-  int dfs(TreeNode *node, TreeNode *parent, int len) {
-    if (node == nullptr) {
-      return len;
+  int helper(TreeNode *root, int &res) {
+    if (root == nullptr) {
+      return 0;
     }
+    auto l = helper(root->left, res);
+    auto r = helper(root->right, res);
 
-    len = (parent != nullptr && node->val == parent->val + 1) ? len + 1 : 1;
-    return max(len,
-               max(dfs(node->left, node, len), dfs(node->right, node, len)));
+    int lValue = 1;
+    int rValue = 1;
+    if (root->left != nullptr && root->left->val == root->val + 1) {
+      lValue = l + 1;
+    }
+    if (root->right != nullptr && root->right->val == root->val + 1) {
+      rValue = r + 1;
+    }
+    res = max(res, lValue);
+    res = max(res, rValue);
+
+    return max(lValue, rValue);
   }
 
 public:
-  int longestConsecutive(TreeNode *root) { return dfs(root, nullptr, 0); }
+  int longestConsecutive(TreeNode *root) {
+    int res = 0;
+    helper(root, res);
+    return res;
+  }
 };

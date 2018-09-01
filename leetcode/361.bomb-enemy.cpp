@@ -35,44 +35,38 @@ using namespace std;
  */
 class Solution {
 public:
-  int maxKilledEnemies(const vector<vector<char>> &grid) {
+  int maxKilledEnemies(vector<vector<char>> &grid) {
     if (grid.empty() || grid[0].empty()) {
       return 0;
     }
 
     int numRows = grid.size();
     int numCols = grid[0].size();
+    vector<int> colhits(numCols, 0);
     int res = 0;
-
-    int rowhits;
-    vector<int> colHits(numCols, 0);
-
     for (int r = 0; r < numRows; ++r) {
+      int rowhits = 0;
       for (int c = 0; c < numCols; ++c) {
-        if (c == 0 || grid[r][c - 1] == 'W') {
-          rowhits = 0;
-          for (int k = c; k < numCols && grid[r][k] != 'W'; ++k) {
-            rowhits += grid[r][k] == 'E';
+        if (grid[r][c] != 'W') {
+          if (c == 0 || grid[r][c - 1] == 'W') {
+            rowhits = 0;
+            for (int k = c; k < numCols && grid[r][k] != 'W'; ++k) {
+              rowhits += grid[r][k] == 'E';
+            }
           }
-        }
-        if (r == 0 || grid[r - 1][c] == 'W') {
-          colHits[c] = 0;
-          for (int k = r; k < numRows && grid[k][c] != 'W'; ++k) {
-            colHits[c] += grid[k][c] == 'E';
+          if (r == 0 || grid[r - 1][c] == 'W') {
+            colhits[c] = 0;
+            for (int k = r; k < numRows && grid[k][c] != 'W'; ++k) {
+              colhits[c] += grid[k][c] == 'E';
+            }
           }
-        }
-        if (grid[r][c] == '0') {
-          res = max(res, rowhits + colHits[c]);
+
+          if (grid[r][c] == '0') {
+            res = max(res, rowhits + colhits[c]);
+          }
         }
       }
     }
     return res;
   }
 };
-
-#ifdef DEBUG
-int main() {
-  Solution sol;
-  cout << sol.maxKilledEnemies({{'0'}, {'0'}, {'0'}}) << endl;
-}
-#endif
