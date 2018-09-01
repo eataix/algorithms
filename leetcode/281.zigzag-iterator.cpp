@@ -49,33 +49,28 @@ using namespace std;
  */
 class ZigzagIterator {
   queue<pair<vector<int>::const_iterator, vector<int>::const_iterator>> q;
-  vector<vector<int>> v;
 
 public:
   ZigzagIterator(vector<int> &v1, vector<int> &v2) {
-    v.push_back(v1);
-    v.push_back(v2);
-
-    for (auto const &i : v) {
-      q.push({i.cbegin(), i.cend()});
+    if (!v1.empty()) {
+      q.push({v1.cbegin(), v1.cend()});
+    }
+    if (!v2.empty()) {
+      q.push({v2.cbegin(), v2.cend()});
     }
   }
 
   int next() {
-    auto p = q.front();
+    auto f = q.front();
     q.pop();
-    if (p.first + 1 != p.second) {
-      q.push({p.first + 1, p.second});
+    int res = *f.first;
+    if (f.first + 1 != f.second) {
+      q.push({f.first + 1, f.second});
     }
-    return *p.first;
+    return res;
   }
 
-  bool hasNext() {
-    while (!q.empty() && q.front().first == q.front().second) {
-      q.pop();
-    }
-    return !q.empty();
-  }
+  bool hasNext() { return !q.empty(); }
 };
 
 /**

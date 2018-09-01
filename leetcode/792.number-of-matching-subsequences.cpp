@@ -34,44 +34,30 @@ using namespace std;
  * The length of words[i] will be in the range of [1, 50].
  *
  */
+
 class Solution {
-  bool isSubsequence(string s, string t) {
-    auto si = s.cbegin();
-    auto ti = t.cbegin();
-
-    for (; si != s.cend() && ti != t.cend(); ++ti) {
-      if (*si == *ti) {
-        si += 1;
-      }
-    }
-
-    return si == s.cend();
-  }
-
 public:
   int numMatchingSubseq(string S, vector<string> &words) {
-    vector<vector<pair<int, int>>> waiting(128, vector<pair<int, int>>());
-    for (int i = 0; i < words.size(); ++i) {
-      waiting[words[i][0]].push_back({i, 1});
-    }
+    vector<vector<pair<string::const_iterator, string::const_iterator>>>
+        waiting(128);
 
-    for (char c : S) {
-      auto advance = waiting[c];
-      waiting[c].clear();
-      for (auto it : advance) {
-        waiting[words[it.first][it.second++]].push_back(it);
-      }
-    }
-    return waiting[0].size();
-  }
-
-  int numMatchingSubseq2(string S, vector<string> &words) {
-    int count = 0;
     for (auto const &word : words) {
-      if (isSubsequence(word, S)) {
-        count += 1;
+      waiting[word[0]].push_back({word.cbegin(), word.cend()});
+    }
+    int res = 0;
+    for (char ch : S) {
+      auto advance = waiting[ch];
+      waiting[ch].clear();
+      for (auto p : advance) {
+        auto it = p.first;
+        auto iEnd = p.second;
+        if (it + 1 == iEnd) {
+          res += 1;
+        } else {
+          waiting[*(it + 1)].push_back({it + 1, iEnd});
+        }
       }
     }
-    return count;
+    return res;
   }
 };

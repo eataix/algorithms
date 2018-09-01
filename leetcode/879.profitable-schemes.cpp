@@ -77,21 +77,22 @@ public:
     vector<vector<int>> dp(P + 1, vector<int>(G + 1, 0));
     dp[0][0] = 1;
 
-    int res = 0;
     int mod = 1e9 + 7;
-
     for (int k = 0; k < group.size(); ++k) {
       int g = group[k];
       int p = profit[k];
 
-      for (int i = P; i >= 0; --i) {
-        for (int j = G - g; j >= 0; --j) {
-          dp[min(i + p, P)][j + g] =
-              (dp[min(i + p, P)][j + g] + dp[i][j]) % mod;
+      for (int prevProfit = P; prevProfit >= 0; --prevProfit) {
+        for (int prevGangs = G - g; prevGangs >= 0; --prevGangs) {
+          dp[min(prevProfit + p, P)][prevGangs + g] =
+              (dp[min(prevProfit + p, P)][prevGangs + g] +
+               dp[prevProfit][prevGangs]) %
+              mod;
         }
       }
     }
 
+    int res = 0;
     for (int x : dp[P]) {
       res = (res + x) % mod;
     }
