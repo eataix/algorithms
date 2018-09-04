@@ -54,12 +54,11 @@ public:
     int OPEN = 0;
     int CLOSE = 1;
     int numRects = rectangles.size();
-    vector<vector<int>> events(numRects * 2);
+    vector<vector<int>> events;
 
-    int t = 0;
     for (auto const &rect : rectangles) {
-      events[t++] = vector<int>{rect[1], OPEN, rect[0], rect[2]};
-      events[t++] = vector<int>{rect[3], CLOSE, rect[0], rect[2]};
+      events.push_back({rect[1], OPEN, rect[0], rect[2]});
+      events.push_back({rect[3], CLOSE, rect[0], rect[2]});
     }
     auto cmp = [](const vector<int> &v1, const vector<int> &v2) {
       return v1[0] < v2[0];

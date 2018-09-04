@@ -65,14 +65,19 @@ class Solution:
         :rtype: List[int]
         """
         res = [0] * n
-        stack = []
         prev = 0
+        stack = []
         for log in logs:
             function_id, start_or_end, timestamp = log.split(':')
             function_id = int(function_id)
             timestamp = int(timestamp)
+
+            if start_or_end == 'end':
+                timestamp += 1
+
             if len(stack) > 0:
-                res[stack[-1]] += timestamp - prev
+                old_id = stack[-1]
+                res[old_id] += timestamp - prev
             prev = timestamp
 
             if start_or_end == 'start':
@@ -80,6 +85,5 @@ class Solution:
             else:
                 old_id = stack[-1]
                 stack.pop()
-                res[old_id] += 1
-                prev += 1
+
         return res

@@ -32,15 +32,13 @@ using namespace std;
 class Solution {
   void dfs(const string &low, const string &high, const string &out, int &res) {
     if (out.size() >= low.size() && out.size() <= high.size()) {
-      if (out.size() == low.size() && out.compare(low) < 0) {
-        return;
-      }
-
       if (out.size() == high.size() && out.compare(high) > 0) {
         return;
       }
 
-      res += to_string(stoi(out)) == out;
+      if (!(out.size() == low.size() && out.compare(low) < 0)) {
+        res += to_string(stoll(out)) == out;
+      }
     }
 
     if (out.size() + 2 > high.size()) {
