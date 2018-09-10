@@ -132,7 +132,8 @@ class Solution:
                     nr = r + dx
                     nc = c + dy
 
-                    if nr >= 0 and nr < numRows and nc >= 0 and nc < numCols and A[nr][nc] == 1:
+                    if nr >= 0 and nr < numRows and nc >= 0 and nc < numCols and A[
+                            nr][nc] == 1:
                         uf.union_set(ID(nr, nc), ID(r, c))
 
                 if r == 0:

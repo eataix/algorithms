@@ -77,40 +77,63 @@ using namespace std;
  * changes.
  *
  */
+
 class Solution {
 public:
   bool sequenceReconstruction(vector<int> &org, vector<vector<int>> &seqs) {
+
     int N = org.size();
-    vector<int> indegrees(N + 1, 0);
-    vector<vector<int>> edges(N + 1);
+    vector<unordered_set<int>> edges(N + 1);
+    vector<int> indegree(N + 1);
 
+    bool empty = true;
     for (auto const &seq : seqs) {
-      for (int i = 1; i < seq.size(); ++i) {
-        edges[seq[i - 1]].push_back(seq[i]);
-        indegrees[seq[]] += 1;
+      if (seq.empty()) {
+        continue;
       }
-    }
-
-    unorder_set<int> s;
-    for (int i = 1; i <= N; ++i) {
-      if (indegrees[i] == 0) {
-        s.insert(i);
-      }
-    }
-
-    int cnt = 0;
-    while (cnt < N) {
-      if (!s.count(org[cnt])) {
-        return false;
-      }
-      s.erase(org[cnt]);
-
-      for (int next : edges[org[cnt]]) {
-        if (--indegrees[next] == 0) {
-          s.insert(next);
+      empty = false;
+      for (int i = 0; i < seq.size(); ++i) {
+        int currNode = seq[i];
+        if (currNode > N || currNode <= 0) {
+          return false;
+        }
+        if (i > 0) {
+          int prevNode = seq[i - 1];
+          if (!edges[prevNode].count(currNode)) {
+            edges[prevNode].insert(currNode);
+            indegree[currNode] += 1;
+          }
         }
       }
     }
-    return true;
+
+    if (empty) {
+      return false;
+    }
+    queue<int> q;
+    for (int i = 1; i <= N; ++i) {
+      if (indegree[i] == 0) {
+        q.push(i);
+      }
+    }
+    // In order to get a unique sequence, myq.size is always 1, also the order
+    // is the same as org
+    int idx = 0;
+    while (!q.empty()) {
+      if (q.size() > 1) {
+        return false;
+      }
+      int k = q.front();
+      q.pop();
+      if (k != org[idx++]) {
+        return false;
+      }
+      for (int i : edges[k]) {
+        if (--indegree[i] == 0) {
+          q.push(i);
+        }
+      }
+    }
+    return idx == N;
   }
 };
