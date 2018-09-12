@@ -91,7 +91,7 @@ public:
     int ten = 0;
 
     for (auto bill : bills) {
-      if (bill = 5) {
+      if (bill == 5) {
         five += 1;
       } else if (bill == 10) {
         if (five == 0) {
