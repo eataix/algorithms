@@ -34,7 +34,6 @@ pair<int, int> parse(const string &s) {
   return {toIP(host), stoi(prefix)};
 }
 
-
 int bitsToCompare(int prefix) {
   unsigned int res = ((1 << (prefix - 1)) - 1) << (32 - prefix + 1);
   // unsigned int res =~((1 << (32 - prefix + 2)) - 1);

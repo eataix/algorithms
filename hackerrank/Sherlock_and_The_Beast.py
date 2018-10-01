@@ -1,8 +1,8 @@
 T = int(raw_input())
 for i in range(T):
     n = int(raw_input())
-    upper = 10 ** n - 1
-    lower = 10 ** (n - 1)
+    upper = 10**n - 1
+    lower = 10**(n - 1)
     print n, upper, lower
     found = False
     j = upper

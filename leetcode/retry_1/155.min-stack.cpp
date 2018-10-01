@@ -1,4 +1,4 @@
-#include<stack>
+#include <stack>
 using namespace std;
 /*
  * [155] Min Stack
@@ -9,29 +9,30 @@ using namespace std;
  * Easy (31.19%)
  * Total Accepted:    182.4K
  * Total Submissions: 584.8K
- * Testcase Example:  '["MinStack","push","push","push","getMin","pop","top","getMin"]\n[[],[-2],[0],[-3],[],[],[],[]]'
+ * Testcase Example:
+ * '["MinStack","push","push","push","getMin","pop","top","getMin"]\n[[],[-2],[0],[-3],[],[],[],[]]'
  *
- * 
+ *
  * Design a stack that supports push, pop, top, and retrieving the minimum
  * element in constant time.
- * 
- * 
+ *
+ *
  * push(x) -- Push element x onto stack.
- * 
- * 
+ *
+ *
  * pop() -- Removes the element on top of the stack.
- * 
- * 
+ *
+ *
  * top() -- Get the top element.
- * 
- * 
+ *
+ *
  * getMin() -- Retrieve the minimum element in the stack.
- * 
- * 
- * 
- * 
+ *
+ *
+ *
+ *
  * Example:
- * 
+ *
  * MinStack minStack = new MinStack();
  * minStack.push(-2);
  * minStack.push(0);
@@ -40,39 +41,35 @@ using namespace std;
  * minStack.pop();
  * minStack.top();      --> Returns 0.
  * minStack.getMin();   --> Returns -2.
- * 
- * 
+ *
+ *
  */
 class MinStack {
-    stack<int> dataStack;
-    stack<int> minStack;
+  stack<int> dataStack;
+  stack<int> minStack;
+
 public:
-    /** initialize your data structure here. */
-    MinStack() {
-    }
+  /** initialize your data structure here. */
+  MinStack() {}
 
-    void push(int x) {
-        dataStack.push(x);
-        if (minStack.empty() || x <= minStack.top()) {
-            minStack.push(x);
-        }
+  void push(int x) {
+    dataStack.push(x);
+    if (minStack.empty() || x <= minStack.top()) {
+      minStack.push(x);
     }
+  }
 
-    void pop() {
-        int v = dataStack.top();
-        dataStack.pop();
-        if (!minStack.empty() && v == minStack.top()) {
-            minStack.pop();
-        }
+  void pop() {
+    int v = dataStack.top();
+    dataStack.pop();
+    if (!minStack.empty() && v == minStack.top()) {
+      minStack.pop();
     }
+  }
 
-    int top() {
-        return dataStack.top();
-    }
+  int top() { return dataStack.top(); }
 
-    int getMin() {
-        return minStack.top();
-    }
+  int getMin() { return minStack.top(); }
 };
 
 /**
@@ -85,7 +82,5 @@ public:
  */
 
 #ifdef DEBUG
-int main() {
-
-}
+int main() {}
 #endif

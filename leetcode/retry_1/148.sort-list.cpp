@@ -21,8 +21,5 @@
  */
 class Solution {
 public:
-    ListNode* sortList(ListNode* head) {
-        ListNode *
-    }
-
+  ListNode *sortList(ListNode *head) { ListNode * }
 };

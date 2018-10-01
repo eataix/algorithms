@@ -837,30 +837,22 @@ template <class T> inline void OT(const T &x) {
 //*/
 
 int main() {
-  int N;
-  cin >> N;
-
-  vector<set<char>> stones(N);
-
-  REP(i, N) {
-    string str;
-    cin >> str;
-    for (char ch : str) {
-      stones[i].insert(ch);
-    }
+  string str;
+  cin >> str;
+  map<char, int> dict;
+  for (char ch : str) {
+    dict[ch] += 1;
   }
-
-  int count = 0;
-  FOR_1(ch, 'a', 'z') {
-    int flag = true;
-    for (auto stone : stones) {
-      if (!CTN(stone, ch)) {
-        flag = false;
+  int c = 0;
+  for (auto d : dict) {
+    if (d.second % 2 == 1) {
+      c += 1;
+      if (c > 1) {
+        cout << "NO" << endl;
+        return 0;
       }
     }
-    if (flag) {
-      count += 1;
-    }
   }
-  cout << count << endl;
+  cout << "YES" << endl;
+  return 0;
 }
