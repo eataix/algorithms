@@ -7,7 +7,8 @@
  * Medium (57.09%)
  * Total Accepted:    3.6K
  * Total Submissions: 6.2K
- * Testcase Example:  '[[110,5,112,113,114],[210,211,5,213,214],[310,311,3,313,314],[410,411,412,5,414],[5,1,512,3,3],[610,4,1,613,614],[710,1,2,713,714],[810,1,2,1,1],[1,1,2,2,2],[4,1,4,4,1014]]'
+ * Testcase Example:
+ * '[[110,5,112,113,114],[210,211,5,213,214],[310,311,3,313,314],[410,411,412,5,414],[5,1,512,3,3],[610,4,1,613,614],[710,1,2,713,714],[810,1,2,1,1],[1,1,2,2,2],[4,1,4,4,1014]]'
  *
  * This question is about implementing a basic elimination algorithm for Candy
  * Crush.
@@ -59,31 +60,40 @@
  *
  */
 class Solution {
-  public:
-    vector<vector<int>> candyCrush(vector<vector<int>>& board) {
-              int numRows = board.size(), numCols = board[0].size();
-        while (true) {
-            vector<pair<int, int>> del;
-            for (int r = 0; r < numRows; ++r) {
-                for (int c = 0; c < numCols; ++c) {
-                    if (board[r][c] == 0) continue;
-                    int r0 = r, r1 = r, c0 = c, c1 = c;
-                    while (r0 >= 0 && r0 > r - 3 && board[r0][c] == board[r][c]) --r0;
-                    while (r1 < numRows && r1 < r + 3 && board[r1][c] == board[r][c]) ++r1;
-                    while (c0 >= 0 && c0 > c - 3 && board[r][c0] == board[r][c]) --c0;
-                    while (c1 < numCols && c1 < c + 3 && board[r][c1] == board[r][c]) ++c1;
-                    if (r1 - r0 > 3 || c1 - c0 > 3) del.push_back({r, c});
-                }
-            }
-            if (del.empty()) break;
-            for (auto a : del) board[a.first][a.second] = 0;
-            for (int c = 0; c < numCols; ++c) {
-                int t = numRows - 1;
-                for (int r = numRows - 1; r >= 0; --r) {
-                    if (board[r][c]) swap(board[t--][c], board[r][c]);
-                }
-            }
+public:
+  vector<vector<int>> candyCrush(vector<vector<int>> &board) {
+    int numRows = board.size(), numCols = board[0].size();
+    while (true) {
+      vector<pair<int, int>> del;
+      for (int r = 0; r < numRows; ++r) {
+        for (int c = 0; c < numCols; ++c) {
+          if (board[r][c] == 0)
+            continue;
+          int r0 = r, r1 = r, c0 = c, c1 = c;
+          while (r0 >= 0 && r0 > r - 3 && board[r0][c] == board[r][c])
+            --r0;
+          while (r1 < numRows && r1 < r + 3 && board[r1][c] == board[r][c])
+            ++r1;
+          while (c0 >= 0 && c0 > c - 3 && board[r][c0] == board[r][c])
+            --c0;
+          while (c1 < numCols && c1 < c + 3 && board[r][c1] == board[r][c])
+            ++c1;
+          if (r1 - r0 > 3 || c1 - c0 > 3)
+            del.push_back({r, c});
         }
-        return board;
+      }
+      if (del.empty())
+        break;
+      for (auto a : del)
+        board[a.first][a.second] = 0;
+      for (int c = 0; c < numCols; ++c) {
+        int t = numRows - 1;
+        for (int r = numRows - 1; r >= 0; --r) {
+          if (board[r][c])
+            swap(board[t--][c], board[r][c]);
+        }
+      }
     }
+    return board;
+  }
 };
