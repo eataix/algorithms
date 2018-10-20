@@ -64,7 +64,8 @@ class Solution:
             for dx, dy in [(1, 0), (-1, 0), (0, 1), (0, -1)]:
                 newR = r + dx
                 newC = c + dy
-                if newR >= 0 and newR < numRows and newC >= 0 and newC < numCols and matrix[newR][newC] > matrix[r][c]:
+                if newR >= 0 and newR < numRows and newC >= 0 and newC < numCols and matrix[
+                        newR][newC] > matrix[r][c]:
                     dp[r][c] = max(dp[r][c], dfs(newR, newC))
             dp[r][c] += 1
             nonlocal res
